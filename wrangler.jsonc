@@ -1,0 +1,9 @@
+{
+  // Static-only Workers deploy: no Worker script, just the files in ./public.
+  // https://developers.cloudflare.com/workers/static-assets/
+  "name": "quoin-site",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./public"
+  }
+}
