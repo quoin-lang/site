@@ -28,9 +28,9 @@ tools/highlight_to_html.py --css
 
 Notes:
 - Needs the `qn` binary: found via `$QN_BIN`, then `PATH`, then a sibling
-  `building_blocks_vm` checkout's `target/{debug,release}`. Override with `--qn`.
+  `quoin` checkout's `target/{debug,release}`. Override with `--qn`.
 - The palette is the Quoin standard, mirrored from
-  `building_blocks_vm/crates/quoin-syntax/src/highlight.rs` (`colors_for`).
+  `quoin/crates/quoin-syntax/src/highlight.rs` (`colors_for`).
   Locals cycle by scope (`.v0`–`.v3`), block braces by nesting depth
   (`.b0`–`.b4`), collection braces `#( )` are one color.
 - **Site deviation:** the `<- -> ^> <--` arrows are kept brand-gold (`.kw`),
