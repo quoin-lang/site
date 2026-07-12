@@ -165,7 +165,7 @@ spans as many lines as you like, and closes at the next quote.
 <tr><td>Regex</td><td><code>#/…/</code></td><td><code>#/^[a-z]+$/</code></td></tr>
 <tr><td>User string</td><td><code>#Name'…'</code></td><td><code>#ANSI'…'</code></td></tr>
 <tr><td>User list</td><td><code>#Name( … )</code></td><td></td></tr>
-<tr><td>Block</td><td><code>{ … }</code></td><td>`{</td><td>n</td><td>n * 2 }` (Part II)</td></tr>
+<tr><td>Block</td><td><code>{ … }</code></td><td><code>{ |n| n * 2 }</code> (Part II)</td></tr>
 <tr><td>Booleans / nil</td><td>reserved identifiers</td><td><code>true</code>, <code>false</code>, <code>nil</code></td></tr>
 </table>
 </blockquote>
@@ -250,7 +250,7 @@ spans as many lines as you like, and closes at the next quote.
 <tr><td><code>a == b</code> <code>a != b</code> <code>a &lt; b</code> <code>a &lt;= b</code> <code>a &gt; b</code> <code>a &gt;= b</code></td><td><code>Send("==:"…)</code> etc.</td><td>overridable <code>==:</code> <code>!=:</code> <code>&lt;:</code> <code>&lt;=:</code> <code>&gt;:</code> <code>&gt;=:</code> methods</td></tr>
 <tr><td><code>a ~ b</code></td><td><code>Send("~:"…)</code></td><td>the match protocol — dispatches <code>~:</code> on the left operand (Part IV)</td></tr>
 <tr><td><code>a .. b</code></td><td><code>Send("..:"…)</code></td><td>builds a <code>NumberRange</code></td></tr>
-<tr><td><code>a &amp;&amp; b</code> `a \</td><td>\</td><td>b`</td><td>short-circuit jumps</td><td><strong>not</strong> method sends; right side is skipped when the left decides the result</td></tr>
+<tr><td><code>a &amp;&amp; b</code> <code>a || b</code></td><td>short-circuit jumps</td><td><strong>not</strong> method sends; right side is skipped when the left decides the result</td></tr>
 <tr><td><code>-x</code></td><td><code>Send("-")</code></td><td>unary minus is the no-arg <code>-</code> method (binary <code>-</code> is <code>-:</code>); <code>+x</code> is <code>Send("+")</code>, the identity <code>+</code> method</td></tr>
 <tr><td><code>!x</code></td><td><code>Send("!")</code></td><td>boolean negation (<code>Object#'!'</code> / <code>Nil#'!'</code> / the booleans)</td></tr>
 </table>

@@ -129,7 +129,7 @@ pre.qn-code { line-height: 1.45; }
 <tr><td><code>=</code></td><td>Assign a local (statement only)</td></tr>
 <tr><td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>Comparison</td></tr>
 <tr><td><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code></td><td>Arithmetic (infix); <code>%</code> infix is modulo</td></tr>
-<tr><td><code>&amp;&amp;</code> `\</td><td>\</td><td>`</td><td>Logical, short-circuit</td></tr>
+<tr><td><code>&amp;&amp;</code> <code>||</code></td><td>Logical, short-circuit</td></tr>
 <tr><td><code>~</code></td><td>Match (Part IV)</td></tr>
 <tr><td><code>..</code></td><td>Range (half-open)</td></tr>
 <tr><td><code>!</code> (prefix)</td><td>Boolean negation</td></tr>
@@ -147,7 +147,7 @@ pre.qn-code { line-height: 1.45; }
 <tr><td><code>a == b</code> (and <code>!= &lt; &lt;= &gt; &gt;=</code>)</td><td><code>Send("==:"…)</code> → overridable <code>==:</code> / <code>!=:</code> / <code>&lt;:</code> / <code>&lt;=:</code> / <code>&gt;:</code> / <code>&gt;=:</code> methods</td></tr>
 <tr><td><code>a ~ b</code></td><td><code>Send("~:"…)</code> → match protocol (dispatches <code>~:</code> on the left operand)</td></tr>
 <tr><td><code>a .. b</code></td><td><code>Send("..:"…)</code> → <code>NumberRange</code></td></tr>
-<tr><td><code>a &amp;&amp; b</code> / `a \</td><td>\</td><td>b`</td><td>short-circuit jumps (not a method send)</td></tr>
+<tr><td><code>a &amp;&amp; b</code> / <code>a || b</code></td><td>short-circuit jumps (not a method send)</td></tr>
 <tr><td><code>-x</code> / <code>+x</code></td><td><code>Send("-")</code> / <code>Send("+")</code> — the no-arg <code>-</code> (negate) / <code>+</code> (identity) methods</td></tr>
 <tr><td><code>!x</code></td><td><code>Send("!")</code></td></tr>
 <tr><td><code>%x</code> (prefix, on a string)</td><td><code>Send("mod")</code> — <code>%{…}</code> interpolation</td></tr>
