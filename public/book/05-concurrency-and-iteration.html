@@ -1,0 +1,295 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part V — Concurrency &amp; iteration</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="part-v-concurrency-iteration">Part V — Concurrency &amp; iteration</h1>
+<p>Fibers (stackful coroutines), generators built on them, and the <code>Iterate</code> mixin that turns a single <code>each:</code> into a full collection API — then the concurrency system proper: detached <code>Task</code>s on one cooperative scheduler, the structured <code>Async</code> helpers, CSP <code>Channel</code>s, and true parallelism with <code>Worker</code> isolates.</p>
+<p>Nav: <a href="01-foundations.html">Foundations</a> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <a href="04-patterns-and-errors.html">Patterns &amp; errors</a> · <strong>Concurrency &amp; iteration</strong> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <a href="07-types.html">Types</a> · <a href="08-tooling.html">Tooling</a> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <a href="10-appendices.html">Appendices</a></p>
+<hr>
+<h2 id="16-fibers-generators">16. Fibers &amp; generators</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Fiber.new:{ … }</code> creates an <strong>unstarted</strong> fiber. <code>f.resume</code> / <code>f.resume:arg</code> runs it to the next yield or to completion.</li>
+<li><code>Fiber.yield:v</code> (or the sugar <code>^&gt; v</code>) suspends the running fiber, handing <code>v</code> back to whoever resumed it. The value passed to the next <code>resume:</code> becomes the <em>result</em> of that yield expression — communication is two-way.</li>
+<li>Query: <code>done?</code>, <code>alive?</code>, <code>failed?</code>, <code>status</code> (<code>'created'</code>/<code>'suspended'</code>/<code>'running'</code>/<code>'done'</code>/<code>'failed'</code>), <code>result</code> (final return value), <code>error</code>. <code>Fiber.current</code> is the running fiber (or <code>nil</code> at top level).</li>
+<li>Fibers are <strong>stackful</strong> (you can yield from deep inside a native method such as <code>each:</code>) and <strong>nestable/re-entrant</strong>.</li>
+<li><code>Generator.from:{ ^&gt; … }</code> wraps a yielding block as a <strong>lazy, re-runnable</strong> iterable (it mixes in <code>Iterate</code>). <code>collection.iterator</code> returns an external pull iterator with <code>hasNext?</code> / <code>next</code>.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">f</span><span class="qn-plain"> = </span><span class="qn-global">Fiber</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Fiber</span><span class="qn-plain">.</span><span class="qn-signature">yield</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">; </span><span class="qn-global">Fiber</span><span class="qn-plain">.</span><span class="qn-signature">yield</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">; </span><span class="qn-string">'done'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">f</span><span class="qn-plain">.</span><span class="qn-signature">resume</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 1</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">f</span><span class="qn-plain">.</span><span class="qn-signature">resume</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 2</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">f</span><span class="qn-plain">.</span><span class="qn-signature">resume</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 'done'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">f</span><span class="qn-plain">.</span><span class="qn-signature">done?</span><span class="qn-plain">         </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">evens</span><span class="qn-plain"> = </span><span class="qn-global">Generator</span><span class="qn-plain">.</span><span class="qn-signature">from</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> = </span><span class="qn-number">0</span><span class="qn-plain">; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-global">true</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">.</span><span class="qn-signature">whileDo</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-plain">^&gt; </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> + </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">evens</span><span class="qn-plain">.</span><span class="qn-signature">take</span><span class="qn-plain">:</span><span class="qn-number">4</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(0 2 4 6)</span></pre>
+<p>The first <code>resume</code> runs to the first yield; the third returns the block's final value. <code>evens</code> is an infinite source, consumed lazily by <code>take:</code>.</p>
+<blockquote>
+<p><strong>⚠ Gotcha — resuming a finished or failed fiber throws.</strong> Once <code>status</code> is <code>'done'</code> or <code>'failed'</code>, <code>resume</code> raises a <code>FiberError</code>. So does <code>Fiber.yield:</code> called outside any fiber, and a fiber attempting to resume itself. Check <code>alive?</code>/<code>done?</code> before resuming in a loop.</p>
+</blockquote>
+<hr>
+<h2 id="17-the-iteration-protocol">17. The iteration protocol</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li>The <code>Iterate</code> mixin provides the entire collection API on top of <strong>one required primitive: <code>each:</code></strong>. Implement <code>each:</code> and mix in <code>Iterate</code>, and every combinator below works.</li>
+<li>Custom iterable recipe:</li>
+</ul>
+<pre class="qn-code">  MyThing &lt;- { …
+      .mix:Iterate
+      each: -&gt; { |b| … b.valueWithSelfOrArg:element … }   "* call b once per element
+  }</pre>
+<ul>
+<li>Iteration is <strong>re-entrant</strong> (no stored cursor — nested/concurrent passes don't interfere) and <strong>nil-safe</strong> (<code>nil</code> is a valid element, never a terminator).</li>
+<li><code>lazyCollect:</code> / <code>lazySelect:</code> return <strong>Generators</strong> (lazy), so they compose and work over infinite sources when capped with <code>take:</code>.</li>
+</ul>
+</blockquote>
+<h3 id="combinators-provided-by-iterate">Combinators provided by <code>Iterate</code></h3>
+<p>Transform: <code>collect:</code>, <code>select:</code>, <code>reject:</code>, <code>flatten</code>, <code>groupBy:</code>, <code>partition:</code>, <code>uniq</code>, <code>zip:</code>, <code>reverse</code>, <code>sort</code> / <code>sort:</code>. Reduce/query: <code>reduce:</code>, <code>reduce:into:</code>, <code>detect:</code>, <code>all?:</code>, <code>any?</code> / <code>any?:</code>, <code>none?:</code>, <code>count</code> / <code>count:</code>, <code>contains?:</code>, <code>sum</code> / <code>sum:</code>, <code>min</code> / <code>max</code> / <code>min:</code> / <code>max:</code>. Access: <code>first</code>…<code>fifth</code>, <code>last</code>, <code>nth:</code>, <code>take:</code>, <code>drop:</code>, <code>list</code>, <code>join:</code>, <code>iterator</code>. Lazy: <code>lazyCollect:</code>, <code>lazySelect:</code>.</p>
+<pre class="qn-code"><span class="qn-global">MyRange</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@start</span><span class="qn-plain"> </span><span class="qn-ivar">@end</span><span class="qn-plain">|
+    </span><span class="qn-plain">.</span><span class="qn-signature">mix</span><span class="qn-plain">:</span><span class="qn-global">Iterate</span><span class="qn-plain">
+    </span><span class="qn-signature">each</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">b</span><span class="qn-plain">| </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> = </span><span class="qn-ivar">@start</span><span class="qn-plain">; </span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> &lt; </span><span class="qn-ivar">@end</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain">.</span><span class="qn-signature">whileDo</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">b</span><span class="qn-plain">.</span><span class="qn-signature">valueWithSelfOrArg</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> + </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain"> = </span><span class="qn-global">MyRange</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">start</span><span class="qn-plain"> = </span><span class="qn-number">0</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-1">end</span><span class="qn-plain"> = </span><span class="qn-number">5</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain">.</span><span class="qn-signature">collect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; #(0 1 4 9 16)</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain">.</span><span class="qn-signature">select</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> &gt; </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">         </span><span class="qn-comment">"* -&gt; #(3 4)</span></pre>
+<p>Every combinator here — <code>collect:</code>, <code>select:</code>, and the rest — comes from that one <code>each:</code>.</p>
+<blockquote>
+<p><strong>⚠ Gotcha — combinators return materialized lists; use the <code>lazy*</code> forms for infinite or expensive sources.</strong> <code>collect:</code>/<code>select:</code> walk the whole collection eagerly. Over an infinite <code>Generator</code>, use <code>lazyCollect:</code>/<code>lazySelect:</code> and finish with <code>take:</code>; otherwise iteration never terminates.</p>
+</blockquote>
+<hr>
+<h2 id="18-tasks-the-cooperative-scheduler">18. Tasks &amp; the cooperative scheduler</h2>
+<p>A fiber (§16) is a coroutine <em>you</em> drive with <code>resume</code>. A <strong>task</strong> is scheduled for you: the VM interleaves every spawned task (the top level of the program is itself a task) on one cooperative scheduler, overlapping their waits.</p>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Task.spawn:{ … }</code> starts a <strong>detached task</strong> from a zero-parameter block and answers a <strong>handle</strong> immediately — the spawner keeps running. On the handle: <code>join</code> (park until finished; answers the task's result), <code>cancel</code>, <code>status</code> (<code>'running'</code>/<code>'done'</code>/<code>'failed'</code>/<code>'cancelled'</code>), <code>done?</code>. <code>Task.running</code> is a snapshot List of the handles of all still-running tasks.</li>
+<li><strong>One thread, cooperative round-robin.</strong> A task runs until it <strong>parks</strong> — an I/O wait, <code>Async.sleep:</code>, a channel operation, a <code>join</code> — finishes, or reaches a <strong>scheduler boundary</strong> (every few hundred instructions), where a runnable sibling gets a turn. One thread means no data races: a single method send always completes before any other task runs, so plain data needs no locks — but a <em>sequence</em> of statements can interleave with other tasks at any parking point or scheduler boundary.</li>
+<li><strong>Parking parks the task, not the VM.</strong> A blocking read (<code>[IO]Stdin.readLine</code>, a socket receive) suspends only the task that issued it; every other task keeps running, and the process truly sleeps only when <em>all</em> tasks are parked.</li>
+<li><code>join</code> re-raises a failed task's error <strong>catchably</strong> at the join site (and raises if the task was cancelled). <code>cancel</code> is <strong>cooperative</strong>: the task raises an <em>uncatchable</em> cancellation at its next checkpoint — within a few hundred instructions, parked or not — <code>finally:</code> blocks run on the way out, but no <code>catch:</code> handler fires.</li>
+<li><strong>The process exits when the main program finishes.</strong> Detached tasks still running — even ones that never got a turn — are abandoned, not awaited: <code>join</code> what must complete. <code>Runtime.exit:code</code> is likewise uncatchable: the raising task unwinds through its <code>finally:</code> blocks, every other task stops, and the process exits (with that status) after normal teardown.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">21</span><span class="qn-plain"> * </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">join</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 42</span></pre>
+<p>A failed task holds its error until someone joins it:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">ValueError</span><span class="qn-plain">.</span><span class="qn-signature">throw</span><span class="qn-plain">:</span><span class="qn-string">'boom'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">join</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">ValueError</span><span class="qn-plain">| </span><span class="qn-string">'caught: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; caught: boom</span></pre>
+<p>Cancellation is a request, honored at the task's next parking point. Its <code>finally:</code> blocks run; its <code>catch:</code> handlers do not see the cancellation:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-collection">)</span><span class="qn-plain">;
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">50</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-string">'caught'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-signature">finally</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-string">'cleanup'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">5</span><span class="qn-plain">;        </span><span class="qn-comment">"* let the task start and park inside its sleep</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">cancel</span><span class="qn-plain">;
+</span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">100</span><span class="qn-plain">;      </span><span class="qn-comment">"* give the cancellation time to land</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">status</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(cancelled #(cleanup))</span></pre>
+<h3 id="parking-parks-the-task-not-the-vm">Parking parks the task, not the VM</h3>
+<p>This is the load-bearing semantic of the whole system. A read that would "block" — stdin, a socket, a sleep — hands control back to the scheduler, which runs whatever else is ready. Here the main task waits on stdin while a spawned ticker keeps ticking (illustrative — it needs a terminal):</p>
+<pre class="qn-code"><span class="qn-comment">"* tick.qn — the ticker runs while the main task waits on stdin</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ticker</span><span class="qn-plain"> = </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    (</span><span class="qn-number">0</span><span class="qn-plain">..</span><span class="qn-number">3</span><span class="qn-plain">).</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">| (</span><span class="qn-string">'tick '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">).</span><span class="qn-signature">print</span><span class="qn-plain">; </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">200</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">line</span><span class="qn-plain"> = </span><span class="qn-namespace">[IO]</span><span class="qn-global">Stdin</span><span class="qn-plain">.</span><span class="qn-signature">readLine</span><span class="qn-plain">;    </span><span class="qn-comment">"* parks THIS task only</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">ticker</span><span class="qn-plain">.</span><span class="qn-signature">join</span><span class="qn-plain">;
+(</span><span class="qn-string">'read: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-0">line</span><span class="qn-plain">).</span><span class="qn-signature">print</span></pre>
+<pre>$ qn tick.qn        (typing "hello" about half a second in)
+tick 0
+tick 1
+tick 2
+read: hello</pre>
+<p>The same holds for every parking point. A deterministic, runnable version — <code>join</code> is the park, and the spawned task runs to completion while the main task waits:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-collection">)</span><span class="qn-plain">;
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> (</span><span class="qn-number">0</span><span class="qn-plain">..</span><span class="qn-number">3</span><span class="qn-plain">).</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">join</span><span class="qn-plain">;    </span><span class="qn-comment">"* main parks here; the spawned task runs</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">log</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; #(0 1 2)</span></pre>
+<blockquote>
+<p><strong>⚠ Gotcha — spawning queues; only joining guarantees.</strong> <code>Task.spawn:</code> queues the task; it gets its first turn at the spawner's next parking point or scheduler boundary (near-immediately, even if the spawner is compute-bound — CPU-bound tasks round-robin rather than starving each other). But <strong>the process exits when the main program finishes</strong>, abandoning whatever is still queued or running — <code>join</code>, <code>Async.gather:</code>, or a channel handshake is what guarantees completion. The one thing that still monopolizes the thread is a single long-running <em>native</em> call: nothing preempts inside one send.</p>
+</blockquote>
+<hr>
+<h2 id="19-async-sleep-gather-timeout">19. Async — sleep, gather, timeout</h2>
+<p>Structured helpers over the task scheduler: <code>Task.spawn:</code> is fire-and-forget; these wait for their work.</p>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Async.sleep:ms</code> parks the running task for the given milliseconds (a <code>Duration</code> is also accepted) without blocking other tasks; answers <code>nil</code>.</li>
+<li><code>Async.gather:#( {…} {…} … )</code> runs a List of zero-parameter blocks as concurrent tasks — their waits overlap — and answers their results as a List <strong>in input order</strong> once all complete. The first error propagates out of the gather.</li>
+<li><code>Async.timeout:ms do:{ … }</code> answers the block's value if it finishes in time. If the deadline fires first, the block is cancelled (its <code>finally:</code> runs, in-flight I/O aborts) and a catchable <code>TimeoutError</code> raises.</li>
+<li><code>Async.timeout:ms do:{ … } onCancel:{ … }</code>: on the deadline, run the handler and answer <strong>its</strong> value instead of throwing (<code>onCancel:{ nil }</code> is the non-throwing form). The handler covers only <em>this</em> deadline — an outer cancellation still propagates and the handler does not run.</li>
+<li><code>Async.joinAll:tasks</code> joins a List of <strong>already-started</strong> <code>Task</code> handles, answering their values in the list's order; the total wait is ~the slowest task, not the sum. (<code>gather:</code> spawns the work itself from blocks; <code>joinAll:</code> is for tasks you spawned yourself.)</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">gather</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">; </span><span class="qn-string">'a'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'b'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(a b)</span></pre>
+<p><code>'b'</code> finishes first, but results keep the input order — gather is about overlapping waits, not racing.</p>
+<pre class="qn-code"><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">timeout</span><span class="qn-plain">:</span><span class="qn-number">50</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">42</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">                                       </span><span class="qn-comment">"* -&gt; 42</span><span class="qn-plain">
+</span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">timeout</span><span class="qn-plain">:</span><span class="qn-number">5</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">200</span><span class="qn-plain">; </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-signature">onCancel</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'late'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; late</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">timeout</span><span class="qn-plain">:</span><span class="qn-number">5</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">200</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+    .</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">TimeoutError</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; operation timed out after 5ms</span></pre>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ts</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">sleep</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">; </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">collect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain">| </span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-global">Async</span><span class="qn-plain">.</span><span class="qn-signature">joinAll</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">ts</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(1 2)</span></pre>
+<blockquote>
+<p><strong>⚠ Gotcha — <code>gather:</code> takes blocks, <code>joinAll:</code> takes handles.</strong> Passing task handles to <code>gather:</code> (or blocks to <code>joinAll:</code>) is a type error. And because a deadline <em>cancels</em> the block it wraps, don't put must-complete side effects inside <code>timeout:do:</code> without a <code>finally:</code>.</p>
+</blockquote>
+<hr>
+<h2 id="20-channels">20. Channels</h2>
+<p>CSP-style message passing between tasks: instead of sharing a structure and coordinating around parking points, hand values from task to task.</p>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Channel.new</code> is an <strong>unbuffered rendezvous</strong>: every <code>send:</code> waits for its receiver. <code>Channel.buffered:n</code> queues up to <code>n</code> values before sends park. Query: <code>count</code> (values sent but not yet received), <code>capacity</code>, <code>closed?</code>.</li>
+<li><code>send:value</code> hands the value to a waiting receiver, else buffers it if there is room, else <strong>parks</strong> until a receiver takes it. <code>receive</code> answers the next value (FIFO — buffered values first, then directly from a parked sender), parking until one is available.</li>
+<li><code>close</code> (idempotent) ends the conversation: parked and future <code>send:</code>s raise a <code>ValueError</code> (<code>'send on a closed channel'</code>); buffered values remain receivable; a drained <code>receive</code> answers <code>nil</code>; <code>each:</code> ends.</li>
+<li><code>ch.each:{ |v| … }</code> runs the block on each received value until the channel is closed and drained, parking between values — the standard consumer loop.</li>
+<li><strong>Deadlock is an error, not a hang.</strong> When every task is parked and no I/O is in flight, the program stops (exit 1) with <code>deadlock: every task is parked with no I/O in flight (e.g. a receive with no sender, or a join cycle); the program cannot make progress</code>.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain"> = </span><span class="qn-global">Channel</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">;
+</span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:</span><span class="qn-number">42</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">receive</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 42</span></pre>
+<p>The main task parks in <code>receive</code>; that yields to the spawned sender, whose <code>send:</code> completes the rendezvous. A buffered channel decouples the two sides:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain"> = </span><span class="qn-global">Channel</span><span class="qn-plain">.</span><span class="qn-signature">buffered</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">close</span><span class="qn-plain">;
+</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">receive</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">receive</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(1 2)</span></pre>
+<p>Producer/consumer, with <code>close</code> as the end-of-stream signal:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain"> = </span><span class="qn-global">Channel</span><span class="qn-plain">.</span><span class="qn-signature">buffered</span><span class="qn-plain">:</span><span class="qn-number">8</span><span class="qn-plain">;
+</span><span class="qn-global">Task</span><span class="qn-plain">.</span><span class="qn-signature">spawn</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> (</span><span class="qn-number">0</span><span class="qn-plain">..</span><span class="qn-number">5</span><span class="qn-plain">).</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:(</span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-2">i</span><span class="qn-plain">) </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">close</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">got</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-collection">)</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">ch</span><span class="qn-plain">.</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">v</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">got</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">v</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">got</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(0 1 4 9 16)</span></pre>
+<blockquote>
+<p><strong>⚠ Gotcha — the deadlock error usually means "nobody on the other end".</strong> A <code>receive</code> with no task that will ever send (or an unbuffered/full <code>send:</code> with no task that will ever receive) can never be woken; once <em>every</em> task is in that state the scheduler reports it rather than hanging silently:</p>
+<pre>$ qn -e 'Channel.new.receive'
+deadlock: every task is parked with no I/O in flight (e.g. a receive with no sender, or a join cycle); the program cannot make progress</pre>
+<p>Spawn the other side before parking (as in the examples above), buffer the channel, or <code>close</code> it when the producer is done.</p>
+</blockquote>
+<hr>
+<h2 id="21-workers-parallel-plan-true-parallelism">21. Workers, Parallel &amp; Plan — true parallelism</h2>
+<p>Everything so far shares one OS thread and one heap. For real parallelism, Quoin uses <strong>isolates</strong>: a <code>Worker</code> is a fresh VM on its own OS thread (or child process) connected to its parent by message lanes — no shared state, parallelism by message passing. This section is an overview; run <code>qn doc</code> for the generated per-class API reference.</p>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Worker.spawn:'unit.qn'</code> boots a fresh VM running that unit file on its own OS thread and answers a handle immediately. <code>Worker.start:{ … }</code> spawns from a <strong>portable block</strong> instead — its free reads ship as a deep-copied snapshot, and <code>join</code> answers the block's value. <code>Worker.spawn:'unit.qn' backing:'process'</code> runs a child <code>qn</code> process (data-only lanes; blocks cannot cross a process boundary).</li>
+<li>On the handle: <code>send:</code> / <code>receive</code> exchange <strong>deep-copied data</strong> — numbers, strings, booleans, <code>nil</code>, <code>Bytes</code>, Lists, Maps; symbols, instances, and resources refuse loudly. <code>join</code> parks until the worker finishes, re-raising its error catchably (a handle joins once — a second <code>join</code> raises); <code>label:</code> names its row in <code>VM.ps</code> / <code>VM.psTree</code>; <code>terminate</code> kills a process-backed worker (a thread-backed one can't be killed).</li>
+<li>Inside the worker, class-side <code>Worker.receive</code> / <code>Worker.send:</code> are the mirror lanes, and <code>Worker.worker?</code> tells a unit which side it is running on.</li>
+<li><strong>Portable blocks refuse at submit time</strong>: writes to captured bindings, <code>self</code> / <code>@fields</code>, and <code>^^</code> are all rejected — the worker gets a snapshot, so none of those could mean the same thing there.</li>
+<li>A worker <code>receive</code> / <code>join</code> parks like any I/O wait, so it composes with <code>Async.gather:</code> / <code>timeout:do:</code> / cancellation unchanged.</li>
+<li>The layers above workers:</li>
+<li><strong><code>Parallel</code></strong> — <code>list.parallelCollect:</code> / <code>list.parallelReduce:</code> map/fold across a warm pool of worker isolates, preserving order. Inputs shorter than <code>Parallel.minItems</code> (2048) run serially with the same result; the reduce block must be <strong>associative</strong> (each worker folds a chunk, then the partials fold).</li>
+<li><strong><code>Plan</code></strong> — a lazy task graph. Leaves say <em>where</em> code runs: <code>Plan.task:{ … }</code> (in-VM task; the only leaf that may capture freely), <code>Plan.thread:{ … }</code> (isolate, portable block), <code>Plan.process:'unit.qn'</code> (child process). Composites say <em>shape</em>: <code>Plan.all:#( … )</code> (structural gather) and <code>Plan.any:#( … )</code> (race — first success wins, the rest are cancelled). Nothing runs until <code>await</code>. Failure policy on a gather: <code>all:…onError:'cancelRest'</code> (default — the first error cancels the rest and re-raises) or <code>'collect'</code> (every slot resolves to <code>#{'ok': v}</code> or <code>#{'err': msg}</code>). Compose deadlines with <code>Async.timeout:ms do:{ plan.await }</code>.</li>
+<li><strong><code>WorkerService</code></strong> — <code>WorkerService.host:'unit.qn' class:'Name'</code> hosts a class in a dedicated isolate and answers a <strong>proxy</strong>: ordinary method sends become RPC into the worker, state stays there, and calls serialize — an actor, effectively. <code>serviceStop</code> ends it.</li>
+</ul>
+</blockquote>
+<p>Round trip through a block worker's lanes (the block is the whole worker program; <code>receive</code> parks the parent task, like any wait):</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain"> = </span><span class="qn-global">Worker</span><span class="qn-plain">.</span><span class="qn-signature">start</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> = </span><span class="qn-global">Worker</span><span class="qn-plain">.</span><span class="qn-signature">receive</span><span class="qn-plain">; </span><span class="qn-global">Worker</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:(</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> * </span><span class="qn-number">2</span><span class="qn-plain">); </span><span class="qn-string">'done'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain">.</span><span class="qn-signature">send</span><span class="qn-plain">:</span><span class="qn-number">21</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain">.</span><span class="qn-signature">receive</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 42</span></pre>
+<p>The parallel combinators keep <code>collect:</code>'s contract — this input is far below <code>Parallel.minItems</code>, so it runs serially, with the same result either way:</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">parallelCollect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain"> * </span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(10 20 30)</span></pre>
+<p>A <code>Plan</code> mixes in-VM tasks and isolates in one awaited shape:</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">all</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-plain"> (</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">task</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> + </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">) (</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">thread</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> + </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">) </span><span class="qn-collection">)</span><span class="qn-plain">).</span><span class="qn-signature">await</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(2 4)</span></pre>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">all</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-plain"> (</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">task</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">) (</span><span class="qn-global">Plan</span><span class="qn-plain">.</span><span class="qn-signature">task</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'boom'</span><span class="qn-plain">.</span><span class="qn-signature">throw</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">) </span><span class="qn-collection">)</span><span class="qn-plain"> </span><span class="qn-signature">onError</span><span class="qn-plain">:</span><span class="qn-string">'collect'</span><span class="qn-plain">).</span><span class="qn-signature">await</span><span class="qn-plain">
+    </span><span class="qn-comment">"* -&gt; #(#{'ok': 1} #{'err': 'boom'})</span></pre>
+<p>Hosting a class as a service (illustrative — it needs the unit file):</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">index</span><span class="qn-plain"> = </span><span class="qn-global">WorkerService</span><span class="qn-plain">.</span><span class="qn-signature">host</span><span class="qn-plain">:</span><span class="qn-string">'search/index.qn'</span><span class="qn-plain"> </span><span class="qn-signature">class</span><span class="qn-plain">:</span><span class="qn-string">'SearchIndex'</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">index</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">doc</span><span class="qn-plain">;                     </span><span class="qn-comment">"* an ordinary send — runs inside the isolate</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">hits</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">index</span><span class="qn-plain">.</span><span class="qn-signature">query</span><span class="qn-plain">:</span><span class="qn-string">'quoin'</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">index</span><span class="qn-plain">.</span><span class="qn-signature">serviceStop</span></pre>
+<blockquote>
+<p><strong>⚠ Gotcha — messages are copies.</strong> A List sent to a worker (or received from one) is deep-copied at the boundary: mutating it on one side never affects the other. Isolation is the point — design worker protocols around values passed through the lanes, not shared structures.</p>
+</blockquote>
+<hr>
+<p>Next: <strong><a href="06-networking-and-web.html">Part VI — Networking &amp; the web</a></strong>.</p>
+
+</body></html>

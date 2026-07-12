@@ -1,0 +1,178 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>List</code><span class="badge">sealed</span></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a> · mixes in <a href="Iterate.html">Iterate</a></p>
+<p>The ordered, growable sequence — Quoin's workhorse collection, written <code>#(10 20 30)</code>.</p>
+<p>Indexes are zero-based. A list holds any mix of values; one checked to a single element class comes from <code>List.of:</code> / <code>ensure:</code>. The natives here are the storage primitives; the wider iteration surface (<code>each:</code>, <code>collect:</code>, <code>select:</code>, …) is the Iterate mixin in the standard library, built on them.</p>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L585"><code>core/02-iterate.qn:585</code></a></span><div class="body"><p>Lists are iterable in index order, and element-preserving combinators answer <code>.emptyLike</code> collections so a checked List(T) stays checked.</p>
+</div></div>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/10-parallel.qn#L113"><code>core/10-parallel.qn:113</code></a></span><div class="body"><p>Parallel combinators on List: <code>parallelCollect:</code> / <code>parallelReduce:</code> map and fold across the shared <code>Parallel</code> worker pool, preserving order.</p>
+</div></div>
+<h2>Class methods</h2>
+<div class="method" id="c-default"><span class="sig">default</span><div class="body"><p>A fresh empty List, the List class default.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L590"><code>core/02-iterate.qn:590</code></a></p></div></div>
+<div class="method" id="c-new"><span class="sig">new</span><div class="body"><p>A fresh empty list — the same value the <code>#()</code> literal builds.</p>
+<pre class="qn-code"><span class="qn-global">List</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">count</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 0</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-new:"><span class="sig">new:</span><div class="body"><p>Always refused: a List has no instance fields for a <code>new:</code> config block to set. Construct with <code>#()</code>, <code>List.new</code>, or <code>List.of:</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-of:"><span class="sig">of:</span><div class="body"><p>A fresh empty list tagged with an element class: every later insert is checked, so an <code>add:</code> / <code>at:put:</code> of a non-matching value raises a catchable TypeError.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">List</span><span class="qn-plain">.</span><span class="qn-signature">of</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">).</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-==:"><span class="sig">==:</span><div class="body"><p>Element-wise equality: true when the other value is a List of the same length whose elements are pairwise <code>==</code>. Anything that is not a List answers false.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain"> == </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-add:"><span class="sig">add:</span><div class="body"><p>Append a value at the end; answers the receiver, so adds chain. On a tagged list (<code>List.of:</code>) the value is checked first.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1 2 3)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-at:"><span class="sig">at:Integer</span><div class="body"><p>The element at a zero-based index; any out-of-range index (negatives included) answers nil.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-number">20</span><span class="qn-plain"> </span><span class="qn-number">30</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 20</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-at:put:"><span class="sig">at:Integer put:</span><div class="body"><p>Replace the element at a zero-based index; answers the receiver. An out-of-range index raises a catchable IndexError — unlike <code>at:</code>, writing never extends the list. On a tagged list (<code>List.of:</code>) the value is checked first.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-signature">put</span><span class="qn-plain">:</span><span class="qn-number">99</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1 99 3)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-bind:"><span class="sig">bind:</span><div class="body"><p>Destructure into a block: call it with the list's elements as its arguments — a two-parameter block gets the first two elements, extras are ignored. Answers the block's value.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 12</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-collector"><span class="sig">collector</span><div class="body"><p>Element-preserving combinators on a List accumulate into <code>.emptyLike</code>, keeping any element-type check.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L595"><code>core/02-iterate.qn:595</code></a></p></div></div>
+<div class="method" id="i-count"><span class="sig">count</span><div class="body"><p>The number of elements.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-number">20</span><span class="qn-plain"> </span><span class="qn-number">30</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">count</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 3</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-each:"><span class="sig">each:Block</span><div class="body"><p>Call the block once per element, in index order.</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-number">0</span><span class="qn-plain">; </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 6</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L602"><code>core/02-iterate.qn:602</code></a></p></div></div>
+<div class="method" id="i-elementType"><span class="sig">elementType</span><div class="body"><p>The checked element type as a Symbol, or nil for an ordinary untagged list.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">List</span><span class="qn-plain">.</span><span class="qn-signature">of</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; Integer</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-emptyLike"><span class="sig">emptyLike</span><div class="body"><p>A fresh empty list like the receiver — element tag included. The species hook the Iterate mixin uses, so transforms of a checked list stay checked.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-ensure:"><span class="sig">ensure:</span><div class="body"><p>Check every element against a class and answer a NEW list carrying that element tag; a non-matching element raises a catchable TypeError. The receiver is copied, not retagged in place, so other holders of the untagged list are unaffected.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">ensure</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; Integer</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-join:"><span class="sig">join:String</span><div class="body"><p>One string from the elements' <code>.s</code> renderings with the separator between them. The separator only appears while the accumulated result is non-empty, so an empty leading piece adds nothing.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">join</span><span class="qn-plain">:</span><span class="qn-string">', '</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 1, 2, 3</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-parallelCollect:"><span class="sig">parallelCollect:</span><div class="body"><p>Order-preserving parallel map. The block must be portable (read-only data captures; no writes to outer bindings, no self/@fields, no ^^) — violations raise the portability error, catchable at the call site. Inputs shorter than <code>Parallel.minItems</code> (and calls made from inside a worker) run serially, with the same result.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">parallelCollect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain"> * </span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(10 20 30)</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/10-parallel.qn#L123"><code>core/10-parallel.qn:123</code></a></p></div></div>
+<div class="method" id="i-parallelReduce:"><span class="sig">parallelReduce:</span><div class="body"><p>Parallel semigroup fold, mirroring <code>reduce:</code> (no seed): the block combines two values into one and MUST be associative — each worker folds its chunk, then the partials fold on this side. Non-associative blocks get chunk-boundary-dependent answers; that's on the caller, exactly as documented.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">parallelReduce</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 10</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/10-parallel.qn#L149"><code>core/10-parallel.qn:149</code></a></p></div></div>
+<div class="method" id="i-push:"><span class="sig">push:</span><div class="body"><p>Insert a value at the front (index 0); answers the receiver. The end-of-list counterpart is <code>add:</code>.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">push</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1 2 3)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-s"><span class="sig">s</span><div class="body"><p>The display string: <code>#(</code> and <code>)</code> around each element's <code>.s</code>, space-separated.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-string">'two'</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1 two 3)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sliceFrom:"><span class="sig">sliceFrom:Integer</span><div class="body"><p>A new list of the elements from a zero-based index to the end; an index past the end answers <code>#()</code>. A checked receiver's element tag carries over.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-number">20</span><span class="qn-plain"> </span><span class="qn-number">30</span><span class="qn-plain"> </span><span class="qn-number">40</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">sliceFrom</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(30 40)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sliceFrom:to:"><span class="sig">sliceFrom:Integer to:Integer</span><div class="body"><p>A new list of the elements from a zero-based start index to an exclusive end index, both clamped to the list's bounds (an empty or inverted range answers <code>#()</code>). A checked receiver's element tag carries over.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-number">20</span><span class="qn-plain"> </span><span class="qn-number">30</span><span class="qn-plain"> </span><span class="qn-number">40</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">sliceFrom</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-signature">to</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(20 30)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sort"><span class="sig">sort</span><div class="body"><p>Sort in place, ascending by the elements' <code>&gt;:</code>, and answer the receiver; nils sort last.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">sort</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(1 2 3)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sort:"><span class="sig">sort:</span><div class="body"><p>Sort in place, directed by the block, and answer the receiver. A one-parameter block is a KEY: elements are ordered by their keys' <code>&gt;:</code>, ascending. A two-parameter block is a COMPARATOR: it answers true when its arguments are already in order.</p>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-string">'bb'</span><span class="qn-plain"> </span><span class="qn-string">'a'</span><span class="qn-plain"> </span><span class="qn-string">'ccc'</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">sort</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(a bb ccc)</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">sort</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> &gt;= </span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(3 2 1)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+
+</body></html>

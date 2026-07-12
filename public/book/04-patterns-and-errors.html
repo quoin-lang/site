@@ -1,0 +1,185 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part IV — Patterns &amp; errors</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="part-iv-patterns-errors">Part IV — Patterns &amp; errors</h1>
+<p>Matching values with <code>case</code>/<code>~</code>, destructuring with <code>.bind:</code>, and raising and catching errors.</p>
+<p>Nav: <a href="01-foundations.html">Foundations</a> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <strong>Patterns &amp; errors</strong> · <a href="05-concurrency-and-iteration.html">Concurrency &amp; iteration</a> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <a href="07-types.html">Types</a> · <a href="08-tooling.html">Tooling</a> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <a href="10-appendices.html">Appendices</a></p>
+<hr>
+<h2 id="14-pattern-matching-case">14. Pattern matching &amp; <code>case</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>subject.case:{ .when:cond do:result; … .default:fallback }</code> — tests each <code>cond</code> against <code>subject</code> with the <code>~</code> operator; the <strong>first match wins</strong>. With no match and no <code>default:</code>, the result is <code>nil</code>. Each arm is an ordinary statement, so end it with <code>;</code> — a following line that starts with <code>.when:</code>'s leading dot would otherwise continue the previous arm (§2).</li>
+<li><code>do:</code> (and <code>default:</code>) accept either a <strong>block</strong> (the block receives the subject as its argument) or a <strong>plain value</strong> (used as the result).</li>
+<li>The <strong><code>~</code> match protocol</strong>: <code>a ~ b</code> is <code>a.~:(b)</code> — the matcher is the <strong>left</strong> operand, so dispatch is class-first on <code>a</code>'s <code>~:</code> (define <code>~:</code> on your own class to customize). Built-in matchers: a <strong>Class</strong> tests is-instance-of (<code>Integer ~ 5</code>), a <strong>Regex</strong> tests a match against the string (<code>#/…/ ~ str</code>), a <strong>Block</strong> runs as a predicate over <code>b</code>, a <strong>range</strong> tests membership, and the default <code>Object#~:</code> is <code>==:</code> equality. (Because the matcher is on the left, <code>case</code> puts the <code>cond</code> first: <code>cond ~ subject</code>.)</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">score</span><span class="qn-plain"> = </span><span class="qn-number">87</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">grade</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">score</span><span class="qn-plain">.</span><span class="qn-signature">case</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:(</span><span class="qn-number">90</span><span class="qn-plain">..</span><span class="qn-number">101</span><span class="qn-plain">) </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-string">'A'</span><span class="qn-plain">;                </span><span class="qn-comment">"* range membership</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:(</span><span class="qn-number">80</span><span class="qn-plain">..</span><span class="qn-number">90</span><span class="qn-plain">)  </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-string">'B'</span><span class="qn-plain">;
+    </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> &lt; </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-string">'invalid'</span><span class="qn-plain">;      </span><span class="qn-comment">"* predicate block, gets the subject</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">default</span><span class="qn-plain">:</span><span class="qn-string">'F'</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">grade</span><span class="qn-plain">;                                     </span><span class="qn-comment">"* -&gt; 'B'</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">name</span><span class="qn-plain"> = </span><span class="qn-string">'Ada'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">name</span><span class="qn-plain">.</span><span class="qn-signature">case</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:</span><span class="qn-regex">#/^[A-Z]+$/</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'shouting'</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;   </span><span class="qn-comment">"* regex match</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:</span><span class="qn-string">'Ada'</span><span class="qn-plain">       </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'hi Ada'</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;     </span><span class="qn-comment">"* equality</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">default</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'unknown'</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<p>The same <code>~</code> operator works standalone, with the matcher on the left: <code>(1..10) ~ 5</code>, <code>#/b/ ~ 'abc'</code>, <code>TypeError ~ value</code>, <code>{ |n| n &gt; 0 } ~ x</code>.</p>
+<h3 id="destructuring-into-blocks-the-bind-family">Destructuring into blocks — the <code>bind:</code> family</h3>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>list.bind:{ |a b| … }</code> calls the block with the list's elements <strong>positionally</strong> — a two-parameter block gets the first two elements, a missing element binds <code>nil</code>, extras are ignored. Answers the block's value.</li>
+<li><code>map.bind:{ |w h| … }</code> binds each parameter by <strong>name</strong>. The lookup runs backward, parameter → key — the parameter's name as a String key first, then as a Symbol key; an absent key binds <code>nil</code>. (A Map key need not be an identifier, but every identifier is a candidate key — so the parameters drive the lookup, never the other way around.)</li>
+<li><code>regex.match:'…'</code> answers a <strong>Match</strong>, or <code>nil</code> when the pattern misses — the nil-guard is the miss test. <code>match.bind:{ … }</code> binds a parameter named after a <strong>named capture group</strong> (<code>(?&lt;name&gt;…)</code>) to that group and any other parameter <strong>positionally</strong> (first parameter → group 1); a group that did not participate binds <code>nil</code>.</li>
+<li>A Match also reads directly: <code>s</code> is the whole matched text, <code>at:</code> one group by index (1-based; 0 is the whole match) or by name (String or Symbol), and <code>captures</code> lists the groups in order.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-collection">#(</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">                       </span><span class="qn-comment">"* -&gt; 12</span><span class="qn-plain">
+</span><span class="qn-collection">#{</span><span class="qn-string">'w'</span><span class="qn-plain">: </span><span class="qn-number">5</span><span class="qn-plain"> </span><span class="qn-string">'h'</span><span class="qn-plain">: </span><span class="qn-number">4</span><span class="qn-collection">}</span><span class="qn-plain">.</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">w</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-1">h</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">             </span><span class="qn-comment">"* -&gt; 20</span><span class="qn-plain">
+(</span><span class="qn-string">'1/2/3'</span><span class="qn-plain">.</span><span class="qn-signature">split</span><span class="qn-plain">:</span><span class="qn-string">'/'</span><span class="qn-plain">).</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">b</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">c</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">a</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">c</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; '13'</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">m</span><span class="qn-plain"> = </span><span class="qn-regex">#/(?&lt;user&gt;\w+)@(?&lt;host&gt;[\w.]+)/</span><span class="qn-plain">.</span><span class="qn-signature">match</span><span class="qn-plain">:</span><span class="qn-string">'ada@example.org'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">m</span><span class="qn-plain">.</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">host</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">user</span><span class="qn-plain">| </span><span class="qn-plain">%</span><span class="qn-string">'%{host} gets mail for %{user}'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">   </span><span class="qn-comment">"* -&gt; 'example.org gets mail for ada'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">m</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'user'</span><span class="qn-plain">;                                      </span><span class="qn-comment">"* -&gt; 'ada'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">m</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">;                                           </span><span class="qn-comment">"* -&gt; 'example.org'</span><span class="qn-plain">
+(</span><span class="qn-regex">#/(\d+)-(\d+)/</span><span class="qn-plain">.</span><span class="qn-signature">match</span><span class="qn-plain">:</span><span class="qn-string">'10-20'</span><span class="qn-plain">).</span><span class="qn-signature">bind</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">lo</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">hi</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">hi</span><span class="qn-plain">.</span><span class="qn-signature">to_integer</span><span class="qn-plain"> - </span><span class="qn-ident qn-ident-1">lo</span><span class="qn-plain">.</span><span class="qn-signature">to_integer</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">   </span><span class="qn-comment">"* -&gt; 10</span><span class="qn-plain">
+</span><span class="qn-regex">#/x/</span><span class="qn-plain">.</span><span class="qn-signature">match</span><span class="qn-plain">:</span><span class="qn-string">'abc'</span><span class="qn-plain">                                  </span><span class="qn-comment">"* -&gt; nil</span></pre>
+<hr>
+<h2 id="15-errors-stack-traces">15. Errors &amp; stack traces</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>value.throw</code> throws <strong>any value</strong>. The <code>Error</code> classes add class-side convenience constructors: <code>Error.throw:'msg'</code> and <code>Error.throw:'msg' payload:p</code> build an instance and throw it.</li>
+<li><code>{ … }.catch:{ |e| … }</code> runs the receiver block; if it throws, the thrown value is passed to the catch block, whose result becomes the value. <code>{ … }.catch:{ |e| … } finally:{ … }</code> additionally runs <code>finally:</code> <strong>always</strong> (on success or failure).</li>
+<li><strong>Typed catch.</strong> A typed handler param — <code>catch:{ |e:IoError| … }</code> — only catches when the thrown value is (a subtype of) that type; a non-match <strong>re-raises</strong> to an enclosing <code>catch:</code>. An untyped <code>|e|</code> (≡ <code>|e:Object|</code>) is a catch-all.</li>
+<li><strong>Multiple handlers by type.</strong> Chain <code>catch:</code> keywords: <code>{ … }.catch:{ |e:IoError| … } catch:{ |e:Error| … } finally:{ … }</code>. Handlers are tried in <strong>source order, first match wins</strong> — so write them most-specific → least-specific, with any untyped catch-all <strong>last</strong> (a broad handler placed first shadows the narrower ones below it). This first-match ordering is a deliberate exception to Quoin's otherwise order-independent multimethod dispatch: a handler's type lives on a runtime block, not a scored method chain, so there is no specificity order to fall back on. (Inside a single handler you can still branch with <code>case</code>/<code>~</code>: <code>e.case:{ .when:TypeError do:… }</code>.)</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">amount</span><span class="qn-plain"> = </span><span class="qn-plain">-</span><span class="qn-number">5</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">result</span><span class="qn-plain"> = </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    (</span><span class="qn-ident qn-ident-0">amount</span><span class="qn-plain"> &lt; </span><span class="qn-number">0</span><span class="qn-plain">).</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-global">ArgumentError</span><span class="qn-plain">.</span><span class="qn-signature">throw</span><span class="qn-plain">:</span><span class="qn-string">'amount must be &gt;= 0'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-plain">.</span><span class="qn-signature">process</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">amount</span><span class="qn-plain">                </span><span class="qn-comment">"* reached only when the check passes</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">ArgumentError</span><span class="qn-plain">| (</span><span class="qn-string">'bad input: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain">).</span><span class="qn-signature">print</span><span class="qn-plain">; </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+ </span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">IoError</span><span class="qn-plain">|        (</span><span class="qn-string">'io failed: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain">).</span><span class="qn-signature">print</span><span class="qn-plain">; </span><span class="qn-plain">-</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+ </span><span class="qn-signature">finally</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'done'</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-comment">"* anything that isn't an ArgumentError or IoError re-raises automatically —</span><span class="qn-plain">
+</span><span class="qn-comment">"* most-specific handler first, no explicit re-throw needed.</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">result</span><span class="qn-plain">                             </span><span class="qn-comment">"* -&gt; 0</span></pre>
+<p>Internal failures surface as the matching Quoin error type — e.g. an out-of-range index or a type mismatch becomes a catchable <code>TypeError</code>/<code>IndexError</code>, and sending an unknown selector becomes a <code>MessageNotUnderstood</code> — each with a <code>message</code> you can read.</p>
+<h3 id="placeholder-statements">Placeholder statements</h3>
+<p>Three statement-only markers hold a place for code that isn't there yet — the <code>todo!()</code> family of Quoin. They are <strong>statements, not expressions</strong> (<code>var x = ...</code> is a parse error):</p>
+<blockquote>
+<ul>
+<li><code>...</code> — "not written yet": throws a typed <code>NotImplementedError</code>.</li>
+<li><code>!!!</code> — "can NEVER execute": throws a typed <code>UnreachableError</code>. Reaching one is a logic error worth crashing over.</li>
+<li><code>???</code> — "shouldn't get here, but keep going": prints a <code>file:line:col: warning:</code> line to the Log — with the placeholder's real source location — and execution continues (its statement value is <code>nil</code>).</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-error">...</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">NotImplementedError</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; not implemented</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-error">!!!</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">:</span><span class="qn-global">UnreachableError</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">       </span><span class="qn-comment">"* -&gt; reached unreachable code</span></pre>
+<p>Both throwing forms are ordinary <code>Error</code> subclasses: a plain <code>catch:{ |e:Error| … }</code> catches them, traces point at the placeholder, and a test can pin one with <code>.does:{ ... } throw:NotImplementedError</code>.</p>
+<blockquote>
+<p>Stack traces: uncaught errors print a highlighted trace (with source snippets). The mechanics are an implementation detail; nothing in the language surface depends on them.</p>
+</blockquote>
+<hr>
+<p>Next: <strong><a href="05-concurrency-and-iteration.html">Part V — Concurrency &amp; iteration</a></strong>.</p>
+
+</body></html>

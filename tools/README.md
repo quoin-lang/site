@@ -36,3 +36,15 @@ Notes:
 - **Site deviation:** the `<- -> ^> <--` arrows are kept brand-gold (`.kw`),
   not the standard's white. Pass `--no-gold-arrows` for the pure standard.
 ```
+
+## `gen_docs.sh` — regenerate the hosted docs
+
+`public/book/` and `public/reference/` are committed artifacts generated from a
+Quoin VM checkout (the language book via `qn doc --md docs/language`, the stdlib
+API reference via `qn doc --stdlib`):
+
+```sh
+tools/gen_docs.sh                     # sibling ../quoin checkout
+tools/gen_docs.sh ~/code/my-checkout  # explicit checkout
+QN_BIN=/path/to/qn tools/gen_docs.sh  # explicit binary
+```

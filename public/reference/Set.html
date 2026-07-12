@@ -1,0 +1,166 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>Set</code><span class="badge">sealed</span></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a> · mixes in <a href="Iterate.html">Iterate</a></p>
+<p>The insertion-ordered collection of unique values, written <code>#&lt;1 2 3&gt;</code>. Adding an element that is already present is a no-op.</p>
+<p>Membership is hash-indexed: an element's <code>hash</code> runs once, at insert, and lookup uses the same equality ladder as Map keys — by value for scalars and strings, by identity for user instances unless their class overrides both <code>hash</code> and <code>==:</code>. A set with a checked element type comes from <code>Set.of:</code> / <code>ensure:</code>.</p>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L615"><code>core/02-iterate.qn:615</code></a></span><div class="body"><p>Sets are iterable (each: is implemented natively - Set#each: in src/runtime/set.rs) and carry the set-algebra operations, built on the native add:/contains?: and the Iterate combinators.</p>
+</div></div>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/16-serialize.qn#L60"><code>core/16-serialize.qn:60</code></a></span><div class="body"><p>A Set serializes as a List in insertion order (the formats have no set type); it comes back as a List — rebuild with Set.of: if set-ness matters.</p>
+</div></div>
+<h2>Class methods</h2>
+<div class="method" id="c-default"><span class="sig">default</span><div class="body"><p>A fresh empty Set, the Set class default.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L620"><code>core/02-iterate.qn:620</code></a></p></div></div>
+<div class="method" id="c-new"><span class="sig">new</span><div class="body"><p>A fresh empty set — the same value the <code>#&lt;&gt;</code> literal builds.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-new:"><span class="sig">new:</span><div class="body"><p>Always refused: a Set has no instance fields for a <code>new:</code> config block to set. Construct with <code>#&lt; &gt;</code>, <code>Set.new</code>, or <code>Set.of:</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-of:"><span class="sig">of:</span><div class="body"><p>A fresh empty set tagged with an element class: every later <code>add:</code> is checked, raising a catchable TypeError on a mismatch.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">Set</span><span class="qn-plain">.</span><span class="qn-signature">of</span><span class="qn-plain">:</span><span class="qn-global">String</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; String</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-==:"><span class="sig">==:</span><div class="body"><p>Same-elements equality: true when the other value is a Set of the same size containing every element of this one — insertion order does not matter. Anything that is not a Set answers false.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain"> == </span><span class="qn-collection">#&lt;</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-collection">&gt;</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-add:"><span class="sig">add:</span><div class="body"><p>Add a value; one already present is left alone (a set holds one of each). Answers the receiver. On a tagged set (<code>Set.of:</code>) the value is checked first.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #&lt;1 2 3&gt;</span><span class="qn-plain">
+</span><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #&lt;1 2&gt;</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-asData"><span class="sig">asData</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/16-serialize.qn#L61"><code>core/16-serialize.qn:61</code></a></p></div></div>
+<div class="method" id="i-collector"><span class="sig">collector</span><div class="body"><p>A fresh empty LIST carrying this set's element tag — the Iterate mixin's staging collection, where transforms like <code>collect:</code> accumulate results in order before they become the final collection.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-contains?:"><span class="sig">contains?:</span><div class="body"><p>True when the value is an element — an O(1) hash probe, using the same equality ladder as Map keys.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">contains?</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">contains?</span><span class="qn-plain">:</span><span class="qn-number">9</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; false</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-count"><span class="sig">count</span><div class="body"><p>The number of elements.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">count</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 3</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-difference:"><span class="sig">difference:</span><div class="body"><p>A new Set holding the elements of self that are not in other.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">difference</span><span class="qn-plain">:</span><span class="qn-collection">#&lt;</span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #&lt;1 3&gt;</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L651"><code>core/02-iterate.qn:651</code></a></p></div></div>
+<div class="method" id="i-each:"><span class="sig">each:</span><div class="body"><p>Call a block once per element, in insertion order; answers the receiver. This is the one iteration primitive — the whole Iterate surface (<code>collect:</code>, <code>select:</code>, …) derives from it.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-elementType"><span class="sig">elementType</span><div class="body"><p>The checked element type as a Symbol, or nil for an ordinary untagged set.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">Set</span><span class="qn-plain">.</span><span class="qn-signature">of</span><span class="qn-plain">:</span><span class="qn-global">String</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; String</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-emptyLike"><span class="sig">emptyLike</span><div class="body"><p>A fresh empty set like the receiver — element tag included. The species hook the Iterate mixin uses, so transforms of a checked set stay checked.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-ensure:"><span class="sig">ensure:</span><div class="body"><p>Check every element against a class and answer a NEW set carrying that element tag; a non-matching element raises a catchable TypeError. Cached hashes carry over, so instance <code>hash</code> methods do not re-run.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">ensure</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; Integer</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-intersection:"><span class="sig">intersection:</span><div class="body"><p>A new Set holding the elements present in both self and other.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">intersection</span><span class="qn-plain">:</span><span class="qn-collection">#&lt;</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">&gt;</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #&lt;2 3&gt;</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L640"><code>core/02-iterate.qn:640</code></a></p></div></div>
+<div class="method" id="i-remove:"><span class="sig">remove:</span><div class="body"><p>Remove a value if present (a miss is a no-op); answers the receiver. The remaining elements keep their insertion order.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">remove</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #&lt;1 3&gt;</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-s"><span class="sig">s</span><div class="body"><p>The display string: <code>#&lt;</code> and <code>&gt;</code> around each element's <code>.s</code>, space-separated, in insertion order.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #&lt;1 2 3&gt;</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-subset?:"><span class="sig">subset?:</span><div class="body"><p>True when every element of self is in other.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">subset?</span><span class="qn-plain">:</span><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L662"><code>core/02-iterate.qn:662</code></a></p></div></div>
+<div class="method" id="i-superset?:"><span class="sig">superset?:</span><div class="body"><p>True when every element of other is in self.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">superset?</span><span class="qn-plain">:</span><span class="qn-collection">#&lt;</span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L669"><code>core/02-iterate.qn:669</code></a></p></div></div>
+<div class="method" id="i-union:"><span class="sig">union:</span><div class="body"><p>A new Set holding every element of self and other.</p>
+<pre class="qn-code"><span class="qn-collection">#&lt;</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">&gt;</span><span class="qn-plain">.</span><span class="qn-signature">union</span><span class="qn-plain">:</span><span class="qn-collection">#&lt;</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">&gt;</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #&lt;1 2 3&gt;</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/02-iterate.qn#L628"><code>core/02-iterate.qn:628</code></a></p></div></div>
+
+</body></html>

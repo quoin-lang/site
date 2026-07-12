@@ -1,0 +1,268 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quoin reference</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1>Quoin reference</h1>
+<h2>Core</h2>
+<ul class="classlist">
+<li><a href="ANSI.html"><code>ANSI</code></a><span class="summary">A String carrying color markup, e.g. <code>#ANSI'a [#ff6961]red[/] word'</code>. A <code>[...]</code> tag</span></li>
+<li><a href="ActAsUserList.html"><code>ActAsUserList</code></a><span class="summary">Marker mixin for classes constructible from a tagged list literal:</span></li>
+<li><a href="ActAsUserString.html"><code>ActAsUserString</code></a><span class="summary">Marker mixin for classes constructible from a tagged string literal:</span></li>
+<li><a href="AmbiguousMethodError.html"><code>AmbiguousMethodError</code></a><span class="summary">A multimethod send where two variants are equally specific for the arguments and</span></li>
+<li><a href="AnsiTestReporter.html"><code>AnsiTestReporter</code></a><span class="summary">The built-in terminal reporter: aligned [Suite] tags, one line per test</span></li>
+<li><a href="ArgumentError.html"><code>ArgumentError</code></a><span class="summary">A method or block invoked with the wrong number of arguments.</span></li>
+<li><a href="ArithmeticError.html"><code>ArithmeticError</code></a><span class="summary">An impossible arithmetic operation — division or modulo by zero.</span></li>
+<li><a href="Array.html"><code>Array</code></a><span class="summary">A typed, contiguous numeric column: every element is the same dtype (<code>#float64</code> or <code>#int64</code>), held in one packed buffer rather than exploded into per-element values. The layout is Apache Arrow's non-nullable primitive format, so extensions (numpy, databases) read the same bytes with zero conversion.</span></li>
+<li><a href="Async.html"><code>Async</code></a><span class="summary">Structured concurrency over the task scheduler: run blocks as concurrent tasks whose I/O overlaps (<code>gather:</code>), park without blocking other tasks (<code>sleep:</code>), and put a deadline on anything (<code>timeout:do:</code>). See docs/internal/ASYNC_ARCH.md.</span></li>
+<li><a href="Base64.html"><code>Base64</code></a><span class="summary">Base64 encoding between <code>Bytes</code> and text — the standard alphabet, with <code>=</code> padding.</span></li>
+<li><a href="BigDecimal.html"><code>BigDecimal</code></a><span class="summary">An exact base-10 decimal number with up to 28 significant digits -- for money and other quantities where binary floating point drifts. Construct with <code>BigDecimal.of:</code> (a String or an Integer; deliberately not a Double, which would already carry rounding error). Arithmetic never mixes silently: a non-BigDecimal operand is 'message not understood'.</span></li>
+<li><a href="BigInteger.html"><code>BigInteger</code></a><span class="summary">An arbitrary-precision integer. Construct explicitly with <code>BigInteger.of:</code> (a decimal String or an Integer); arithmetic never mixes silently -- a plain Integer operand is 'message not understood', so convert both sides first. Division truncates toward zero, like Integer.</span></li>
+<li><a href="Block.html"><code>Block</code></a><span class="summary">A closure: code plus its captured environment. Written as a literal <code>{ ... }</code>, with parameters as <code>{ |x y| ... }</code>. Run one with <code>value</code> / <code>value:</code> / <code>valueWithArgs:</code>, loop with <code>whileDo:</code>, handle errors with <code>catch:</code>. Inside a block, <code>^</code> returns from the block itself and <code>^^</code> returns from the enclosing method.</span></li>
+<li><a href="Boolean.html"><code>Boolean</code></a><span class="summary">The two truth values, written as the literals <code>true</code> and <code>false</code>. Control flow in Quoin is messaging a Boolean: <code>if:</code>/<code>else:</code> take blocks and run the matching one, so there is no statement-level if.</span></li>
+<li><a href="BuiltinAssertions.html"><code>BuiltinAssertions</code></a><span class="summary">The assertion vocabulary test methods write against (<code>isTrue:</code>,</span></li>
+<li><a href="ByteStream.html"><code>ByteStream</code></a><span class="summary">A buffered binary stream — the one reading/writing surface over every conduit: files (<code>[IO]File.byteStream</code> / <code>create:</code> / <code>append:</code>), sockets (<code>TcpSocket#byteStream</code> or <code>ByteStream.over:</code>), and stdin (<code>[IO]Stdin.byteStream</code>).</span></li>
+<li><a href="Bytes.html"><code>Bytes</code></a><span class="summary">Immutable binary data — a contiguous run of raw octets. Text crosses the boundary explicitly: <code>'…'.asBytes</code> encodes, <code>asString</code> decodes (UTF-8). Build from integers with <code>Bytes.of:</code>, slice with <code>from:to:</code>, concatenate with <code>+</code>. An opaque blob (an image, a gzip stream) belongs here; a typed numeric column belongs in <code>Array</code>.</span></li>
+<li><a href="CSV.html"><code>CSV</code></a><span class="summary">Parse and generate CSV, RFC 4180 tabular text.</span></li>
+<li><a href="Case.html"><code>Case</code></a><span class="summary">A case/switch expression: match a subject against a series of conditions</span></li>
+<li><a href="Channel.html"><code>Channel</code></a><span class="summary">A CSP-style channel for passing values between tasks. <code>Channel.new</code> is an unbuffered rendezvous -- a send parks until a receiver takes the value; <code>Channel.buffered:n</code> queues up to n values before sends park. <code>close</code> ends the conversation: further sends raise, receives drain the buffer then answer nil, and <code>each:</code> ends.</span></li>
+<li><a href="Class.html"><code>Class</code></a><span class="summary">The class of classes: <code>Integer</code>, <code>List</code>, and every user-defined class are instances of Class. Define one with <code>Name &lt;- { ... }</code> (a subclass with <code>Parent &lt;- Name &lt;- { ... }</code>), reopen one with <code>Name &lt;-- { ... }</code>, and reflect with <code>name</code> / <code>parent</code> / <code>class</code>. Note that on classes <code>==</code> is the SUBTYPE test, and <code>Pattern ~ x</code> is instance-of.</span></li>
+<li><a href="ClassError.html"><code>ClassError</code></a><span class="summary">A class-structural violation: extending a <code>sealed!</code> class, instantiating an</span></li>
+<li><a href="DNS.html"><code>DNS</code></a><span class="summary">Name resolution — the system resolver (getaddrinfo, the same one <code>TcpSocket.connect:</code> uses), exposed. Lookups run on the blocking pool and park the task, not the scheduler.</span></li>
+<li><a href="Date.html"><code>Date</code></a><span class="summary">A civil calendar date — year, month, day; no time of day, no time zone. The type for birthdays, deadlines, and schedules, where "March 3rd" means March 3rd regardless of zone.</span></li>
+<li><a href="DateTime.html"><code>DateTime</code></a><span class="summary">A zone-aware date and time: an instant plus its time zone, so calendar components, DST, and offsets all come out right.</span></li>
+<li><a href="Double.html"><code>Double</code></a><span class="summary">A 64-bit IEEE-754 floating-point number -- the type of literals like <code>3.14</code>. Arithmetic with either an Integer or a Double operand happens in floating point and yields a Double. Whole values print without a decimal point (<code>4.0.s</code> is '4').</span></li>
+<li><a href="Duration.html"><code>Duration</code></a><span class="summary">A signed, fixed length of time, with nanosecond precision.</span></li>
+<li><a href="Error.html"><code>Error</code></a><span class="summary">The root of every throwable error: a human-readable <code>message</code> plus an optional</span></li>
+<li><a href="Extension.html"><code>Extension</code></a><span class="summary">A connected out-of-process extension: a subprocess speaking the Quoin extension wire, providing classes and operations to the host program. <code>Extension.loadPackage:</code> is the managed entry point (spawn per the package's extension.toml, install its classes under the package namespace, run its init.qn glue) -- <code>use name:*</code> does this for you. The handle's <code>call:with:</code> family is the raw op surface that package glue builds on. See docs/internal/EXT_PACKAGING.md.</span></li>
+<li><a href="Fiber.html"><code>Fiber</code></a><span class="summary">A coroutine: a block that can suspend itself with <code>Fiber.yield:</code> -- or the <code>^&gt; value</code> sugar -- and be resumed by its caller, exchanging values both ways. Cooperative and in-task; for concurrent tasks whose I/O overlaps, use Task / Async instead.</span></li>
+<li><a href="FiberError.html"><code>FiberError</code></a><span class="summary">A Fiber misused: resuming a finished or failed Fiber, a Fiber resuming itself, or</span></li>
+<li><a href="Generator.html"><code>Generator</code></a><span class="summary">An iterable made from a yielding block: each <code>^&gt;</code> in the block becomes an</span></li>
+<li><a href="Hex.html"><code>Hex</code></a><span class="summary">Hexadecimal encoding between <code>Bytes</code> and text: two hex digits per byte, lower-case on encode, either case accepted on decode.</span></li>
+<li><a href="HttpError.html"><code>HttpError</code></a><span class="summary">HttpError — throw a status (and optional body) from anywhere under a</span></li>
+<li><a href="IndexError.html"><code>IndexError</code></a><span class="summary">Raised by an out-of-bounds index (e.g. <code>List.at:put:</code>, <code>Bytes.at:</code>). The VM</span></li>
+<li><a href="Instant.html"><code>Instant</code></a><span class="summary">A point on the monotonic clock, for measuring elapsed time.</span></li>
+<li><a href="Integer.html"><code>Integer</code></a><span class="summary">A 64-bit signed whole number -- the type of integer literals like <code>42</code>.</span></li>
+<li><a href="IoError.html"><code>IoError</code></a><span class="summary">Raised by socket/stream/file operations. <code>kind</code> is a symbol categorizing the</span></li>
+<li><a href="Iterate.html"><code>Iterate</code></a><span class="summary">Every collection combinator, derived from a single method: <code>each:</code>.</span></li>
+<li><a href="IterateAssertions.html"><code>IterateAssertions</code></a><span class="summary">Collection assertions layered on BuiltinAssertions; mixed into Test</span></li>
+<li><a href="Iterator.html"><code>Iterator</code></a><span class="summary">An external, pull-style iterator (hasNext?/next) over any <code>each:</code>-able.</span></li>
+<li><a href="JSON.html"><code>JSON</code></a><span class="summary">Parse and generate JSON text.</span></li>
+<li><a href="KeyValuePair.html"><code>KeyValuePair</code></a><span class="summary">One key/value entry — what a Map yields when iterated: <code>each:</code> hands its block a KeyValuePair per entry, read with <code>key</code> and <code>value</code>. Build one directly with <code>KeyValuePair.new:{ var key = …; var value = … }</code>.</span></li>
+<li><a href="List.html"><code>List</code></a><span class="summary">The ordered, growable sequence — Quoin's workhorse collection, written <code>#(10 20 30)</code>.</span></li>
+<li><a href="Log.html"><code>Log</code></a></li>
+<li><a href="Map.html"><code>Map</code></a><span class="summary">The insertion-ordered dictionary, written <code>#{'a': 1 'b': 2}</code>. Any value can be a key, and iteration, printing, and serialization keep the order entries were added — a parse → generate round-trip doesn't reshuffle a document.</span></li>
+<li><a href="Match.html"><code>Match</code></a><span class="summary">One resolved regex match — what <code>Regex.match:</code> answers. <code>s</code> is the matched text, <code>at:</code> reads a capture group by index (1-based; 0 is the whole match) or by name, <code>captures</code> lists them all, and <code>bind:</code> destructures them into a block's parameters.</span></li>
+<li><a href="Math.html"><code>Math</code></a><span class="summary">A namespace of mathematical constants and free functions -- <code>Math.sin: x</code> where a method hung off the number would read awkwardly. Number-centric operations (<code>abs</code>, <code>floor</code>, <code>sqrt</code>, <code>pow:</code>, <code>min:</code>, <code>max:</code>) live on Integer/Double; <code>sqrt:</code> and <code>pow:to:</code> are mirrored here in free-function style. Every function accepts an Integer or a Double and returns a Double; angles are in radians.</span></li>
+<li><a href="MessageNotUnderstood.html"><code>MessageNotUnderstood</code></a><span class="summary">A message sent to a receiver that has no matching method.</span></li>
+<li><a href="MessagePack.html"><code>MessagePack</code></a><span class="summary">Compact binary serialization: <code>pack:</code> a value to <code>Bytes</code>, <code>unpack:</code> it back.</span></li>
+<li><a href="Method.html"><code>Method</code></a><span class="summary">A method as an object: the reflective handle behind a selector in a class's method table. Method objects are created by the VM when classes define or extend methods; there is no public constructor.</span></li>
+<li><a href="Mixin.html"><code>Mixin</code></a><span class="summary">The base class for mixins — method bundles a class pulls in with <code>.mix:</code>. Define</span></li>
+<li><a href="NameError.html"><code>NameError</code></a><span class="summary">Reading a name bound to nothing (<code>typo</code>). Assigning to an undeclared local is a</span></li>
+<li><a href="Nil.html"><code>Nil</code></a><span class="summary">The class of <code>nil</code>, the single 'no value' value -- what a missing Map key or a search that finds nothing returns. nil is not a Boolean and does not answer <code>if:else:</code>; test for it with <code>== nil</code> or <code>defined?</code> (which is false only for nil).</span></li>
+<li><a href="NotImplementedError.html"><code>NotImplementedError</code></a><span class="summary">Raised by the <code>...</code> placeholder statement: the code path exists but its body</span></li>
+<li><a href="NumberRange.html"><code>NumberRange</code></a><span class="summary">A numeric interval from start toward end - end-EXCLUSIVE - iterating in</span></li>
+<li><a href="Object.html"><code>Object</code></a><span class="summary">The universal root: every value is an Object, and every class inherits from it. It carries the protocol everything shares -- identity and equality (<code>==:</code> / <code>!=:</code> / <code>~:</code>), rendering (<code>s</code> / <code>pp</code> / <code>print</code>), reflection (<code>class</code> / <code>can?:</code> / <code>doc</code> / <code>docFor:</code> / <code>perform:args:</code>), and raising a value as an error (<code>throw</code>).</span></li>
+<li><a href="Parallel.html"><code>Parallel</code></a><span class="summary">Pool machinery behind the parallel List combinators (<code>parallelCollect:</code> /</span></li>
+<li><a href="ParseError.html"><code>ParseError</code></a><span class="summary">A parse/decode failure of input data (invalid UTF-8, a malformed HTTP response</span></li>
+<li><a href="Plan.html"><code>Plan</code></a><span class="summary">Plan — the join graph (docs/internal/CONCURRENCY_ARCH.md §13.5).</span></li>
+<li><a href="ProcessError.html"><code>ProcessError</code></a><span class="summary">A subprocess failed its <code>check</code>: nonzero exit (or death by signal) where success was</span></li>
+<li><a href="RandomAccessFile.html"><code>RandomAccessFile</code></a><span class="summary">Positioned reads over a file — pread-style, no cursor: every <code>readAt:count:</code> names its own offset, so reads are independent and there is no hidden position state. This is the substrate for random-access FORMATS (zip's central directory lives at the end of the file), where a sequential ByteStream is the wrong shape. Read-only. Together with <code>size</code>, this is the informal random-access read protocol — Bytes speaks it too (core/17-zip.qn), so code written against it reads a file or a byte buffer alike.</span></li>
+<li><a href="Regex.html"><code>Regex</code></a><span class="summary">A compiled regular expression -- the type of <code>#/pattern/</code> literals. Match with <code>~</code>, split with <code>split:</code>, substitute via <code>String.replace:with:</code>. Patterns use Rust's regex syntax.</span></li>
+<li><a href="Runtime.html"><code>Runtime</code></a><span class="summary">The running program's own runtime: command-line <code>arguments</code>, process <code>exit:</code>, and the <code>eval:</code> family for compiling and running Quoin source at runtime.</span></li>
+<li><a href="Set.html"><code>Set</code></a><span class="summary">The insertion-ordered collection of unique values, written <code>#&lt;1 2 3&gt;</code>. Adding an element that is already present is a no-op.</span></li>
+<li><a href="Span.html"><code>Span</code></a><span class="summary">A mixed-unit, calendar-aware duration: years, months, weeks, days, and time units held as SEPARATE fields — "1 month" stays 1 month until it meets a date, where <code>Date</code>/<code>DateTime</code> arithmetic applies it correctly (end-of-month clamping, DST). Contrast <code>Duration</code>, which is a fixed length of time.</span></li>
+<li><a href="StackError.html"><code>StackError</code></a><span class="summary">A recursion the VM refused before it could overflow the machine stack: a block that</span></li>
+<li><a href="StopIteration.html"><code>StopIteration</code></a><span class="summary">Raised by an exhausted iterator's <code>next</code> (see core/02-iterate.qn).</span></li>
+<li><a href="String.html"><code>String</code></a><span class="summary">Immutable UTF-8 text -- the type of 'single-quoted' literals (a double quote starts a comment in Quoin, so strings are single-quoted). Position-based operations (<code>length</code>, <code>index:</code>, <code>insert:at:</code>) count characters, not bytes. Strings concatenate with <code>+</code>, format with <code>%</code>, and interpolate with <code>.mod</code>; every operation returns a new String.</span></li>
+<li><a href="StringStream.html"><code>StringStream</code></a><span class="summary">A text stream: the UTF-8 view of a byte conduit, usually obtained from <code>[IO]File#stringStream</code>, a socket's <code>stringStream</code>, or <code>[IO]Stdin</code>.</span></li>
+<li><a href="Symbol.html"><code>Symbol</code></a><span class="summary">An interned identifier -- the type of <code>#name</code> literals (<code>#'quoted form'</code> for names with spaces or punctuation). Two symbols with the same name are the same object, so comparing them is a cheap identity check. Symbols name things -- selectors, classes, keys -- where a String would carry text.</span></li>
+<li><a href="TOML.html"><code>TOML</code></a><span class="summary">Parse and generate TOML, the config-file format.</span></li>
+<li><a href="Task.html"><code>Task</code></a><span class="summary">A detached concurrent task -- the fire-and-forget primitive beneath the structured <code>Async.gather:</code>. <code>Task.spawn:</code> starts one and answers a handle for observing and controlling it: <code>join</code> for the result, <code>cancel</code> for cooperative cancellation, <code>status</code> / <code>done?</code> to poll. Tasks interleave on one scheduler and their I/O overlaps. See docs/internal/ASYNC_ARCH.md.</span></li>
+<li><a href="TcpListener.html"><code>TcpListener</code></a><span class="summary">The server side of TCP: a socket bound to a local address, accepting incoming connections.</span></li>
+<li><a href="TcpServer.html"><code>TcpServer</code></a><span class="summary">A minimal concurrent TCP server. <code>start:</code> accepts connections in the background, handling</span></li>
+<li><a href="TcpSocket.html"><code>TcpSocket</code></a><span class="summary">A plaintext TCP connection.</span></li>
+<li><a href="Term.html"><code>Term</code></a><span class="summary">Terminal facts and markup rendering. <code>color?</code> answers whether styled output is on — the same detection the standard-stream writers use (a terminal, <code>NO_COLOR</code> unset, <code>CLICOLOR_FORCE</code> honored) — and <code>width</code>/<code>height</code> the console size. <code>render:</code> turns color markup into escape codes unconditionally (for output that bypasses the std streams); <code>strip:</code> turns it into plain text.</span></li>
+<li><a href="Test.html"><code>Test</code></a><span class="summary">One test: a named method (declared with TestSuite#test:) that runs with</span></li>
+<li><a href="TestAssertionResult.html"><code>TestAssertionResult</code></a><span class="summary">The record of one assertion: the verdict, the #( expected comparison</span></li>
+<li><a href="TestReporter.html"><code>TestReporter</code></a><span class="summary">Abstract lifecycle interface for test output. TestRunner announces the</span></li>
+<li><a href="TestResult.html"><code>TestResult</code></a><span class="summary">Immutable summary of one Test's run: its assertion results plus</span></li>
+<li><a href="TestRunner.html"><code>TestRunner</code></a><span class="summary">Drives suites against a reporter, firing the lifecycle hooks in order;</span></li>
+<li><a href="TestSuite.html"><code>TestSuite</code></a><span class="summary">A named group of tests — the unit a test file declares. Constructing one</span></li>
+<li><a href="Time.html"><code>Time</code></a><span class="summary">A wall-clock time of day — no date, no zone: the type for "the shop opens at 9:40". Arithmetic with a <code>Duration</code> WRAPS around midnight (a zoneless clock has nowhere else to go); <code>until:</code> answers the signed Duration between two clock readings within one day. It meets dates through <code>Date#atTime:zone:</code> and <code>DateTime#time</code>.</span></li>
+<li><a href="TimeZone.html"><code>TimeZone</code></a><span class="summary">An IANA time zone (<code>America/New_York</code>, <code>Asia/Tokyo</code>, …) or UTC — the zone component of a <code>DateTime</code>.</span></li>
+<li><a href="TimeoutError.html"><code>TimeoutError</code></a><span class="summary">Raised by the <code>Async.timeout:ms do:{…}</code> deadline combinator (the bare form, no</span></li>
+<li><a href="Timer.html"><code>Timer</code></a><span class="summary">A one-selector stopwatch: run a block, get its elapsed time.</span></li>
+<li><a href="Timestamp.html"><code>Timestamp</code></a><span class="summary">An absolute instant in time: UTC wall-clock, nanosecond precision.</span></li>
+<li><a href="TlsSocket.html"><code>TlsSocket</code></a><span class="summary">A TLS-encrypted TCP connection, with the same read/write surface as <code>TcpSocket</code>.</span></li>
+<li><a href="TypeError.html"><code>TypeError</code></a><span class="summary">A value of the wrong type where another was required (e.g. writing a non-String</span></li>
+<li><a href="ULID.html"><code>ULID</code></a><span class="summary">A 128-bit sortable identifier: a 48-bit millisecond timestamp plus 80 random bits, rendered as 26 characters of Crockford base32. String order equals creation order, so ULIDs make good keys where insertion order matters. Generate with <code>ULID.generate</code>, parse with <code>ULID.parse:</code>.</span></li>
+<li><a href="UUID.html"><code>UUID</code></a><span class="summary">A 128-bit universally unique identifier. Generate with <code>UUID.generateV4</code> (random) or <code>UUID.generateV7</code> (time-ordered, so fresh IDs sort by creation time), or parse the standard hyphenated form with <code>UUID.parse:</code>. Renders via <code>s</code> as the 36-character hyphenated lowercase form.</span></li>
+<li><a href="UnreachableError.html"><code>UnreachableError</code></a><span class="summary">Raised by the <code>!!!</code> placeholder statement: a code path the author asserts can</span></li>
+<li><a href="UsageError.html"><code>UsageError</code></a><span class="summary">A command line that doesn't fit its [CLI]Spec — unknown option, missing value,</span></li>
+<li><a href="VM.html"><code>VM</code></a><span class="summary">The VM's self-introspection surface: <code>stats</code> (counters by section), <code>aotRefusals</code> (which members stayed interpreted and why), and <code>ps</code> / <code>psTree</code> (a live snapshot of tasks and workers as plain data).</span></li>
+<li><a href="ValueError.html"><code>ValueError</code></a><span class="summary">A value of the right type but invalid content (e.g. a non-hex string to</span></li>
+<li><a href="WebSocket.html"><code>WebSocket</code></a></li>
+<li><a href="Worker.html"><code>Worker</code></a><span class="summary">An isolate: a fresh VM on its own OS thread (or child process) with message lanes to its parent. Parent side: <code>Worker.spawn:'unit.qn'</code> answers a handle -- <code>send:</code> / <code>receive</code> exchange values, <code>join</code> parks until the unit finishes. Worker side, inside the spawned unit: class-side <code>Worker.receive</code> / <code>Worker.send:</code> are the mirror lanes, and <code>Worker.worker?</code> says which side you are on. Messages deep-copy plain data (numbers, strings, booleans, nil, Bytes, Lists, Maps); symbols, instances, and resources refuse -- and blocks cross only as a whole thread-backed message. See docs/internal/CONCURRENCY_ARCH.md.</span></li>
+<li><a href="WorkerService.html"><code>WorkerService</code></a><span class="summary">Host a class in a dedicated worker isolate and get a PROXY whose ordinary method sends become RPC over the worker lanes: sticky state with serialized access -- an actor, effectively. Arguments and returns follow the worker data taxonomy (plain data crosses; blocks and instances refuse), errors in the hosted method raise catchably at the call site, and one call runs at a time (concurrent callers queue fairly).</span></li>
+<li><a href="YAML.html"><code>YAML</code></a><span class="summary">Parse and generate YAML documents.</span></li>
+</ul>
+<h2>[Archive]</h2>
+<ul class="classlist">
+<li><a href="Archive.Tar.html"><code>[Archive]Tar</code></a><span class="summary">The streaming reader. <code>each:</code> (and the whole Iterate vocabulary over it)</span></li>
+<li><a href="Archive.TarEntry.html"><code>[Archive]TarEntry</code></a><span class="summary">One archive member: metadata is plain fields; <code>bytes</code> pulls the content from the</span></li>
+<li><a href="Archive.TarWriter.html"><code>[Archive]TarWriter</code></a><span class="summary">The streaming writer, from [Archive]Tar.writeTo:. Members are written in call</span></li>
+<li><a href="Archive.Zip.html"><code>[Archive]Zip</code></a><span class="summary">The reader. Construction parses the end-of-central-directory record and the</span></li>
+<li><a href="Archive.ZipEntry.html"><code>[Archive]ZipEntry</code></a><span class="summary">One archive member, from the central directory. Metadata is plain fields;</span></li>
+<li><a href="Archive.ZipWriter.html"><code>[Archive]ZipWriter</code></a><span class="summary">The writer, from [Archive]Zip.writeTo:. Writing streams naturally — each</span></li>
+</ul>
+<h2>[CLI]</h2>
+<ul class="classlist">
+<li><a href="CLI.Parsed.html"><code>[CLI]Parsed</code></a><span class="summary">The parse result: <code>at:</code> reads any declared name (option, positional, rest — a name</span></li>
+<li><a href="CLI.Spec.html"><code>[CLI]Spec</code></a><span class="summary">The declarative spec. Builder methods return self, so a whole tool declares in one</span></li>
+</ul>
+<h2>[Crypto]</h2>
+<ul class="classlist">
+<li><a href="Crypto.Digest.html"><code>[Crypto]Digest</code></a><span class="summary">One-shot cryptographic digests (and MD5, kept with the hashes despite being broken for security use). Each method hashes a String's UTF-8 bytes or a Bytes value and answers the raw digest as Bytes — <code>toHex</code> for the usual text form, <code>Base64.encode:</code> for wire formats.</span></li>
+<li><a href="Crypto.Hmac.html"><code>[Crypto]Hmac</code></a><span class="summary">Keyed message authentication (HMAC) over the SHA family. Message and key are each a String (UTF-8) or Bytes; the MAC comes back as Bytes. To CHECK a received MAC use <code>verifySha256:message:key:</code> — it compares in constant time, where <code>==</code> on the recomputed Bytes would leak timing.</span></li>
+<li><a href="Crypto.Random.html"><code>[Crypto]Random</code></a><span class="summary">Bytes from the operating system's CSPRNG — for keys, tokens, and salts. The seedable <code>Random</code> class is for simulations and tests; this one is for secrets (and is deliberately not seedable).</span></li>
+</ul>
+<h2>[HTTP]</h2>
+<ul class="classlist">
+<li><a href="HTTP.Body.html"><code>[HTTP]Body</code></a><span class="summary">A request or response body — two backings, one interface. A *chunk* is just a</span></li>
+<li><a href="HTTP.BodyTooLarge.html"><code>[HTTP]BodyTooLarge</code></a><span class="summary">Thrown while draining a body that exceeds a caller-imposed byte ceiling — the</span></li>
+<li><a href="HTTP.Client.html"><code>[HTTP]Client</code></a><span class="summary">The convenience facade: class-side helpers for the common verbs. Kept thin so a</span></li>
+<li><a href="HTTP.HeadTooLarge.html"><code>[HTTP]HeadTooLarge</code></a><span class="summary">Thrown while reading a request head that exceeds maxHeadBytes; the connection</span></li>
+<li><a href="HTTP.Parser.html"><code>[HTTP]Parser</code></a><span class="summary">Internal: the native HTTP/1.1 head parser under <code>[HTTP]Client</code> and <code>[HTTP]Server</code> (<code>use std:net/http</code>) — a thin wrapper over <code>httparse</code>. Programs normally use those classes, not this one.</span></li>
+<li><a href="HTTP.Request.html"><code>[HTTP]Request</code></a><span class="summary">The request Builder. Convenience methods on [HTTP]Client cover the common cases;</span></li>
+<li><a href="HTTP.Response.html"><code>[HTTP]Response</code></a><span class="summary">An HTTP response: status line, headers (a list of #(name value) pairs, order- and</span></li>
+<li><a href="HTTP.Server.html"><code>[HTTP]Server</code></a><span class="summary">The server: bind in init (so <code>port</code> works before <code>start</code>, including after an</span></li>
+<li><a href="HTTP.ServerRequest.html"><code>[HTTP]ServerRequest</code></a><span class="summary">An inbound request: the parsed head plus the body as an [HTTP]Body —</span></li>
+<li><a href="HTTP.ServerResponse.html"><code>[HTTP]ServerResponse</code></a><span class="summary">An outbound response under construction: status, #(name value) header pairs,</span></li>
+</ul>
+<h2>[IO]</h2>
+<ul class="classlist">
+<li><a href="IO.File.html"><code>[IO]File</code></a><span class="summary">A file on the local filesystem.</span></li>
+<li><a href="IO.Folder.html"><code>[IO]Folder</code></a><span class="summary">A directory on the local filesystem, listed entry by entry.</span></li>
+<li><a href="IO.Handle.html"><code>[IO]Handle</code></a><span class="summary">One of the process's three standard streams: stdout, stderr, or stdin.</span></li>
+<li><a href="IO.Stdin.html"><code>[IO]Stdin</code></a><span class="summary">The process's standard input.</span></li>
+</ul>
+<h2>[Lang]</h2>
+<ul class="classlist">
+<li><a href="Lang.Node.html"><code>[Lang]Node</code></a><span class="summary">One node of a parsed program — every node, one class: <code>kind</code> answers WHICH (a Symbol: #send, #classDefinition, #stringLiteral, …), <code>children</code> the structural children in source order, and <code>at:#field</code> the kind-specific parts (#selector/#receiver/#arguments on a #send; #name/#parent/#body on a #classDefinition; #value on literals; nil for a field the kind doesn't have). Source fidelity is total: <code>file</code>, <code>span</code> (#( start end line column )), and <code>text</code> (the exact source slice) — which is what makes the span-based [Lang]Rewrite (qnlib/lang/ast.qn) safe. Trees are immutable views; transform by rewriting source, then parse again.</span></li>
+<li><a href="Lang.Parser.html"><code>[Lang]Parser</code></a><span class="summary">The Quoin parser, exposed: <code>parse:</code> answers the program's <code>[Lang]Node</code> tree — the same AST the compiler consumes, wrapped, never copied. Unparseable source throws the same catchable ParseError <code>Runtime.eval:</code> throws. <code>parse:named:</code> labels the unit, and the name rides every node's <code>file</code> (diagnostics built from the tree point somewhere real). See [Lang]Node, and qnlib/lang/ast.qn for the traversal vocabulary and the span-based [Lang]Rewrite.</span></li>
+<li><a href="Lang.Rewrite.html"><code>[Lang]Rewrite</code></a><span class="summary">An edit list over one unit's source: collect replacements by node span,</span></li>
+</ul>
+<h2>[OS]</h2>
+<ul class="classlist">
+<li><a href="OS.Env.html"><code>[OS]Env</code></a><span class="summary">READ-ONLY access to the process environment. Mutation is deliberately absent: the C environment is process-global state that other threads (workers, the blocking I/O pool) may be reading concurrently, so setting variables would be a soundness hazard. Listings are sorted by name, and entries that are not valid UTF-8 are skipped rather than mangled.</span></li>
+<li><a href="OS.Path.html"><code>[OS]Path</code></a><span class="summary">Purely LEXICAL path manipulation over Strings. Nothing here touches the filesystem -- no stat, no symlink resolution, no requirement that a path exist -- which is what makes it safe on a path you are about to create. Filesystem access lives on <code>[IO]File</code> / <code>[IO]Folder</code>.</span></li>
+<li><a href="OS.Process.html"><code>[OS]Process</code></a><span class="summary">Subprocesses, on the scheduler: <code>run:</code> parks the calling task (other tasks keep running) until the child exits, answering a ProcessResult; <code>start:</code> spawns for streaming and answers this handle — read <code>stdout</code>/<code>stderr</code> like a socket, write with <code>writeStdin:</code>/<code>closeStdin</code>, <code>wait</code>/<code>kill</code>/<code>terminate</code> it. The command is a List (program + arguments) — there is NO shell, so nothing splits, globs, or injects. An undetached child dies with its handle (and a cancelled <code>run:</code> kills its child); <code>detach</code> opts out.</span></li>
+<li><a href="OS.ProcessResult.html"><code>[OS]ProcessResult</code></a><span class="summary">What a one-shot <code>[OS]Process.run:</code> answers: the child's complete output and how it</span></li>
+</ul>
+<h2>[Test]</h2>
+<ul class="classlist">
+<li><a href="Test.Main.html"><code>[Test]Main</code></a><span class="summary">Entry point for <code>qn test</code>. The runner synthesizes <code>use test</code>, a glob of the caller's</span></li>
+</ul>
+<h2>[Web]</h2>
+<ul class="classlist">
+<li><a href="Web.App.html"><code>[Web]App</code></a><span class="summary">The framework core: routing DSL, middleware onion, render conventions, and error</span></li>
+<li><a href="Web.Pool.html"><code>[Web]Pool</code></a><span class="summary">Multi-core request execution over worker isolates — the pool behind</span></li>
+<li><a href="Web.Response.html"><code>[Web]Response</code></a><span class="summary">[Web]Response — the response handlers build: an [HTTP]ServerResponse with the</span></li>
+<li><a href="Web.Route.html"><code>[Web]Route</code></a><span class="summary">One compiled path pattern: static segments, ':name' (captures exactly one segment,</span></li>
+<li><a href="Web.Router.html"><code>[Web]Router</code></a><span class="summary">Per-verb route tables with most-specific-wins dispatch. The router is pure</span></li>
+<li><a href="Web.Url.html"><code>[Web]Url</code></a><span class="summary">The URL percent codec: component encoding/decoding plus query- and form-string</span></li>
+</ul>
+
+</body></html>

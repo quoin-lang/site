@@ -1,0 +1,146 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StringStream</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>StringStream</code></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a></p>
+<p>A text stream: the UTF-8 view of a byte conduit, usually obtained from <code>[IO]File#stringStream</code>, a socket's <code>stringStream</code>, or <code>[IO]Stdin</code>.</p>
+<p>Reading is line-oriented — <code>readLine</code> (nil at EOF), <code>eachLine:</code>, <code>readAll</code> — and throws a catchable ParseError on invalid UTF-8; multibyte characters split across reads are reassembled. Writing is <code>write:</code> / <code>writeln:</code> with plain Strings. Like every stream, reads park the task, not the scheduler.</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain"> = (</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">create</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/lines.txt'</span><span class="qn-plain">).</span><span class="qn-signature">stringStream</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain">.</span><span class="qn-signature">writeln</span><span class="qn-plain">:</span><span class="qn-string">'alpha'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain">.</span><span class="qn-signature">close</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">st</span><span class="qn-plain"> = (</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">open</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/lines.txt'</span><span class="qn-plain">).</span><span class="qn-signature">stringStream</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">st</span><span class="qn-plain">.</span><span class="qn-signature">readLine</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 'alpha'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">st</span><span class="qn-plain">.</span><span class="qn-signature">readLine</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; nil</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">st</span><span class="qn-plain">.</span><span class="qn-signature">close</span><span class="qn-plain">
+</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">delete</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/lines.txt'</span></pre>
+<h2>Class methods</h2>
+<div class="method" id="c-over:"><span class="sig">over:</span><div class="body"><p>A text stream that *consumes* a ByteStream: the connection, read-ahead, and any pending writes transfer, and the byte stream is left closed. Equivalent to the byte stream's own <code>stringStream</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-over:do:"><span class="sig">over: do:</span><div class="body"><p>Like <code>over:</code>, but scoped: run the block with the text stream and close it on every exit path (normal, throw, or cancel); answers the block's value.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-close"><span class="sig">close</span><div class="body"><p>Flush any buffered writes and close the stream (idempotent). On a write-codec stream (<code>gzip</code>) this also finishes the encoder (writing the trailer); a failed finish throws. Further operations throw. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-closed?"><span class="sig">closed?</span><div class="body"><p>Whether the stream has been closed.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-codecWrap:"><span class="sig">codecWrap:String</span><div class="body"><p>Wrap the stream in a named codec IN PLACE (see the ByteStream twin) — later reads decode the transformed bytes as UTF-8, later writes go through the transform; answers the receiver. Prefer the sugar (<code>gunzip</code> / <code>gzip</code>).</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-eachLine:"><span class="sig">eachLine:</span><div class="body"><p>Run the block on each remaining line (terminators stripped, as <code>readLine</code>) until EOF; answers self. The whole-file loop: <code>st.eachLine:{ |line| ... }</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-flush!"><span class="sig">flush!</span><div class="body"><p>Hand any buffered written bytes to the OS now; a no-op on a write-through (socket) stream. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-gunzip"><span class="sig">gunzip</span><div class="body"><p>As <code>ByteStream#gunzip</code>, decoding the gunzipped bytes as UTF-8 text — gzipped logs read line by line without materializing anything.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L71"><code>core/09-codecs.qn:71</code></a></p></div></div>
+<div class="method" id="i-gzip"><span class="sig">gzip</span><div class="body"><p>As <code>ByteStream#gzip</code>, for text: <code>write:</code>/<code>writeln:</code> land gzip-compressed — a <code>.log.gz</code> written line by line. Close deliberately (see <code>ByteStream#gzip</code>).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L75"><code>core/09-codecs.qn:75</code></a></p></div></div>
+<div class="method" id="i-read"><span class="sig">read</span><div class="body"><p>Whatever text is available right now: the largest valid-UTF-8 prefix of the buffered bytes, as a String (a trailing partial code point is kept back for the next read). An empty String means EOF; a truly invalid byte, or EOF in the middle of a character, throws a ParseError.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-readAll"><span class="sig">readAll</span><div class="body"><p>Read to EOF and answer the whole remainder as one String (throws a ParseError on invalid UTF-8). The one-line way to slurp a file:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain"> = </span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">create</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/notes.txt'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain">.</span><span class="qn-signature">writeAll</span><span class="qn-plain">:</span><span class="qn-string">'hi'</span><span class="qn-plain">.</span><span class="qn-signature">asBytes</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">out</span><span class="qn-plain">.</span><span class="qn-signature">close</span><span class="qn-plain">
+(</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">open</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/notes.txt'</span><span class="qn-plain">).</span><span class="qn-signature">stringStream</span><span class="qn-plain">.</span><span class="qn-signature">readAll</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 'hi'</span><span class="qn-plain">
+</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">delete</span><span class="qn-plain">:</span><span class="qn-string">'/tmp/notes.txt'</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-readLine"><span class="sig">readLine</span><div class="body"><p>The next line as a String, its trailing <code>\n</code> (or <code>\r\n</code>) stripped; nil at EOF. An empty line answers <code>''</code>; a final line without a newline is returned once, then nil. Throws a ParseError if the line is not valid UTF-8.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-write:"><span class="sig">write:String</span><div class="body"><p>Write the String's UTF-8 bytes, without a trailing newline. Buffered on a file write stream, straight through on a socket. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-writeln:"><span class="sig">writeln:String</span><div class="body"><p><code>write:</code> plus a trailing newline — the line-oriented half of the filter idiom <code>[IO]Stdin.eachLine:{ |l| out.writeln:l }</code>. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+
+</body></html>
