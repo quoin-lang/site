@@ -1,0 +1,204 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appendices</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="appendices">Appendices</h1>
+<p>Nav: <a href="01-foundations.html">Foundations</a> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <a href="04-patterns-and-errors.html">Patterns &amp; errors</a> · <a href="05-concurrency-and-iteration.html">Concurrency &amp; iteration</a> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <a href="07-types.html">Types</a> · <a href="08-tooling.html">Tooling</a> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <strong>Appendices</strong></p>
+<hr>
+<h2 id="a-sigil-operator-cheat-sheet">A. Sigil &amp; operator cheat-sheet</h2>
+<h3 id="sigils-literal-markers">Sigils &amp; literal markers</h3>
+<table>
+<tr><th>Sigil</th><th>Meaning</th></tr>
+<tr><td><code>"… </code> / <code>"* …</code> / <code>"…"</code></td><td>Comment (line / line / block; block spans newlines)</td></tr>
+<tr><td><code>'…'</code></td><td>String (the only string literal)</td></tr>
+<tr><td><code>#name</code> <code>#a:b:</code> <code>#'…'</code></td><td>Symbol (selector-as-data)</td></tr>
+<tr><td><code>#( … )</code></td><td>List</td></tr>
+<tr><td><code>#{ k: v … }</code></td><td>Map</td></tr>
+<tr><td><code>#/ … /</code></td><td>Regex</td></tr>
+<tr><td><code>#Name'…'</code></td><td>User string (e.g. <code>#ANSI'…'</code>)</td></tr>
+<tr><td><code>#Name( … )</code></td><td>User list</td></tr>
+<tr><td><code>#&lt; … &gt;</code></td><td>Set literal (unique elements); a bare <code>&gt;</code> ends the set — parenthesize <code>&gt;</code>/<code>&gt;=</code> elements</td></tr>
+<tr><td><code>@name</code></td><td>Instance variable</td></tr>
+<tr><td><code>[NS]Name</code> <code>[/]Name</code></td><td>Namespaced global / root global</td></tr>
+<tr><td><code>_</code></td><td>Ignore (in lvalues and block params)</td></tr>
+<tr><td><code>*name</code></td><td>Splat (destructuring)</td></tr>
+</table>
+<h3 id="operators">Operators</h3>
+<table>
+<tr><th>Operator</th><th>Meaning</th></tr>
+<tr><td><code>.</code></td><td>Message send; leading <code>.</code> = send to <code>self</code></td></tr>
+<tr><td><code>name!</code> <code>name?</code></td><td>Selector suffixes (ordinary method names)</td></tr>
+<tr><td><code>&lt;-</code></td><td>Define class / subclass / constant</td></tr>
+<tr><td><code>&lt;--</code></td><td>Extend a class or a single value (eigenclass)</td></tr>
+<tr><td><code>-&gt;</code></td><td>Add a method (variant)</td></tr>
+<tr><td><code>--&gt;</code></td><td>Add a method variant; errors if selector doesn't already exist</td></tr>
+<tr><td><code>use pkg:path;</code></td><td>Load a <code>.qn</code> file once — a soft keyword, not a reserved word (Part IX §47)</td></tr>
+<tr><td><code>^</code> <code>^^</code> <code>^&gt;</code></td><td>Block return / method return / yield</td></tr>
+<tr><td><code>=</code></td><td>Assign a local (statement only)</td></tr>
+<tr><td><code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>Comparison</td></tr>
+<tr><td><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code></td><td>Arithmetic (infix); <code>%</code> infix is modulo</td></tr>
+<tr><td><code>&amp;&amp;</code> <code>||</code></td><td>Logical, short-circuit</td></tr>
+<tr><td><code>~</code></td><td>Match (Part IV)</td></tr>
+<tr><td><code>..</code></td><td>Range (half-open)</td></tr>
+<tr><td><code>!</code> (prefix)</td><td>Boolean negation</td></tr>
+<tr><td><code>-</code> (prefix)</td><td>Negate (→ the no-arg <code>-</code> method)</td></tr>
+<tr><td><code>%</code> (prefix)</td><td>String interpolation (→ <code>mod</code>)</td></tr>
+<tr><td><code>+</code> (prefix)</td><td>Identity (→ the no-arg <code>+</code> method)</td></tr>
+</table>
+<h3 id="operator-precedence">Operator precedence</h3>
+<p>Loosest → tightest, all left-associative: <code>||</code> · <code>&amp;&amp;</code> · <code>== !=</code> · <code>&lt; &lt;= &gt; &gt;=</code> · <code>~</code> · <code>..</code> · <code>+ -</code> · <code>* / %</code> · <code>&lt;--</code>. Postfix sends (<code>.method</code>) bind tighter than any infix operator; prefix operators (<code>-</code> <code>!</code> <code>%</code>) bind tightest.</p>
+<hr>
+<h2 id="b-selector-desugaring-quick-reference">B. Selector / desugaring quick-reference</h2>
+<table>
+<tr><th>Surface form</th><th>Compiles to</th></tr>
+<tr><td><code>a + b</code> (and <code>- * / %</code>)</td><td><code>Send("+:"…)</code> → overridable <code>+:</code> / <code>-:</code> / <code>*:</code> / <code>/:</code> / <code>%:</code> method (class-first, no global fallback)</td></tr>
+<tr><td><code>a == b</code> (and <code>!= &lt; &lt;= &gt; &gt;=</code>)</td><td><code>Send("==:"…)</code> → overridable <code>==:</code> / <code>!=:</code> / <code>&lt;:</code> / <code>&lt;=:</code> / <code>&gt;:</code> / <code>&gt;=:</code> methods</td></tr>
+<tr><td><code>a ~ b</code></td><td><code>Send("~:"…)</code> → match protocol (dispatches <code>~:</code> on the left operand)</td></tr>
+<tr><td><code>a .. b</code></td><td><code>Send("..:"…)</code> → <code>NumberRange</code></td></tr>
+<tr><td><code>a &amp;&amp; b</code> / <code>a || b</code></td><td>short-circuit jumps (not a method send)</td></tr>
+<tr><td><code>-x</code> / <code>+x</code></td><td><code>Send("-")</code> / <code>Send("+")</code> — the no-arg <code>-</code> (negate) / <code>+</code> (identity) methods</td></tr>
+<tr><td><code>!x</code></td><td><code>Send("!")</code></td></tr>
+<tr><td><code>%x</code> (prefix, on a string)</td><td><code>Send("mod")</code> — <code>%{…}</code> interpolation</td></tr>
+<tr><td><code>'fmt' % arg</code></td><td><code>Send("%:")</code> — <code>printf</code>-style substitution</td></tr>
+<tr><td><code>obj.sel:arg</code></td><td><code>Send("sel:"…)</code></td></tr>
+<tr><td><code>.sel</code></td><td>send <code>sel</code> to <code>self</code></td></tr>
+</table>
+<hr>
+<h2 id="c-gotchas-for-writing-generating-quoin">C. Gotchas for writing &amp; generating Quoin</h2>
+<p>The consolidated list of surprising behaviors. If you're producing Quoin code, read this first.</p>
+<ol>
+<li><strong>Operator precedence is conventional</strong> (<code>* / %</code> tighter than <code>+ -</code> tighter than comparison tighter than <code>&amp;&amp;</code>/<code>||</code>), with two specifics: <strong>range <code>..</code> is looser than arithmetic</strong> (<code>2 .. n + 1</code> = <code>2 .. (n + 1)</code>), and <strong>postfix <code>.method</code> binds tighter than any infix operator</strong> (<code>1 .. list.count</code> = <code>1 .. (list.count)</code>).</li>
+<li><strong><code>"</code> always starts a comment</strong> — there are no double-quoted strings. A <code>"…"</code> block comment spans newlines, so a <strong>stray <code>"</code> silently swallows code</strong> until the next quote. Strings are <code>'…'</code>.</li>
+<li><strong>Conditionals are strict; combinators coerce.</strong> <code>if:</code>/<code>else:</code>/<code>whileDo:</code> require a real Boolean — <code>nil.if:{…}</code>, <code>42.if:{…}</code>, and <code>{5}.whileDo:{…}</code> all raise (<code>MessageNotUnderstood</code>). But <code>&amp;&amp;</code>/<code>||</code> short-circuit on truthiness and return the operand value, and <code>!</code> maps any value to a Boolean. Use <code>==</code>, <code>&lt;</code>, <code>defined?</code>, etc. to build conditions.</li>
+<li><strong>Assignment is a statement, not an expression.</strong> <code>b = (a = 5)</code> is a parse error; you can't assign inside a condition or argument.</li>
+<li><strong>Ranges are half-open.</strong> <code>1..5</code> yields <code>1 2 3 4</code>; the end is excluded (both directions: <code>5..1</code> → <code>5 4 3 2</code>).</li>
+<li><strong><code>^</code> returns from the block, <code>^^</code> from the method.</strong> Inside an iterator block (<code>each:</code>, <code>collect:</code>), <code>^</code> only ends that iteration — use <code>^^</code> to break out of the surrounding method.</li>
+<li><strong>Block arity is unchecked.</strong> Too few arguments → missing params are <code>nil</code>; too many → extras are ignored. No error either way.</li>
+<li><strong>Redefining overrides; type/guard variants coexist.</strong> A later same-signature definition (same param types, no guard) <em>replaces</em> the earlier — <code>bar -&gt; {1}</code> then <code>bar --&gt; {2}</code> makes <code>bar</code> return <code>2</code>. Variants that differ by parameter type or carry a guard are kept as distinct multimethods, dispatched by argument by specificity (a guarded variant outranks an equal-typed unguarded one). Definition order is <strong>not</strong> a tiebreaker: two equally-specific variants that both match raise <code>AmbiguousMethodError</code> — pair specific guards with one unguarded catch-all (<code>|x|</code>), or use <code>case</code>/<code>~</code> for ordered matching.</li>
+<li><strong><code>new:{}</code> doesn't capture lexical scope, and <code>super</code> doesn't exist.</strong> An empty <code>new:{}</code> leaves fields <code>nil</code>; only explicit assignment binds a field (its RHS is lexical, but it never mutates the outer variable). A plain-assignment <code>init: { |a| @a = a }</code> is redundant. A child sets a parent's field via <code>@field</code>.</li>
+<li><strong><code>.sealed!</code> / <code>.abstract!</code> are enforced.</strong> <code>.sealed!</code> freezes a class (or instance eigenclass) — no <code>&lt;--</code>/<code>-&gt;</code>/<code>--&gt;</code>/<code>.mix:</code>/subclassing — and <code>.abstract!</code> forbids instantiating the class itself (subclasses still instantiate). Call <code>.sealed!</code> <em>last</em> in a body, since defs after it are rejected.</li>
+<li><strong><code>case:</code> matches with <code>~</code>, not <code>==</code>.</strong> Ranges, regexes, classes, and predicate blocks all match; the first matching <code>when:</code> wins. Order clauses most-specific-first.</li>
+<li><strong><code>throw</code> takes any value, but catch-by-type needs <code>Error</code>s.</strong> To dispatch with <code>TypeError ~ e</code> (the matcher class is on the <strong>left</strong> of <code>~</code>), throw <code>Error</code> subclasses (or use <code>Error.throw:</code>).</li>
+<li><strong><code>%</code> has three meanings.</strong> Infix between numbers = modulo; infix on a string = <code>printf</code>-style <code>%:</code>; prefix on a string = <code>%{…}</code> interpolation (<code>mod</code>).</li>
+<li><strong><code>&lt;-</code> vs <code>=</code>.</strong> <code>&lt;-</code> defines a once-only constant/class (redefining throws); <code>=</code> is a reassignable local. They're not interchangeable.</li>
+<li><strong>Fibers throw on misuse.</strong> Resuming a <code>done</code>/<code>failed</code> fiber, yielding outside a fiber, or self-resuming all raise <code>FiberError</code>. Guard with <code>alive?</code>/<code>done?</code>.</li>
+<li><strong>A leading <code>.</code> or operator continues the previous line.</strong> A newline ends a statement only when unambiguous; a line starting with <code>.</code> (a message send) or an infix operator attaches to the line above. <code>method -&gt; {}</code> ⏎ <code>.mix:Mixin</code> parses as <code>(method -&gt; {}).mix:Mixin</code>. End the previous line with <code>;</code> when the next starts with <code>.</code> or an operator — which is why stdlib code uses <code>;</code> heavily.</li>
+<li><strong><code>use</code> loads files; it doesn't import names.</strong> <code>use path;</code> runs a <code>.qn</code> file once (a repeat/cyclic <code>use</code> is a no-op), and its definitions land as ordinary <code>[Ns]</code> globals — there's no local import scope, and aliasing is just <code>X = [Ns]Name</code>. <code>use</code> is a <em>soft keyword</em> (still usable as an identifier). Packages: bare/<code>std:</code> = stdlib, <code>self:</code> = your project; <code>dir/*</code> globs a directory (sorted). See §47.</li>
+<li><strong>Inside a collection literal, spacing decides whether <code>+ - %</code> is a prefix or an infix operator.</strong> Elements are juxtaposed expressions (so <code>#(a + b  c)</code> is two elements), which makes <code>#(-1 -2)</code> ambiguous. The rule, in <code>#( … )</code>, <code>#Name( … )</code> and <code>#&lt; … &gt;</code>: an operator <strong>detached from its left operand and glued to its right one</strong> is a prefix and starts a new element. Every other spacing is infix.</li>
+</ol>
+<table>
+<tr><th></th><th></th></tr>
+<tr><td><code>#(1 -2)</code>, <code>#(1 +2)</code>, <code>#('a' %'b')</code></td><td>two elements</td></tr>
+<tr><td><code>#(1 - 2)</code>, <code>#(1-2)</code>, <code>#(1- 2)</code></td><td>one element — subtraction</td></tr>
+</table>
+<p>    So <code>#(-1 -2)</code> is two negatives, <code>#(5-3)</code> is <code>#(2)</code>, and <code>#('a' %'b%{x}')</code> is a string     plus an interpolation. Identifiers follow the same rule (<code>#(a -b)</code> is two elements),     and the prefix binds tighter than the infix after it, so <code>#(1 -2 + 3)</code> is <code>#(1 1)</code>.     <code>!</code> needs no rule: its infix form is the two-character <code>!=</code>. Parenthesize when in     doubt: <code>#((7-3))</code>.</p>
+<hr>
+<h2 id="d-glossary">D. Glossary</h2>
+<ul>
+<li><strong>Selector</strong> — a method name, including its colons: <code>at:put:</code> is one selector with two argument slots. Operators are selectors too (<code>+:</code>, <code>~:</code>).</li>
+<li><strong>Multimethod</strong> — several definitions of one selector distinguished by argument type or guard; dispatch picks the most specific match (an equally-specific tie that both match → <code>AmbiguousMethodError</code>).</li>
+<li><strong>Eigenclass / singleton</strong> — a per-object class created by <code>value &lt;-- { … }</code>, holding methods for just that one object (named <code>$Type</code> internally).</li>
+<li><strong>Mixin</strong> — a class included into another with <code>.mix:</code>; its methods and instance vars participate in lookup (before the parent).</li>
+<li><strong>Block</strong> — a first-class closure <code>{ … }</code>; the unit of deferred code used for control flow, iteration, and initialization.</li>
+<li><strong>Block-local</strong> — a variable declared after <code>-</code> in a block header (<code>{ |args - locals| }</code>), initialized to <code>nil</code>.</li>
+<li><strong>Fiber</strong> — a stackful coroutine; <code>Generator</code> and the external <code>Iterator</code> are built on fibers.</li>
+<li><strong>Half-open range</strong> — a range that includes its start but excludes its end.</li>
+<li><strong>Namespaced name</strong> — a global addressed as <code>[NS]Name</code>; bare names and <code>[/]Name</code> live in the root namespace.</li>
+<li><strong>Unit / package</strong> — a <code>.qn</code> file loaded by <code>use pkg:path</code> (once, via the host's resolver). <code>std:</code>/bare = the stdlib, <code>self:</code> = the project. The load path is decoupled from the <code>[Ns]</code> namespace a unit registers under. (§47)</li>
+</ul>
+<hr>
+<p><a href="index.html">Back to the index</a></p>
+
+</body></html>

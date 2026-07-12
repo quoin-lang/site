@@ -1,0 +1,462 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part VII — The gradual type system</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="part-vii-the-gradual-type-system">Part VII — The gradual type system</h1>
+<p>Quoin is dynamic by default: nothing in the language requires a type annotation. But every annotation position you've seen so far — typed block params (§7), typed multimethod params (§13) — belongs to one coherent, gradual type system: optional annotations, a best-effort compile-time checker (<code>qn check</code>), runtime-checked collections, and an optimizer that consumes the parts it can trust.</p>
+<p>Nav: <a href="01-foundations.html">Foundations</a> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <a href="04-patterns-and-errors.html">Patterns &amp; errors</a> · <a href="05-concurrency-and-iteration.html">Concurrency &amp; iteration</a> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <strong>Types</strong> · <a href="08-tooling.html">Tooling</a> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <a href="10-appendices.html">Appendices</a></p>
+<hr>
+<h2 id="28-types-are-optional">28. Types are optional</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Annotations are optional everywhere.</strong> Un-annotated code is not "untyped code that happens to work" — it is the default, fully supported style. An un-annotated parameter or variable is <em>gradual</em>: the checker assumes nothing about it and never warns on it.</li>
+<li>Annotations serve three consumers at once:</li>
+<li><strong>The checker</strong> — <code>qn check</code> reports likely type bugs as <strong>non-fatal warnings</strong> (§30). It never blocks compilation or execution.</li>
+<li><strong>Dispatch</strong> — a typed method parameter selects a multimethod variant by the argument's <em>runtime</em> type (§13, §32). This half is enforced.</li>
+<li><strong>The optimizer</strong> — typed locals, sealed classes (§34), and checked collections (§33) let the compiler devirtualize and compile code it would otherwise run generically.</li>
+<li>Only three things are ever <strong>enforced at runtime</strong>: dispatch-checked method parameters, element tags on checked collections, and <code>sealed!</code>. Every other annotation is advisory — a wrong one costs a warning, never a crash.</li>
+</ul>
+</blockquote>
+<p>Dynamic Quoin is complete on its own. This method has no annotations and happily serves two types:</p>
+<pre class="qn-code"><span class="qn-global">Doubler</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">double</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-global">Doubler</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">double</span><span class="qn-plain">:</span><span class="qn-number">21</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 42</span><span class="qn-plain">
+</span><span class="qn-global">Doubler</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">double</span><span class="qn-plain">:</span><span class="qn-string">'ho'</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; 'hoho'</span></pre>
+<p>Add a type to the parameter and the method's contract becomes real: dispatch only selects the variant when the argument actually is an <code>Integer</code>, so a wrong argument is a <code>MessageNotUnderstood</code> at the call — not a strange result later:</p>
+<pre class="qn-code"><span class="qn-global">Halver</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">half</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain"> ^</span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> / </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-global">Halver</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">half</span><span class="qn-plain">:</span><span class="qn-number">42</span><span class="qn-plain">                                    </span><span class="qn-comment">"* -&gt; 21</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Halver</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">half</span><span class="qn-plain">:</span><span class="qn-string">'ho'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">   </span><span class="qn-comment">"* -&gt; 'MessageNotUnderstood'</span></pre>
+<p>The stance throughout: <strong>nothing requires types; everything benefits from them.</strong> Annotate where a contract matters (public methods, collection contents, nullable data) and leave exploratory code bare.</p>
+<hr>
+<h2 id="29-annotation-syntax">29. Annotation syntax</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Where a type may be written</strong> (all positions share one grammar):</li>
+</ul>
+<table>
+<tr><th>Position</th><th>Syntax</th></tr>
+<tr><td>Block/method parameter</td><td><code>{ |n: Integer| … }</code></td></tr>
+<tr><td>Return type (in the header, after the params)</td><td><code>{ |n: Integer ^Integer| … }</code></td></tr>
+<tr><td>Local declaration</td><td><code>var x: Integer = 5</code>, <code>let y: String = 'hi'</code></td></tr>
+<tr><td>Block-local (after the <code>-</code>)</td><td><code>{ |a - tmp: Integer| … }</code></td></tr>
+<tr><td>Class-header type variable</td><td><code>Stack(T) &lt;- { … }</code></td></tr>
+</table>
+<ul>
+<li><strong>Type names</strong>: a bare <code>Name</code> is a class in the root namespace; namespaced classes work in every position (<code>var f: [IO]File = …</code>, <code>|e: [Web]Halt|</code>).</li>
+<li><strong>Nullable</strong>: <code>Integer?</code> means "<code>Integer</code> or <code>nil</code>" (§31). No space — <code>?</code> is part of the identifier, so <code>Integer ?</code> is not a type.</li>
+<li><strong>Generics</strong>: <code>Class(args)</code>, space-separated — <code>List(Integer)</code>, <code>Map(String Integer)</code>, <code>Set(String)</code>, nesting allowed. Only <code>List</code>/<code>Map</code>/<code>Set</code> take type arguments today; Map keys are pinned to <code>String</code> (§33).</li>
+<li><strong>Block types</strong>: <code>Block(args ^Ret)</code> — a block's type is its header with the names stripped. <code>Block()</code> is zero-arg, bare <code>Block</code> is fully unconstrained.</li>
+<li><strong>Type variables</strong> are declared on the class header — <code>Stack(T) &lt;- { … }</code> — and usable as types in that class's methods (<code>push: -&gt; { |x: T| … }</code>, <code>top -&gt; { |^T?| … }</code>). They are checker machinery only: a variable-typed parameter never constrains dispatch and carries no runtime check.</li>
+<li>A method's return type lives in its header too — there is no <code>-&gt; Ret</code> form: <code>area -&gt; { |^Double| … }</code>.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">count</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain"> = </span><span class="qn-number">0</span><span class="qn-plain">                            </span><span class="qn-comment">"* typed local</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">title</span><span class="qn-plain">: </span><span class="qn-global">String?</span><span class="qn-plain"> = </span><span class="qn-global">nil</span><span class="qn-plain">                          </span><span class="qn-comment">"* nullable: String or nil</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">(</span><span class="qn-global">Integer</span><span class="qn-plain">) = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">                  </span><span class="qn-comment">"* checked collection (§33)</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">index</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">) = </span><span class="qn-collection">#{</span><span class="qn-plain"> </span><span class="qn-string">'ada'</span><span class="qn-plain">: </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-collection">}</span><span class="qn-plain">    </span><span class="qn-comment">"* value type Integer; keys are String</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">pred</span><span class="qn-plain">: </span><span class="qn-global">Block</span><span class="qn-plain">(</span><span class="qn-global">Integer</span><span class="qn-plain"> ^</span><span class="qn-global">Boolean</span><span class="qn-plain">) = </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> &gt; </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-comment">"* a block type</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">pred</span><span class="qn-plain">.</span><span class="qn-signature">value</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain">                                      </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p>Return types sit in the header after the parameters, marked with <code>^</code> — the same character as the return statement, in a type position:</p>
+<pre class="qn-code"><span class="qn-global">Circle</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@r</span><span class="qn-plain">|
+    </span><span class="qn-signature">area</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |^</span><span class="qn-global">Double</span><span class="qn-plain">| </span><span class="qn-number">3.14159</span><span class="qn-plain"> * </span><span class="qn-ivar">@r</span><span class="qn-plain"> * </span><span class="qn-ivar">@r</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">grow</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">k</span><span class="qn-plain">: </span><span class="qn-global">Double</span><span class="qn-plain"> ^</span><span class="qn-global">Double</span><span class="qn-plain">| </span><span class="qn-ivar">@r</span><span class="qn-plain"> = </span><span class="qn-ivar">@r</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-2">k</span><span class="qn-plain">; </span><span class="qn-plain">.</span><span class="qn-signature">area</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+(</span><span class="qn-global">Circle</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">r</span><span class="qn-plain"> = </span><span class="qn-number">2.0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">area</span><span class="qn-plain">          </span><span class="qn-comment">"* -&gt; 12.56636</span></pre>
+<p>Because a block's type is exactly its header minus the names, the two sides of this correspondence read the same way:</p>
+<pre class="qn-code">{ |a: Integer b: Integer ^Integer| a + b }     "* a value of type…
+Block(Integer Integer ^Integer)                "* …this type</pre>
+<blockquote>
+<p><strong>⚠ Gotcha — in the block role, annotations are not runtime checks.</strong> <code>value:</code> binds arguments with no arity or type checking (§7), so a typed block param is documentation plus checker/optimizer input — not a guard. Only the <em>method</em> role enforces parameter types, because there dispatch itself does the checking (§32):</p>
+</blockquote>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">x</span><span class="qn-plain"> + </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">value</span><span class="qn-plain">:</span><span class="qn-string">'nope'</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'nope1'</span></pre>
+<hr>
+<h2 id="30-the-checker-qn-check">30. The checker: <code>qn check</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn check &lt;path&gt;…</code> type-checks files <strong>without running them</strong>. Clean → silent, exit 0. Otherwise each diagnostic prints as <code>file:line:col: warning: message</code> with the source line and a caret, and the exit code is 1.</li>
+<li>The same warnings print (to stderr) when you simply run a program — <code>qn check</code> is the "check only" entry point, not a separate analysis.</li>
+<li><strong>Warnings are never fatal.</strong> A program with type warnings still compiles and runs; the checker exists to point, not to gate.</li>
+<li><strong>Gradual means silent on dynamic code.</strong> The checker only speaks where types are <em>known</em>: annotated values, literals, and stdlib contracts. Un-annotated code never warns.</li>
+<li>What it catches: type mismatches at declarations, reassignments, arguments and returns; sends a class provably can't answer (compile-time <code>MessageNotUnderstood</code>); return-type covariance violations on overrides; nil-misuse on nullable values (§31); bad insertions into checked collections (§33); malformed generic shapes.</li>
+<li><code>qnlib/warnings.qn</code> is the maintained gallery: one method per diagnostic. <code>qn check qnlib/warnings.qn</code> renders every warning the checker can produce.</li>
+<li>A deliberate warning can be silenced in place: a <strong>trailing</strong> <code>"* allow: &lt;kind&gt;</code> comment suppresses that kind on its own line only. The pragma polices itself — an unknown kind name, or a pragma on its own line, is a warning.</li>
+</ul>
+</blockquote>
+<p>Given a file with three bugs:</p>
+<pre class="qn-code"><span class="qn-comment">"* stats.qn</span><span class="qn-plain">
+</span><span class="qn-global">Stats</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">label</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">score</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain"> ^</span><span class="qn-global">String</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">score</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+
+    </span><span class="qn-signature">firstOver</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">xs</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">(</span><span class="qn-global">Integer</span><span class="qn-plain">) ^</span><span class="qn-global">Integer</span><span class="qn-plain">|
+        </span><span class="qn-ident qn-ident-2">xs</span><span class="qn-plain">.</span><span class="qn-signature">detect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-3">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-3">n</span><span class="qn-plain"> &gt; </span><span class="qn-number">100</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain">
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+
+    </span><span class="qn-signature">span</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">r</span><span class="qn-plain">: </span><span class="qn-global">NumberRange</span><span class="qn-plain"> = </span><span class="qn-number">1</span><span class="qn-plain">..</span><span class="qn-number">10</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-2">r</span><span class="qn-plain">.</span><span class="qn-signature">middle</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<p><code>qn check stats.qn</code> reports:</p>
+<pre>stats.qn:2:42: warning: type mismatch: expected `String`, found `Integer`
+    |
+  2 |     label: -&gt; { |score: Integer ^String| score };
+    |                                          ^^^^^
+  stats.qn:2:18: note: `score` is `Integer` (parameter)
+    |
+  2 |     label: -&gt; { |score: Integer ^String| score };
+    |                  ^^^^^
+stats.qn:5:9: warning: type mismatch: expected `Integer`, found `Integer?`
+    |
+  5 |         xs.detect:{ |n| n &gt; 100 }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+stats.qn:8:43: warning: `NumberRange` does not respond to `middle`
+    |
+  8 |     span -&gt; { var r: NumberRange = 1..10; r.middle }
+    |                                           ^</pre>
+<p>Each diagnostic carries the location, the message in Quoin's own type names, the offending line with a caret, and — where an inference is involved — a <code>note:</code> tracing <em>why</em> the checker believes what it believes (<code>score</code> is <code>Integer</code> because the parameter says so).</p>
+<p>The three warnings show the checker's range. The first is a straight declaration-vs-value mismatch. The second is nullable honesty: <code>detect:</code> can come up empty, so its result is <code>Integer?</code>, which doesn't satisfy a declared <code>^Integer</code> (§31). The third is a <strong>compile-time MNU</strong> — but note what made it possible: <code>NumberRange</code> is a <em>sealed</em>, already-loaded class, so no future code can add <code>middle</code> to it, and the checker can <em>prove</em> the send fails. On an open class the same send stays silent — some later <code>&lt;--</code> extension could legitimately add the method, and a false warning is worse than a missed one.</p>
+<p>The checker also enforces the override contract that keeps inherited types meaningful — an override must return a subtype of what the base method declares (this is what lets the checker trust <code>x.defined?</code> to be <code>Boolean</code> for <em>any</em> receiver, §31):</p>
+<pre class="qn-code"><span class="qn-global">Sneaky</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">defined?</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |^</span><span class="qn-global">String</span><span class="qn-plain">| </span><span class="qn-string">'always'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<pre>override.qn:2:21: warning: override of `defined?` returns `String`, incompatible with `Boolean` from `Object`
+    |
+  2 |     defined? -&gt; { |^String| 'always' }
+    |                     ^^^^^^</pre>
+<p>One convenience the checker allows rather than flags: an <code>Integer</code> <em>literal</em> in a <code>Double</code> position is promoted to the double it obviously means, at the value level:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">d</span><span class="qn-plain">: </span><span class="qn-global">Double</span><span class="qn-plain"> = </span><span class="qn-number">1</span><span class="qn-plain">        </span><span class="qn-comment">"* no warning: the literal 1 becomes 1.0</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">d</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain">             </span><span class="qn-comment">"* -&gt; 'Double'</span></pre>
+<p>Finally, the escape hatch. Sometimes the flagged behavior is the point — a test that <em>wants</em> to send <code>if:</code> to a maybe-nil value to pin the runtime error, say. A trailing <code>allow:</code> comment silences exactly that warning kind, exactly there:</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-ident qn-ident-0">flags</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">n</span><span class="qn-plain">).</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-plain">^^</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;  </span><span class="qn-comment">"* allow: nil-receiver (nil -&gt; MNU is the point)</span></pre>
+<p>The kind name is the warning's family — <code>nil-receiver</code>, <code>caret-discard</code>, <code>mnu</code>, <code>no-variant</code>, <code>element-type</code>, <code>type-mismatch</code>, <code>return-type</code>, <code>unknown-type</code>, <code>annotation</code> — and several can be listed, separated by commas. A parenthesized rationale is encouraged and ignored by the parser. Three rules keep suppressions honest: the pragma must <strong>trail</strong> the warned line (on a line of its own it would be captured as a doc comment, so that placement warns instead of silently doing nothing); an unknown kind name warns rather than no-ops, so a typo can't leave a phantom suppression; and a pragma only reaches its own line, so it can't blanket a file.</p>
+<hr>
+<h2 id="31-nullable-types-nil-narrowing">31. Nullable types &amp; nil narrowing</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>T?</code> is "<code>T</code> or <code>nil</code>". It is the honest type of anything that can be absent: a Map lookup, <code>detect:</code>, an element read from a checked collection (§33).</li>
+<li><strong>Nil-misuse warnings are opt-in by annotation</strong>: a non-nil-safe message sent to a value the checker knows is <code>T?</code> warns (<code></code>receiver of <code>abs</code> may be nil<code></code>, <code></code>left operand of <code>+</code> may be nil<code></code>). Nil-safe messages (<code>defined?</code>, <code>s</code>, <code>pp</code>, <code>class</code>, <code>==</code>, <code>!=</code>, <code>hash</code>) stay silent. Unannotated values never warn.</li>
+<li><strong>Narrowing is flow-sensitive.</strong> A nil guard refines the type inside the guarded arm (and after it, when the nil arm diverges). Recognized shapes, for a local or an <code>@field</code>:</li>
+</ul>
+<table>
+<tr><th>Guard</th><th>Narrows</th></tr>
+<tr><td><code>x.defined?.if:{A} else:{B}</code></td><td><code>A</code>: <code>x</code> is <code>T</code> · <code>B</code>: <code>x</code> is nil</td></tr>
+<tr><td><code>x.defined?.else:{ ^^ … }</code></td><td>rest of the method: <code>x</code> is <code>T</code></td></tr>
+<tr><td><code>(x != nil).if:{A}</code> / <code>(x == nil)</code></td><td>same, polarity flipped</td></tr>
+<tr><td><code>x.defined? &amp;&amp; expr</code></td><td><code>expr</code> sees <code>x</code> as <code>T</code></td></tr>
+</table>
+<ul>
+<li>Reassignment updates the flow: after <code>x.defined?.if:{} else:{ x = 0 }</code>, both arms leave <code>x</code> non-nil, so the join does too.</li>
+<li><code>Object#defined?</code> is declared <code>^Boolean</code> (and covariance protects it, §30), which is why <code>x.defined?.if:</code> is sound narrowing for <em>any</em> receiver.</li>
+</ul>
+</blockquote>
+<p>Dereferencing a nullable without a guard draws the warning:</p>
+<pre class="qn-code"><span class="qn-global">Badge</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">width</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">: </span><span class="qn-global">String?</span><span class="qn-plain"> ^</span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain"> + </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<pre>badge.qn:2:42: warning: receiver of `length` may be nil
+    |
+  2 |     width: -&gt; { |name: String? ^Integer| name.length + 4 }
+    |                                          ^^^^</pre>
+<p>Guard it and the same send is silently fine — the checker follows the flow. The early-return form reads especially well: handle absence once, then the rest of the method sees the narrowed type:</p>
+<pre class="qn-code"><span class="qn-global">Grades</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">letterFor</span><span class="qn-plain">:</span><span class="qn-signature">in</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">: </span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">scores</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">) ^</span><span class="qn-global">String</span><span class="qn-plain">|
+        </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer?</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-2">scores</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">;
+        </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">.</span><span class="qn-signature">defined?</span><span class="qn-plain">.</span><span class="qn-signature">else</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-plain">^^ </span><span class="qn-string">'absent'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain">;      </span><span class="qn-comment">"* from here on, n is Integer</span><span class="qn-plain">
+        (</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> &gt;= </span><span class="qn-number">90</span><span class="qn-plain">).</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-string">'A'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">else</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-string">'B or below'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain">
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">g</span><span class="qn-plain"> = </span><span class="qn-global">Grades</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">) = </span><span class="qn-collection">#{</span><span class="qn-plain"> </span><span class="qn-string">'ada'</span><span class="qn-plain">: </span><span class="qn-number">97</span><span class="qn-plain"> </span><span class="qn-collection">}</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">g</span><span class="qn-plain">.</span><span class="qn-signature">letterFor</span><span class="qn-plain">:</span><span class="qn-string">'ada'</span><span class="qn-plain"> </span><span class="qn-signature">in</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 'A'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">g</span><span class="qn-plain">.</span><span class="qn-signature">letterFor</span><span class="qn-plain">:</span><span class="qn-string">'grace'</span><span class="qn-plain"> </span><span class="qn-signature">in</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; 'absent'</span></pre>
+<p>This is the static complement of the strict-conditional rule from §8: <code>nil.if:</code> is a runtime error, and <code>x.defined?.if:{ … }</code> is both the idiomatic guard <em>and</em> the thing the checker understands.</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">) = </span><span class="qn-collection">#{</span><span class="qn-plain"> </span><span class="qn-string">'ada'</span><span class="qn-plain">: </span><span class="qn-number">97</span><span class="qn-plain"> </span><span class="qn-collection">}</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">n</span><span class="qn-plain">: </span><span class="qn-global">Integer?</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'grace'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">n</span><span class="qn-plain">.</span><span class="qn-signature">defined?</span><span class="qn-plain">.</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'present'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain"> </span><span class="qn-signature">else</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'absent'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; 'absent'</span></pre>
+<p>A <code>T?</code> parameter participates in dispatch as base-type-or-nil: a <code>|name: String?|</code> variant matches a <code>String</code> argument at the base type's specificity, and matches <code>nil</code> exactly — so a nullable variant can sit beside concretely-typed siblings:</p>
+<pre class="qn-code"><span class="qn-global">W</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">width</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">: </span><span class="qn-global">String?</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-2">name</span><span class="qn-plain">.</span><span class="qn-signature">defined?</span><span class="qn-plain">.</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-string">'str'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">else</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-string">'none'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">width</span><span class="qn-plain">: --&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-string">'int'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain"> = </span><span class="qn-global">W</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain">.</span><span class="qn-signature">width</span><span class="qn-plain">:</span><span class="qn-string">'x'</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'str'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain">.</span><span class="qn-signature">width</span><span class="qn-plain">:</span><span class="qn-global">nil</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'none'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">w</span><span class="qn-plain">.</span><span class="qn-signature">width</span><span class="qn-plain">:</span><span class="qn-number">7</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; 'int'</span></pre>
+<hr>
+<h2 id="32-types-at-dispatch-time">32. Types at dispatch time</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li>Typed parameters are the <strong>enforced</strong> half of the type system: a method variant is selected only when every argument matches its declared parameter types, by the multimethod rules of §13 (specificity ranking, guards refine, equal ties are ambiguous).</li>
+<li>No matching variant → <code>MessageNotUnderstood</code> at the call. If the selector exists with non-matching types, the error <strong>lists the filtered-out candidates</strong> as a hint.</li>
+<li>Because dispatch guarantees the parameter's type, the body needs no defensive checks — and the optimizer treats the annotation as proven fact.</li>
+<li><strong>Element tags dispatch too</strong> (§33): <code>|xs: List(Integer)|</code> matches only a list <em>tagged</em> <code>Integer</code>; bare <code>|xs: List|</code> matches any list. Two variants may differ only by tag.</li>
+<li><strong>Block shapes do not dispatch</strong>: <code>|b: Block(Integer ^Boolean)|</code> dispatches exactly like <code>|b: Block|</code> (the runtime can't check a block's shape, so two variants differing only in block shape are a <em>redefinition</em>, later wins).</li>
+<li>A guard composes with the type: <code>|n: Integer { n &gt; 100 }|</code> matches an <code>Integer</code> for which the guard is truthy.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-global">Triage</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">rank</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain"> &gt; </span><span class="qn-number">100</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain">| </span><span class="qn-string">'big'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">rank</span><span class="qn-plain">: --&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-string">'small'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">rank</span><span class="qn-plain">: --&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">x</span><span class="qn-plain">| </span><span class="qn-string">'not a number'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">        </span><span class="qn-comment">"* untyped catch-all</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain"> = </span><span class="qn-global">Triage</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">rank</span><span class="qn-plain">:</span><span class="qn-number">400</span><span class="qn-plain">          </span><span class="qn-comment">"* -&gt; 'big'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">rank</span><span class="qn-plain">:</span><span class="qn-number">7</span><span class="qn-plain">            </span><span class="qn-comment">"* -&gt; 'small'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">t</span><span class="qn-plain">.</span><span class="qn-signature">rank</span><span class="qn-plain">:</span><span class="qn-string">'seven'</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; 'not a number'</span></pre>
+<p>Without a catch-all, a wrong-typed argument fails loudly — and helpfully:</p>
+<pre class="qn-code"><span class="qn-global">Describer</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">describe</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain">| </span><span class="qn-string">'int '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">describe</span><span class="qn-plain">: --&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">s</span><span class="qn-plain">: </span><span class="qn-global">String</span><span class="qn-plain">| </span><span class="qn-string">'str '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-2">s</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-global">Describer</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">describe</span><span class="qn-plain">:</span><span class="qn-number">7</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 'int 7'</span><span class="qn-plain">
+</span><span class="qn-global">Describer</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">describe</span><span class="qn-plain">:</span><span class="qn-string">'hi'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 'str hi'</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Describer</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">describe</span><span class="qn-plain">:</span><span class="qn-number">3.14</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">: </span><span class="qn-global">MessageNotUnderstood</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+                                </span><span class="qn-comment">"* -&gt; 'no method \'describe:\' for Describer'</span></pre>
+<p>(Uncaught, the same error also prints the candidate variants — see §35.)</p>
+<p>Generic collection types make dispatch element-aware, because tagged collections really know their element type at runtime (§33):</p>
+<pre class="qn-code"><span class="qn-global">Render</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">show</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">xs</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">(</span><span class="qn-global">Integer</span><span class="qn-plain">)| </span><span class="qn-string">'all ints'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">show</span><span class="qn-plain">: --&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">xs</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">| </span><span class="qn-string">'any old list'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain"> = </span><span class="qn-global">Render</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain">.</span><span class="qn-signature">show</span><span class="qn-plain">:(</span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">ensure</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">)      </span><span class="qn-comment">"* -&gt; 'all ints'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain">.</span><span class="qn-signature">show</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-collection">)</span><span class="qn-plain">                       </span><span class="qn-comment">"* -&gt; 'any old list'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">r</span><span class="qn-plain">.</span><span class="qn-signature">show</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-string">'two'</span><span class="qn-collection">)</span><span class="qn-plain">                   </span><span class="qn-comment">"* -&gt; 'any old list'</span></pre>
+<p>The untagged <code>#(1 2)</code> falls through to the bare <code>List</code> variant even though its elements happen to be integers — dispatch trusts <strong>tags</strong> (guarantees), never inspection of the current contents.</p>
+<hr>
+<h2 id="33-checked-generic-collections">33. Checked generic collections</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li>A <code>List</code>/<code>Map</code>/<code>Set</code> may carry a runtime <strong>element tag</strong>. Tagged collections <strong>check every insertion</strong> and raise a <code>TypeError</code> on mismatch; therefore every read is <em>guaranteed</em> tag-or-nil. Untagged collections (every plain literal, everything decoded from JSON/CSV/etc.) behave exactly as before, cost nothing, and match only bare <code>List</code>/<code>Map</code>/<code>Set</code> types.</li>
+<li>Three ways to construct a tagged collection:</li>
+<li><code>List.of:Integer</code> / <code>Map.of:Integer</code> / <code>Set.of:String</code> — empty, tagged (<code>Map.of:</code> tags the <strong>values</strong>; keys are always <code>String</code>).</li>
+<li>An annotated declaration whose initializer is a literal: <code>var xs: List(Integer) = #(1 2 3)</code> — tags and checks the elements.</li>
+<li><code>coll.ensure:Integer</code> — verifies every current element and returns a <strong>new</strong> tagged collection (the original is untouched). This is the bridge from dynamic data to checked data.</li>
+<li><code>coll.elementType</code> → the tag as a Symbol (<code>#Integer</code>), or <code>nil</code> when untagged.</li>
+<li><code>nil</code> elements are always allowed — a tag constrains what a <em>present</em> element is, so reads are honestly <code>T?</code> (§31).</li>
+<li>Element-preserving combinators (<code>select:</code>, <code>reject:</code>, <code>take:</code>, <code>drop:</code>, <code>reverse</code>, <code>uniq</code>, <code>sort</code>, slices, set algebra) <strong>keep the tag</strong>. <code>collect:</code> returns <strong>untagged</strong> — its elements are whatever the block produced; chain <code>.ensure:</code> when you need the tag back.</li>
+<li>User classes work as tags (<code>List.of:Shape</code> accepts subclass instances). Nested generics (<code>List(List(Integer))</code>) are checker-only: the runtime tag degrades to the base with a warning, never a false guarantee.</li>
+<li>The checker mirrors the runtime: a statically-visible bad insertion warns at compile time; the same insertion arriving dynamically raises at runtime.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain"> = </span><span class="qn-global">List</span><span class="qn-plain">.</span><span class="qn-signature">of</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain">.</span><span class="qn-signature">elementType</span><span class="qn-plain">                            </span><span class="qn-comment">"* -&gt; #Integer</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">bad</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-string">'one'</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-number">0</span><span class="qn-plain">                   </span><span class="qn-comment">"* arrives dynamically — invisible to the checker</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-0">bad</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'List(Integer): element must be Integer, got String'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">xs</span><span class="qn-plain">.</span><span class="qn-signature">count</span><span class="qn-plain">                                  </span><span class="qn-comment">"* -&gt; 1</span></pre>
+<p>The insertion check is the entire mechanism — because writes are guarded, reads need no checks, and whatever comes out of a <code>List(Integer)</code> is provably an <code>Integer</code> or <code>nil</code>. Construction through an annotated literal checks up front:</p>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">nope</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">(</span><span class="qn-global">Integer</span><span class="qn-plain">) = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-string">'two'</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-1">nope</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+    </span><span class="qn-comment">"* -&gt; 'List(Integer): element at 1 must be Integer, got String'</span></pre>
+<p>Decoded data is inherently dynamic, so decoders never guess a tag — <code>ensure:</code> is the explicit opt-in:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">raw</span><span class="qn-plain"> = </span><span class="qn-global">JSON</span><span class="qn-plain">.</span><span class="qn-signature">parse</span><span class="qn-plain">:</span><span class="qn-string">'[1, 2, 3]'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">raw</span><span class="qn-plain">.</span><span class="qn-signature">elementType</span><span class="qn-plain">                           </span><span class="qn-comment">"* -&gt; nil</span><span class="qn-plain">
+(</span><span class="qn-ident qn-ident-0">raw</span><span class="qn-plain">.</span><span class="qn-signature">ensure</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">          </span><span class="qn-comment">"* -&gt; #Integer</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-string">'two'</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">ensure</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'TypeError'</span></pre>
+<p>Tags flow through the combinators that preserve elements, and honestly don't through the one that transforms them:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">days</span><span class="qn-plain">: </span><span class="qn-global">List</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain">) = </span><span class="qn-collection">#(</span><span class="qn-string">'monday'</span><span class="qn-plain"> </span><span class="qn-string">'tue'</span><span class="qn-plain"> </span><span class="qn-string">'wednesday'</span><span class="qn-collection">)</span><span class="qn-plain">
+(</span><span class="qn-ident qn-ident-0">days</span><span class="qn-plain">.</span><span class="qn-signature">select</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">d</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">d</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain"> &gt; </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #String</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">days</span><span class="qn-plain">.</span><span class="qn-signature">reverse</span><span class="qn-plain">.</span><span class="qn-signature">elementType</span><span class="qn-plain">                          </span><span class="qn-comment">"* -&gt; #String</span><span class="qn-plain">
+(</span><span class="qn-ident qn-ident-0">days</span><span class="qn-plain">.</span><span class="qn-signature">collect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">d</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">d</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">elementType</span><span class="qn-plain">       </span><span class="qn-comment">"* -&gt; nil</span></pre>
+<p>On the checker side, declared element types catch both directions of mistake — bad writes and unguarded reads:</p>
+<pre class="qn-code"><span class="qn-global">Inventory</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">restock</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">counts</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">)|
+        </span><span class="qn-ident qn-ident-2">counts</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'bolts'</span><span class="qn-plain"> </span><span class="qn-signature">put</span><span class="qn-plain">:</span><span class="qn-string">'twelve'</span><span class="qn-plain">
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+
+    </span><span class="qn-signature">firstCount</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">counts</span><span class="qn-plain">: </span><span class="qn-global">Map</span><span class="qn-plain">(</span><span class="qn-global">String</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain">) ^</span><span class="qn-global">Integer</span><span class="qn-plain">|
+        </span><span class="qn-ident qn-ident-2">counts</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'bolts'</span><span class="qn-plain">
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<pre>inventory.qn:3:31: warning: `Map(String Integer)` rejects a `String` element — this raises a TypeError at runtime
+    |
+  3 |         counts.at:'bolts' put:'twelve'
+    |                               ^^^^^^^^
+inventory.qn:7:9: warning: type mismatch: expected `Integer`, found `Integer?`
+    |
+  7 |         counts.at:'bolts'
+    |         ^^^^^^^^^^^^^^^^^</pre>
+<blockquote>
+<p><strong>⚠ Gotcha — <code>ensure:</code> copies; tagging is never in-place.</strong> Retagging a list aliased elsewhere would change its behavior under someone else's feet, so <code>ensure:</code> always returns a fresh collection and leaves the receiver untagged. Note the type-argument forms are for <em>type positions</em> only: construction and conversion take an ordinary class value (<code>List.of:Integer</code>, <code>.ensure:Integer</code>) — <code>List(Integer).new</code> is not an expression.</p>
+</blockquote>
+<hr>
+<h2 id="34-sealing">34. Sealing</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>Class.sealed!</code> <strong>freezes</strong> a class: no <code>&lt;--</code> reopening, no new <code>-&gt;</code>/<code>--&gt;</code> definitions, no <code>.mix:</code>, no subclassing. Extension attempts raise a catchable <code>ClassError</code>; a subclass attempt raises too. Seal <em>last</em> in a class body (§12).</li>
+<li><code>Class.abstract!</code> forbids instantiating the class itself; concrete subclasses instantiate normally. Independent of sealing.</li>
+<li><strong>The value built-ins ship sealed</strong>: <code>Integer</code>, <code>Double</code>, <code>Boolean</code>, <code>Nil</code>, <code>List</code>, <code>Map</code>, <code>Set</code>, and <code>NumberRange</code>. Open for extension: <code>String</code>, <code>Symbol</code>, <code>Bytes</code>, <code>Block</code>, <code>Object</code>, the <code>Error</code> hierarchy, and every user class that doesn't opt in.</li>
+<li><strong>Why</strong>: a sealed method table is a <em>guarantee</em> — the optimizer can compile <code>n + 1</code> on a known <code>Integer</code> down to machine arithmetic only because no code can ever redefine <code>Integer#+:</code>. Sealing is what turns type annotations from hints into compiled speed; it's also what makes compile-time MNU provable (§30).</li>
+</ul>
+</blockquote>
+<p>The visible consequence: you cannot monkey-patch or subclass the sealed built-ins —</p>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Integer</span><span class="qn-plain"> &lt;-- </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-signature">double</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-3">self</span><span class="qn-plain"> * </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+    </span><span class="qn-comment">"* -&gt; 'Cannot extend sealed class [/]Integer'</span></pre>
+<p>— extend <code>String</code> (open) or wrap a sealed type in your own class instead. Your own classes can buy the same guarantees:</p>
+<pre class="qn-code"><span class="qn-global">Money</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@cents</span><span class="qn-plain">|
+    </span><span class="qn-signature">cents</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@cents</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-plain">.</span><span class="qn-signature">sealed</span><span class="qn-plain">!
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Money</span><span class="qn-plain"> &lt;-- </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-signature">inflate</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'ClassError'</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Money</span><span class="qn-plain"> &lt;- </span><span class="qn-global">Coupon</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-2">{</span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'ClassError'</span></pre>
+<p>Extension and subclass attempts both raise a typed <code>ClassError</code>, so one <code>catch:{ |e: ClassError| … }</code> covers either.</p>
+<p><code>abstract!</code> is the other, independent switch — a class that exists only to be subclassed:</p>
+<pre class="qn-code"><span class="qn-global">Shape</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">abstract</span><span class="qn-plain">!;
+    </span><span class="qn-signature">describe</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'a '</span><span class="qn-plain"> + </span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain"> + </span><span class="qn-string">' of area '</span><span class="qn-plain"> + </span><span class="qn-plain">.</span><span class="qn-signature">area</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-global">Shape</span><span class="qn-plain"> &lt;- </span><span class="qn-global">Circle</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-signature">area</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-number">314</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-global">Shape</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 'Cannot instantiate abstract class [/]Shape'</span><span class="qn-plain">
+</span><span class="qn-global">Circle</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">describe</span><span class="qn-plain">                      </span><span class="qn-comment">"* -&gt; 'a Circle of area 314'</span></pre>
+<hr>
+<h2 id="35-errors-at-runtime-warnings-at-compile-time">35. Errors at runtime, warnings at compile time</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li>The division of labor:</li>
+</ul>
+<table>
+<tr><th>Mistake</th><th>When caught</th><th>As</th></tr>
+<tr><td>Reading an unbound name</td><td>runtime</td><td><code>NameError</code></td></tr>
+<tr><td>Unknown selector</td><td>runtime (compile-time warning when provable, §30)</td><td><code>MessageNotUnderstood</code></td></tr>
+<tr><td>Wrong-typed argument to a typed method</td><td>runtime, at dispatch</td><td><code>MessageNotUnderstood</code> + candidate list</td></tr>
+<tr><td>Bad insertion into a tagged collection</td><td>runtime (warning when statically visible)</td><td><code>TypeError</code></td></tr>
+<tr><td>Everything else the checker sees</td><td>compile time</td><td>non-fatal warning</td></tr>
+</table>
+<ul>
+<li>Reading a name bound to nothing raises a catchable <code>NameError</code> (assigning to an undeclared name was already a compile error — the two halves agree).</li>
+<li>To ask whether a class exists <em>without</em> reading its name, use <code>Class.exists?:#Name</code> (a namespaced class needs the quoted symbol form: <code>Class.exists?:#'[IO]File'</code>).</li>
+<li>An uncaught <code>MessageNotUnderstood</code> on a multimethod prints the variants that exist but didn't match — read it as "here's what this selector <em>can</em> accept."</li>
+</ul>
+</blockquote>
+<p>A misspelling fails at the read, not three calls later as a mysterious <code>nil</code>:</p>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">typoedName</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">: </span><span class="qn-global">NameError</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">.</span><span class="qn-signature">message</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+    </span><span class="qn-comment">"* -&gt; 'undefined name `typoedName` — nothing with that name is in scope'</span><span class="qn-plain">
+
+</span><span class="qn-global">Class</span><span class="qn-plain">.</span><span class="qn-signature">exists?</span><span class="qn-plain">:</span><span class="qn-symbol">#Integer</span><span class="qn-plain">         </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-global">Class</span><span class="qn-plain">.</span><span class="qn-signature">exists?</span><span class="qn-plain">:</span><span class="qn-symbol">#Wibble</span><span class="qn-plain">          </span><span class="qn-comment">"* -&gt; false</span><span class="qn-plain">
+</span><span class="qn-global">Class</span><span class="qn-plain">.</span><span class="qn-signature">exists?</span><span class="qn-plain">:</span><span class="qn-symbol">#'[IO]File'</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p>A <code>NameError</code> can't be checked at compile time — <code>use</code> runs at run time and a method may name a class defined later in the file, so the read site is the first place the answer is knowable.</p>
+<p>And when typed dispatch rejects every variant, the uncaught error names the candidates it filtered out. Running the <code>Describer</code> of §32 against a <code>Double</code>:</p>
+<pre class="qn-code"><span class="qn-global">Describer</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">describe</span><span class="qn-plain">:</span><span class="qn-number">3.14</span></pre>
+<pre>VM execution error: Message not understood: receiver=Describer, selector='describe:', args=[Double]
+  describe:Integer
+  describe:String
+  at describe.qn:5:1
+  |
+  | Describer.new.describe:3.14
+  |</pre>
+<p>The summary of the whole chapter is in that table: the <strong>checker</strong> warns early where types are written, the <strong>runtime</strong> enforces the three real guarantees (dispatch, tags, seals), and dynamic code sails through both untouched.</p>
+<hr>
+<p>Next: <strong><a href="08-tooling.html">Part VIII — Tooling</a></strong>.</p>
+
+</body></html>

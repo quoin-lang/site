@@ -1,0 +1,139 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TlsSocket</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>TlsSocket</code></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a></p>
+<p>A TLS-encrypted TCP connection, with the same read/write surface as <code>TcpSocket</code>.</p>
+<p><code>connect:</code> speaks TLS from the first byte (certificate checked against the host name); <code>wrap:host:</code> upgrades an existing plaintext <code>TcpSocket</code> in place — the STARTTLS pattern — consuming it. The <code>insecure:</code> variants take a Boolean that, when true, skips certificate validation: local debugging only, the word at the call site is the warning. The <code>do:</code> forms scope the socket to a block, closing it on every exit path.</p>
+<pre class="qn-code"><span class="qn-global">TlsSocket</span><span class="qn-plain">.</span><span class="qn-signature">connect</span><span class="qn-plain">:</span><span class="qn-string">'example.com:443'</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">sock</span><span class="qn-plain">|
+</span><span class="qn-ident qn-ident-1">sock</span><span class="qn-plain">.</span><span class="qn-signature">writeAll</span><span class="qn-plain">:</span><span class="qn-string">'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n'</span><span class="qn-plain">.</span><span class="qn-signature">asBytes</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-1">sock</span><span class="qn-plain">.</span><span class="qn-signature">readAll</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<h2>Class methods</h2>
+<div class="method" id="c-connect:"><span class="sig">connect:</span><div class="body"><p>Connect to <code>'host:port'</code> speaking TLS from the first byte; the host part is also the certificate / SNI name. A failed handshake (or a certificate that doesn't validate) throws a catchable IoError.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-connect:do:"><span class="sig">connect: do:</span><div class="body"><p>Connect with TLS, run the block with the socket, and close it on every exit path (normal, throw, or cancel); answers the block's value.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-connect:insecure:"><span class="sig">connect: insecure:</span><div class="body"><p><code>connect:</code>, with certificate validation skipped when the Boolean is true — for local debugging against self-signed certificates, never production.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-connect:insecure:do:"><span class="sig">connect: insecure: do:</span><div class="body"><p>The scoped (<code>do:</code>) form of <code>connect:insecure:</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-wrap:host:"><span class="sig">wrap: host:</span><div class="body"><p>Upgrade an already-connected TcpSocket to TLS in place (the STARTTLS pattern). <code>host:</code> names the certificate / SNI identity — supplied explicitly because the connection may have been made by IP or via a proxy. The TcpSocket is *consumed*: it is left closed whether the handshake succeeds or not.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-wrap:host:do:"><span class="sig">wrap: host: do:</span><div class="body"><p>Upgrade a TcpSocket to TLS, run the block with the TlsSocket, and close it on every exit path; answers the block's value.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-wrap:host:insecure:"><span class="sig">wrap: host: insecure:</span><div class="body"><p><code>wrap:host:</code>, with certificate validation skipped when the Boolean is true (local debugging only).</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="c-wrap:host:insecure:do:"><span class="sig">wrap: host: insecure: do:</span><div class="body"><p>The scoped (<code>do:</code>) form of <code>wrap:host:insecure:</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-byteStream"><span class="sig">byteStream</span><div class="body"><p>A buffered ByteStream that *consumes* this socket: the connection transfers to the stream and the socket is left closed (further ops on it throw). Adds read-ahead, <code>peek:</code>, and delimiter framing (<code>readUntil:</code>) over the raw socket.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-close"><span class="sig">close</span><div class="body"><p>Close the socket (idempotent — a second close is a no-op). Further operations throw. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-closed?"><span class="sig">closed?</span><div class="body"><p>Whether the socket has been closed — including by being consumed into a stream or a TLS upgrade.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-read:"><span class="sig">read:Integer</span><div class="body"><p>Up to n bytes as Bytes — one read, so possibly fewer than asked; empty Bytes means the peer closed (EOF). Parks the task until data arrives. Throws on a closed socket or an I/O error. For buffered or delimiter-framed reading, wrap the socket in <code>byteStream</code>.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-readAll"><span class="sig">readAll</span><div class="body"><p>Read until the peer closes, answering everything as one Bytes. Only returns once the other side signals EOF — for request/response protocols where the peer keeps the connection open, frame reads with <code>read:</code> or a <code>byteStream</code> instead.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-stringStream"><span class="sig">stringStream</span><div class="body"><p>A text StringStream that *consumes* this socket (a <code>byteStream</code> immediately wrapped): <code>readLine</code> / <code>eachLine:</code> / <code>writeln:</code> over the connection, decoding UTF-8.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-writeAll:"><span class="sig">writeAll:Bytes</span><div class="body"><p>Write all of the Bytes to the socket — complete or throw, no short writes. Returns nil.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+
+</body></html>

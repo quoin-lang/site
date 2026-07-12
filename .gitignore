@@ -6,3 +6,6 @@
 # Editor / OS cruft
 *~
 Thumbs.db
+
+# Claude Code local config
+.claude/

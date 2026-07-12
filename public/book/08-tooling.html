@@ -1,0 +1,435 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part VIII — Tooling</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="part-viii-tooling">Part VIII — Tooling</h1>
+<p>Everything ships in one binary: <code>qn</code> runs programs, and its subcommands are the REPL, the test runner, the static checker, the formatter, the documentation generator, the debugger, and a syntax highlighter. This part is a tour of each, with real sessions. Shell transcripts are shown as plain fences (they are terminal text, not Quoin); runnable Quoin examples are tagged and verified like everywhere else in this book.</p>
+<p>Nav: <a href="01-foundations.html">Foundations</a> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <a href="04-patterns-and-errors.html">Patterns &amp; errors</a> · <a href="05-concurrency-and-iteration.html">Concurrency &amp; iteration</a> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <a href="07-types.html">Types</a> · <strong>Tooling</strong> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <a href="10-appendices.html">Appendices</a></p>
+<hr>
+<h2 id="36-running-programs-qn">36. Running programs — <code>qn</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn app.qn [args…]</code> runs a program. <strong>Everything after the file</strong> — flags included — lands in <code>Runtime.arguments</code> (a List of Strings), verbatim; <code>qn</code>'s own flags go <em>before</em> the file.</li>
+<li>A program may start with a <strong>shebang</strong> (<code>#!/usr/bin/env qn</code>): the line is trivia to the language, so a <code>chmod +x</code>'d script runs directly, and its arguments still arrive verbatim. Diagnostics keep true line numbers.</li>
+<li><code>qn -e EXPR</code> evaluates one expression and prints its value (a <code>nil</code> result prints nothing) — the same rendering the REPL uses.</li>
+<li><strong>Exit codes</strong>: <code>0</code> on normal completion; an <strong>uncaught error</strong> prints its annotated report to stderr and exits <code>1</code>; <code>Runtime.exit:N</code> exits with <code>N</code> (it is uncatchable, and teardown still runs).</li>
+<li><strong>Environment</strong>: <code>QUOIN_STDLIB=DIR</code> loads the stdlib from <code>DIR</code> instead of the copy embedded in the binary; <code>QUOIN_PATH=DIRS</code> adds extra roots to the extension-package search. Internal <code>QN_*</code> tuning knobs are catalogued in <code>docs/internal/ENV_FLAGS.md</code> and are not part of the language surface.</li>
+</ul>
+</blockquote>
+<p>A program is just a <code>.qn</code> file; there is no required entry point — top-level statements run in order (Part I). Command-line arguments arrive as a list of strings:</p>
+<pre class="qn-code"><span class="qn-global">Runtime</span><span class="qn-plain">.</span><span class="qn-signature">arguments</span><span class="qn-plain">.</span><span class="qn-signature">print</span></pre>
+<pre>$ qn args.qn --verbose input.txt
+#(--verbose input.txt)</pre>
+<p>With the shebang and the execute bit, a <code>.qn</code> file is a command:</p>
+<pre>$ head -1 tool.qn
+#!/usr/bin/env qn
+$ chmod +x tool.qn
+$ ./tool.qn --verbose input.txt</pre>
+<p><code>-e</code> is the one-liner form — handy in shell pipelines, and it prints the expression's value exactly as the REPL would:</p>
+<pre>$ qn -e '(1..5).collect:{ |n| n * n }'
+#(1 4 9 16)
+$ qn -e 'nil.foo'
+Message not understood: receiver=Nil, selector='foo', args=[]
+  at &lt;eval&gt;:1:1
+  |
+  | nil.foo
+  |
+  at (top) in &lt;eval&gt;:1:0                                &lt; nil.foo
+$ echo $?
+1</pre>
+<p>That second run shows the exit-code contract: an error nobody catches is reported on stderr and the process exits <code>1</code>, so shell scripts and CI can gate on any <code>qn</code> invocation. To choose the status yourself, <code>Runtime.exit:3</code> ends the process with code 3 — it cannot be caught, but sockets, extensions, and other resources are still torn down normally.</p>
+<hr>
+<h2 id="37-the-repl-qn-repl">37. The REPL — <code>qn repl</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn repl</code> opens an interactive session; the prompt is <code>qn&gt; </code>. Results echo as <code>=&gt; value</code>; a <code>nil</code> result is suppressed.</li>
+<li><strong>State persists across lines</strong>: class definitions and constants become ordinary globals; lowercase <code>var</code>/<code>let</code> locals live for the whole session.</li>
+<li>Line editing with history (<code>~/.quoin_history</code>), <strong>syntax highlighting as you type</strong>, multiline continuation (an incomplete line keeps reading), and <strong>tab completion</strong> — global and session-local names, namespace names inside <code>[…]</code>, and <code>receiver.</code> selectors when the receiver's class is knowable (a class name, a session local, or a literal).</li>
+<li>A line whose first non-space character is <code>$</code> is a REPL command, not Quoin:</li>
+</ul>
+<table>
+<tr><th>Command</th><th>Does</th></tr>
+<tr><td><code>$type &lt;expr&gt;</code></td><td>show the class of an expression's result</td></tr>
+<tr><td><code>$inspect &lt;expr&gt;</code></td><td>evaluate and show the value's class + fields</td></tr>
+<tr><td><code>$time &lt;expr&gt;</code></td><td>evaluate and report wall-clock time</td></tr>
+<tr><td><code>$globals [pre]</code></td><td>list defined classes and values (optional prefix)</td></tr>
+<tr><td><code>$class &lt;Name&gt;</code></td><td>show a class: parent, mixins, ivars, methods</td></tr>
+<tr><td><code>$doc &lt;Name&gt;[.sel]</code></td><td>show a class's or method's reference doc</td></tr>
+<tr><td><code>$load &lt;file.qn&gt;</code></td><td>run a <code>.qn</code> file into the session</td></tr>
+<tr><td><code>$ps</code> (or <code>$ps tree</code>)</td><td>show tasks, fibers, workers, and waits</td></tr>
+<tr><td><code>$reset</code></td><td>clear session locals (definitions stay)</td></tr>
+<tr><td><code>$help</code>, <code>$quit</code>/<code>$exit</code></td><td>help; leave (also Ctrl-D)</td></tr>
+</table>
+<ul>
+<li><code>~/.quoinrc</code>, if present, runs into the session before the first prompt — <strong>interactive sessions only</strong> (piped input and <code>qn -e</code> skip it, like a shell rc file).</li>
+</ul>
+</blockquote>
+<p>A session, verbatim:</p>
+<pre>$ qn repl
+qn&gt; var nums = #(3 1 4 1 5)
+=&gt; #(3 1 4 1 5)
+qn&gt; nums.sort
+=&gt; #(1 1 3 4 5)
+qn&gt; $type nums.first
+class Integer
+qn&gt; $inspect 1..5
+NumberRange(1..5)  (class NumberRange)
+  @start: Integer
+  @end: Integer
+  @n: Integer
+qn&gt; $time nums.sort
+=&gt; #(1 1 3 4 5)
+   (1.873 ms)
+qn&gt; $globals Str
+Classes (2):
+  String  StringStream
+qn&gt; $reset
+Session locals cleared.</pre>
+<p>Every line runs under the same scheduler a program uses, so top-level I/O, an <code>Async.sleep:</code>, a spawned <code>Task</code>, or a fiber resume all work at the prompt — and <code>$ps</code> shows what is running or parked while they do.</p>
+<p><code>$doc</code> is the reference at your fingertips: it answers with the same documentation <code>qn doc</code> publishes (see below), for stdlib and your own loaded classes alike:</p>
+<pre>qn&gt; $doc List.sort
+Sort in place, ascending by the elements' `&gt;:`, and answer the receiver; nils sort last.
+...</pre>
+<hr>
+<h2 id="38-tests-qn-test">38. Tests — <code>qn test</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn test [DIR]</code> (default <code>tests</code>) loads the test framework, then every <code>.qn</code> file in <code>DIR</code> in sorted order, then runs every suite that registered.</li>
+<li>A test file <em>builds</em> suites; <strong>constructing a <code>TestSuite</code> registers it</strong> (into the <code>[Test]Suites</code> registry) — no export or main needed.</li>
+<li>Structure: <code>(TestSuite.new:{ var name = '…' }).add:{ … }</code>; inside the <code>add:</code> block, each <code>.test: name -&gt; { … }</code> declares one test.</li>
+<li>Assertions take the value under test as a <strong>block</strong>. The vocabulary: <code>isTrue:</code> / <code>isFalse:</code>; <code>is:equalTo:</code> / <code>is:notEqualTo:</code> (the workhorse); <code>is:a:</code> / <code>is:an:</code>; <code>is:closeTo:</code> (<code>…within:</code>); <code>is:lessThan:</code> / <code>is:greaterThan:</code> (and the <code>…OrEqualTo:</code> pair); <code>does:match:</code> / <code>does:notMatch:</code> (the <code>~</code> pattern protocol, §14); <code>does:resultIn:</code> (effects); <code>does:throw:</code>; <code>elementsOf:areEqualTo:</code>. <code>.skip:'reason'</code> in an <code>add:</code> block skips the suite without failing the run.</li>
+<li><strong>Lifecycle hooks</strong>, declared in the <code>add:</code> block like tests: <code>.setup:{ … }</code> / <code>.teardown:{ … }</code> run around <strong>each</strong> test; <code>.setupAll:{ … }</code> / <code>.teardownAll:{ … }</code> run once per suite. Share fixture state by capturing a <code>var</code>. Several of the same hook accumulate: setups run in declaration order, teardowns in reverse (they unwind). A skipped suite runs no hooks.</li>
+<li><strong>Exit code</strong>: <code>0</code> when everything passes, <code>1</code> on any failure — the CI gate.</li>
+<li><code>--coverage[=lcov|cobertura]</code> collects Quoin-level coverage: the report goes to stdout (or <code>--coverage-out PATH</code>), a one-line summary to stderr. The same flags work on a plain <code>qn program.qn</code> run.</li>
+</ul>
+</blockquote>
+<p>A complete test file:</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">TestSuite</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">name</span><span class="qn-plain"> = </span><span class="qn-string">'Math'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">test</span><span class="qn-plain">:
+    </span><span class="qn-signature">addition</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain">
+        </span><span class="qn-plain">.</span><span class="qn-signature">is</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> + </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">equalTo</span><span class="qn-plain">:</span><span class="qn-number">4</span><span class="qn-plain">;
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+
+    </span><span class="qn-plain">.</span><span class="qn-signature">test</span><span class="qn-plain">:
+    </span><span class="qn-signature">division</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain">
+        </span><span class="qn-plain">.</span><span class="qn-signature">is</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-number">10</span><span class="qn-plain"> / </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">equalTo</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">;
+        </span><span class="qn-plain">.</span><span class="qn-signature">does</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> / </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">throw</span><span class="qn-plain">:</span><span class="qn-global">ArithmeticError</span><span class="qn-plain">;
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<pre>$ qn test tests
+[Math] Running 2 tests
+[Math]   Test addition . 7µs (119µs) 1 passed
+[Math]   Test division .. 10µs (1.5ms) 2 passed
+[Math] Finished in 17µs (11.4ms) : 3 passes / 0 failures
+All suites finished in 17µs (38.6ms) : 3 passes / 0 failures / 0 skipped
+$ echo $?
+0</pre>
+<p>A failure names the assertion's expected/actual and its source location, and flips the exit code:</p>
+<pre>[Failing]   Test arithmetic ! 8µs (138µs) 1 of 1 assertions failed:
+[Failing]     5 != 4 at self:failing/fail_test.qn:4:13
+[Failing] Finished in 8µs (10.5ms) : 0 passes / 1 failures
+All suites finished in 8µs (15.6ms) : 0 passes / 1 failures / 0 skipped
+$ echo $?
+1</pre>
+<p>A fixture every test reads belongs in <code>setupAll:</code>, its removal in <code>teardownAll:</code> — built once, cleaned up even when tests fail; use <code>setup:</code> / <code>teardown:</code> instead when a test <em>mutates</em> the fixture and the next one needs it fresh:</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-global">TestSuite</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">name</span><span class="qn-plain"> = </span><span class="qn-string">'Config'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">path</span><span class="qn-plain"> = </span><span class="qn-string">'/tmp/hooks_example.json'</span><span class="qn-plain">;
+    </span><span class="qn-plain">.</span><span class="qn-signature">setupAll</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">write</span><span class="qn-plain">:</span><span class="qn-string">'{"port": 8080}'</span><span class="qn-plain"> </span><span class="qn-signature">to</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">path</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-plain">.</span><span class="qn-signature">teardownAll</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">delete</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">path</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+
+    </span><span class="qn-plain">.</span><span class="qn-signature">test</span><span class="qn-plain">:
+    </span><span class="qn-signature">readsPort</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain">
+        </span><span class="qn-plain">.</span><span class="qn-signature">is</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> (</span><span class="qn-global">JSON</span><span class="qn-plain">.</span><span class="qn-signature">parse</span><span class="qn-plain">:(</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">read</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">path</span><span class="qn-plain">)).</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'port'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">equalTo</span><span class="qn-plain">:</span><span class="qn-number">8080</span><span class="qn-plain">;
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<p>The framework itself is ordinary, documented Quoin — for the full assertion reference (including how to build custom assertions on <code>recordResult:evidence:block:</code>), see the <code>TestSuite</code>, <code>BuiltinAssertions</code>, and <code>IterateAssertions</code> pages of the generated API reference (<code>qn doc</code>, below), or ask the REPL directly with <code>$doc TestSuite</code>.</p>
+<blockquote>
+<p><strong>⚠ Gotcha — the test directory's name is spliced into a <code>use</code> path.</strong> <code>qn test DIR</code> synthesizes <code>use self:DIR/*</code>, so <code>DIR</code> must be spellable as a Quoin load path: <code>qn test my-tests</code> fails with a parse error (the <code>-</code> reads as an operator). Prefer plain names like <code>tests</code>.</p>
+</blockquote>
+<p>Coverage, for CI dashboards:</p>
+<pre>$ qn test --coverage tests &gt; coverage.lcov
+coverage: 188/868 lines (21.7%)</pre>
+<p>The summary lands on stderr; the redirected stdout is a standard LCOV report (<code>--coverage=cobertura</code> for Cobertura XML instead).</p>
+<hr>
+<h2 id="39-static-checking-qn-check">39. Static checking — <code>qn check</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn check PATH…</code> parses and type-checks each file (directories recurse) <strong>without running anything</strong>.</li>
+<li>It reports parse errors, plus the gradual type checker's diagnostics: unknown types, type mismatches (declarations, reassignments, returns), messages a typed receiver does not understand, possibly-<code>nil</code> receivers and operands, return-type covariance violations, and generics misuse.</li>
+<li>Diagnostics are <strong>warnings</strong>: the checker is best-effort and never blocks <code>qn</code> from running the program. <code>qn check</code> is where they become a gate.</li>
+<li><strong>Exit codes</strong>: <code>0</code> and silent when clean; <code>1</code> if any diagnostic or parse error was reported.</li>
+</ul>
+</blockquote>
+<pre>$ qn check typo.qn
+typo.qn:1:22: warning: type mismatch: expected `Integer`, found `String`
+    |
+  1 | var count: Integer = 'three'
+    |                      ^^^^^^^
+typo.qn:3:1: warning: `NumberRange` does not respond to `nopeMethod`
+    |
+  3 | r.nopeMethod
+    | ^
+$ echo $?
+1</pre>
+<p>Quoin's types are gradual (annotations are optional, checking is best-effort), so a clean <code>qn check</code> is not a soundness proof — but it catches the classic mistakes before they run, and it is cheap enough to sit in a pre-commit hook next to <code>qn fmt --check</code>.</p>
+<hr>
+<h2 id="40-formatting-qn-fmt">40. Formatting — <code>qn fmt</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn fmt PATH…</code> formats files <strong>in place</strong> (directories recurse; <code>-</code> reads stdin and writes the result to stdout). Changed files are named; untouched ones are silent.</li>
+<li><strong>Opinionated and zero-config</strong>: one canonical style (4-space indent, width-driven line breaks, <code>;</code> separators normalized, <code>{ |x| … }</code> delimiter padding), nothing to tune.</li>
+<li><strong>Self-verifying</strong>: the formatter re-parses its own output and refuses to write if the AST changed or a comment was lost — a bug can produce an error, never a meaning-changing write.</li>
+<li><code>--check</code> exits <code>1</code> and lists any file not already formatted (the CI gate); <code>--dry-run</code> prints the would-be result without writing; <code>--diff</code> prints a unified diff (and also exits <code>1</code> when anything would change).</li>
+</ul>
+</blockquote>
+<pre>$ qn fmt --diff messy.qn
+--- messy.qn	2026-07-09 23:30:36
++++ messy.qn (formatted)	2026-07-09 23:30:36
+@@ -1,3 +1,3 @@
+-var total=0
+-(1..4).each:{|n| total = total+n}
++var total=0;
++(1..4).each:{ |n| total = total+n };
+ total.print
+$ qn fmt messy.qn
+formatted messy.qn
+$ qn fmt --check messy.qn
+$ echo $?
+0</pre>
+<p>Note what the diff fixed silently: the missing <code>;</code> after the first two statements. Part I's separator rule (a line starting with <code>.</code> or an operator continues the previous statement) makes a dropped <code>;</code> a real hazard, and the canonical style always writes them between statements — one of several ways the formatter removes a whole class of surprises.</p>
+<p>The self-verification is why formatting is safe to run blind over a tree: the guarantee is checked <em>at write time</em> on your actual file, not merely promised by the formatter's own test suite.</p>
+<hr>
+<h2 id="41-documenting-a-project-qn-doc">41. Documenting a project — <code>qn doc</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn doc</code> documents <strong>the current directory's project</strong>: it loads the tree's <code>.qn</code> units (skipping <code>tests/</code>, <code>bin/</code>, hidden directories, and shebang scripts — a command's top level <em>is</em> the program) and generates one HTML page per class plus an index into <code>qn-docs/</code> (<code>--out DIR</code>). <code>PATH…</code> narrows the roots. <code>--json</code> also writes the raw model as <code>model.json</code> (<code>{"version": 2, …}</code>) for other renderers.</li>
+<li><strong>Docs are comments</strong>: a contiguous run of <code>"*</code> lines <em>immediately</em> above a definition — method, class, or class extension — is that definition's documentation. A blank line detaches it. The first line is the summary.</li>
+<li><strong>Your extensions are API.</strong> Methods your project adds to platform classes (<code>[OS]Process &lt;-- { … }</code>) document under your project as "Extensions to …" — provenance is per method, so the platform's own surface never bleeds in.</li>
+<li>The index opens with your <code>README.md</code> (headers, lists, links, and <code>quoin</code>-tagged fences render), and lists <code>bin/</code> entries whose <code>#!</code> line mentions <code>qn</code> as the project's commands.</li>
+<li>A discovered unit that doesn't load standalone (a <code>Quernfile.qn</code>-style config script) is skipped with a warning; files you name explicitly fail hard. Well-formed library files <code>use</code> what they need, so loading them standalone just works.</li>
+<li>The same docs answer <code>$doc</code> in the REPL and <code>doc</code>/<code>docFor:</code> in code.</li>
+<li><code>--coverage</code> lists every class/selector of <em>yours</em> with no doc and the overall percentage. It is a report, not a gate — exit <code>0</code> either way.</li>
+<li><code>--check</code> runs the documentation's <strong>examples</strong> instead of generating: with PATHs, fenced blocks tagged <code>quoin</code> in markdown files/dirs; without, the annotated examples inside your own doc comments — with the project preloaded, so examples needn't <code>use</code> the code they document. Exit <code>1</code> if any fail.</li>
+</ul>
+</blockquote>
+<p>Documenting your own code is just commenting it (Part I's <code>"*</code> line comment), directly above the thing described:</p>
+<pre class="qn-code"><span class="qn-comment">"* A circle with a radius, in whatever unit you like.</span><span class="qn-plain">
+</span><span class="qn-global">Circle</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@radius</span><span class="qn-plain">|
+    </span><span class="qn-comment">"* The enclosed area.</span><span class="qn-plain">
+    </span><span class="qn-signature">area</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@radius</span><span class="qn-plain"> * </span><span class="qn-ivar">@radius</span><span class="qn-plain"> * </span><span class="qn-number">3.14159</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">diameter</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@radius</span><span class="qn-plain"> * </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+(</span><span class="qn-global">Circle</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">radius</span><span class="qn-plain"> = </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">).</span><span class="qn-signature">area</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 12.56636</span></pre>
+<pre>$ qn doc
+qn doc: skipping Quernfile.qn (does not load standalone): undefined name `Quern` — …
+qn doc: 8 classes, 1 extended classes, 1 commands -&gt; qn-docs
+$ qn doc --coverage
+undocumented: Circle diameter
+doc coverage: 73/74 (98.6%)</pre>
+<p>The coverage report is the safety net for the adjacency rule: a blank line sneaking in between a doc block and its definition silently detaches the doc, and <code>--coverage</code> is how that shows up.</p>
+<h3 id="the-doc-example-harness-qn-doc-check">The doc-example harness — <code>qn doc --check</code></h3>
+<p>Documentation rots unless something executes it. <code>qn doc --check PATH…</code> finds every fenced code block tagged <code>quoin</code> in the given markdown files and <strong>runs each one in a fresh session</strong>, statement by statement like the REPL. A block tagged <code>quoin norun</code> is display-only; an untagged fence (shell transcripts, program output) never runs. Within a running block, every <code>"* -&gt; value</code> annotation is asserted: the statement's rendered result must match. So this fence is a <em>test</em>, executed on every change to this book:</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-number">1</span><span class="qn-plain">..</span><span class="qn-number">5</span><span class="qn-plain">).</span><span class="qn-signature">collect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> * </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(1 4 9 16)</span></pre>
+<pre>$ qn doc --check docs/language/08-tooling.md
+qn doc --check: 5 examples, 2 annotations checked, 0 failed</pre>
+<p>The chapter you are reading — all of <code>docs/language/</code> — is checked exactly this way in CI, which is why its examples can promise their annotations are true. Run bare (<code>qn doc --check</code>, no paths), the same engine executes the annotated examples inside your project's own doc comments — doc-tested libraries for free. (The stdlib's reference is generated and checked with the same tool; the publishing flags it uses aren't part of the everyday surface.)</p>
+<hr>
+<h2 id="42-the-debugger-qn-debug">42. The debugger — <code>qn debug</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn debug app.qn [args…]</code> runs the program under the debugger, <strong>paused at the first line</strong>. The prompt is <code>$ </code>; a bare expression evaluates in the focus frame (<code>self</code>, <code>@ivars</code>, and locals all resolve).</li>
+</ul>
+<table>
+<tr><th>Command</th><th>Does</th></tr>
+<tr><td><code>$continue</code>, <code>$c</code></td><td>resume execution</td></tr>
+<tr><td><code>$step</code>/<code>$s</code> · <code>$next</code>/<code>$n</code> · <code>$finish</code>/<code>$fin</code></td><td>step into · over · out</td></tr>
+<tr><td><code>$break FILE:LINE</code> (<code>$b</code>; <code>$break LINE</code> = current file)</td><td>set a breakpoint</td></tr>
+<tr><td><code>$delete FILE:LINE</code> (<code>$d</code>)</td><td>clear a breakpoint</td></tr>
+<tr><td><code>$frames</code>/<code>$bt</code> · <code>$up</code> · <code>$down</code></td><td>backtrace; move the focus frame</td></tr>
+<tr><td><code>$locals</code>/<code>$l</code></td><td>locals, <code>self</code>, and <code>self</code>'s <code>@ivars</code></td></tr>
+<tr><td><code>$list</code> · <code>$source on|off</code></td><td>source around the focus; auto-show toggle</td></tr>
+<tr><td><code>$print EXPR</code>, <code>$p</code></td><td>evaluate in the focus frame (or just type it)</td></tr>
+<tr><td><code>$quit</code>/<code>$q</code> · <code>$help</code></td><td>leave; help</td></tr>
+</table>
+<ul>
+<li><strong>Exception breakpoints</strong>: <code>--break-on-throw TYPES</code> pauses when a matching exception is thrown, <em>even one that would be caught</em> (first-chance); <code>--break-on-uncaught TYPES</code> pauses only when it will escape. Both take a comma-separated type list — matching is hierarchy-aware (<code>Error</code> catches every structured error; <code>Object</code> is the explicit catch-everything), and a Rust-raised <code>TypeError</code> and your own <code>Error.throw:</code> behave identically.</li>
+<li><code>qn debug --dap</code> speaks the <strong>Debug Adapter Protocol</strong> on stdio instead of the <code>$</code>-command loop — point VS Code, <code>nvim-dap</code>, or any DAP client at it for editor breakpoints and stepping.</li>
+<li>A breakpoint pauses the whole scheduler, so the paused world holds still while you inspect it.</li>
+</ul>
+</blockquote>
+<p>A session against the <code>Tally</code> class from earlier chapters' mold:</p>
+<pre class="qn-code"><span class="qn-global">Tally</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@total</span><span class="qn-plain">|
+    </span><span class="qn-signature">init</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@total</span><span class="qn-plain"> = </span><span class="qn-number">0</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">add</span><span class="qn-plain">: -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">|
+        </span><span class="qn-ivar">@total</span><span class="qn-plain"> = </span><span class="qn-ivar">@total</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-2">n</span><span class="qn-plain">;
+        </span><span class="qn-ivar">@total</span><span class="qn-plain">
+    </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+    </span><span class="qn-signature">total</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@total</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">tally</span><span class="qn-plain"> = </span><span class="qn-global">Tally</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-number">5</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-0">tally</span><span class="qn-plain">.</span><span class="qn-signature">add</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+(</span><span class="qn-string">'total: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-0">tally</span><span class="qn-plain">.</span><span class="qn-signature">total</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">).</span><span class="qn-signature">print</span></pre>
+<pre>$ qn debug tally.qn
+Quoin debugger — $help for commands, $continue to run, $quit to exit.
+→ paused at tally.qn:1  (in &lt;block&gt;)
+→    1 │ Tally &lt;- { |@total|
+     2 │     init -&gt; { @total = 0 };
+     3 │     add: -&gt; { |n|
+$ $break 4
+breakpoint set at tally.qn:4
+$ $continue
+→ paused at tally.qn:4  (in add:)
+     2 │     init -&gt; { @total = 0 };
+     3 │     add: -&gt; { |n|
+→    4 │         @total = @total + n;
+     5 │         @total
+     6 │     };
+$ $locals
+  n = 3
+  self = Tally{@total: 0}
+  @total = 0
+$ @total + n
+3
+$ $continue
+→ paused at tally.qn:4  (in add:)
+...
+$ $delete tally.qn:4
+breakpoint cleared at tally.qn:4
+$ $continue
+total: 12</pre>
+<p>Note the second pause: a breakpoint fires on every arrival at its line — each <code>each:</code> iteration — until deleted. The <code>@total + n</code> line is the expression-first design: anything that isn't a <code>$</code>-command is evaluated in the focus frame, so inspecting state is just writing Quoin.</p>
+<p>Exception breakpoints pause with the throwing stack still live, before any unwinding, so <code>$frames</code>, <code>$locals</code>, and eval-in-frame see the world exactly as the <code>throw</code> left it:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">half</span><span class="qn-plain"> = </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">|
+    (</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> % </span><span class="qn-number">2</span><span class="qn-plain"> == </span><span class="qn-number">0</span><span class="qn-plain">).</span><span class="qn-signature">if</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> / </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-signature">else</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-global">ValueError</span><span class="qn-plain">.</span><span class="qn-signature">throw</span><span class="qn-plain">:(</span><span class="qn-string">'odd: '</span><span class="qn-plain"> + </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">) </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-number">6</span><span class="qn-plain"> </span><span class="qn-number">7</span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">each</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| (</span><span class="qn-ident qn-ident-0">half</span><span class="qn-plain">.</span><span class="qn-signature">value</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">).</span><span class="qn-signature">print</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span></pre>
+<pre>$ qn debug --break-on-throw ValueError oops.qn
+...
+$ $continue
+2
+3
+→ broke on throw: ValueError{@message: 'odd: 7' @payload: nil}
+→ paused at core/00-bootstrap.qn:115  (in throw:)
+$ $frames
+→ #2  core/00-bootstrap.qn:115  throw:
+  #1  oops.qn:2  value:
+  #0  oops.qn:4  &lt;block&gt;</pre>
+<p><code>$continue</code> from a throw pause simply lets the exception keep propagating (or get caught) exactly as it would have. Had this run used <code>--break-on-uncaught</code> and the <code>ValueError</code> been caught somewhere, no pause would fire at all — that mode is for the error that actually escapes.</p>
+<hr>
+<h2 id="43-syntax-highlighting-qn-highlight">43. Syntax highlighting — <code>qn highlight</code></h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><code>qn highlight FILE</code> prints the source ANSI-colorized to the terminal — the same highlighting the REPL applies as you type.</li>
+<li><code>qn highlight --html FILE</code> emits a standalone HTML page instead, using the same code styles as the pages <code>qn doc</code> generates (one style table, two consumers).</li>
+</ul>
+</blockquote>
+<pre>$ qn highlight --html greet.qn | head -3
+&lt;!doctype html&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta charset="utf-8"&gt;
+&lt;title&gt;greet.qn&lt;/title&gt;</pre>
+<hr>
+<p>Next: <strong><a href="09-library-and-reference.html">Part IX — The standard library</a></strong> — the core types, string formatting, namespaces, and the stdlib map.</p>
+
+</body></html>

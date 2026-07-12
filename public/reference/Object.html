@@ -1,0 +1,172 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>Object</code><span class="badge">abstract</span></h1>
+<p>The universal root: every value is an Object, and every class inherits from it. It carries the protocol everything shares -- identity and equality (<code>==:</code> / <code>!=:</code> / <code>~:</code>), rendering (<code>s</code> / <code>pp</code> / <code>print</code>), reflection (<code>class</code> / <code>can?:</code> / <code>doc</code> / <code>docFor:</code> / <code>perform:args:</code>), and raising a value as an error (<code>throw</code>).</p>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L49"><code>core/00-bootstrap.qn:49</code></a></span><div class="body"><p>Defaults every object inherits: the existence test, truthiness, unary <code>+</code>, and the comparison operators derived from <code>&lt;:</code>.</p>
+</div></div>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/01-case.qn#L70"><code>core/01-case.qn:70</code></a></span><div class="body"><p>Every object can open a case expression on itself.</p>
+</div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-!"><span class="sig">!</span><div class="body"><p>Everything except nil/false is truthy, so <code>!self</code> is false here; nil and the booleans override. (<code>-self</code> is handled per numeric type, not here.)</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L61"><code>core/00-bootstrap.qn:61</code></a></p></div></div>
+<div class="method" id="i-!=:"><span class="sig">!=:</span><div class="body"><p>The negation of <code>==:</code>, defined once here -- overriding <code>==:</code> is enough to get <code>!=</code> right.</p>
+<pre class="qn-code"><span class="qn-number">1</span><span class="qn-plain"> != </span><span class="qn-number">2</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-+"><span class="sig">+</span><div class="body"><p>Unary plus (<code>+self</code>) is identity for every type.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L64"><code>core/00-bootstrap.qn:64</code></a></p></div></div>
+<div class="method" id="i-&lt;=:"><span class="sig">&lt;=:</span><div class="body"><p>Less-than-or-equal, derived from <code>&lt;:</code> as <code>!(x &lt; self)</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L70"><code>core/00-bootstrap.qn:70</code></a></p></div></div>
+<div class="method" id="i-==:"><span class="sig">==:</span><div class="body"><p>Equality. Object's default is IDENTITY -- true only when both sides are the very same object (scalars compare by value). Value classes override it (numbers compare across Integer/Float, collections structurally); any <code>==:</code> override must be matched by a <code>hash</code> override.</p>
+<pre class="qn-code"><span class="qn-global">A</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">; </span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain"> = </span><span class="qn-global">A</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">;
+</span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain"> == </span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain">            </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-global">A</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain"> == </span><span class="qn-global">A</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; false</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-&gt;:"><span class="sig">&gt;:</span><div class="body"><p>Greater-than, derived from <code>&lt;:</code> (defined natively per primitive type, and on the booleans): any class that defines <code>&lt;:</code> gets <code>&gt;:</code>/<code>&lt;=:</code>/<code>&gt;=:</code> for free.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L68"><code>core/00-bootstrap.qn:68</code></a></p></div></div>
+<div class="method" id="i-&gt;=:"><span class="sig">&gt;=:</span><div class="body"><p>Greater-than-or-equal, derived from <code>&lt;:</code> as <code>!(self &lt; x)</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L72"><code>core/00-bootstrap.qn:72</code></a></p></div></div>
+<div class="method" id="i-can?:"><span class="sig">can?:</span><div class="body"><p>Whether the receiver 'can do' the argument -- overloaded by argument. With a Symbol or String selector: does the receiver implement that method? (A Class receiver reports its INSTANCE methods; ask <code>.meta.can?:</code> for class-side ones.) With a Class: is the receiver an instance of it -- mixins and superclasses included?</p>
+<pre class="qn-code"><span class="qn-global">List</span><span class="qn-plain">.</span><span class="qn-signature">can?</span><span class="qn-plain">:</span><span class="qn-symbol">#add:</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-number">3</span><span class="qn-plain">.</span><span class="qn-signature">can?</span><span class="qn-plain">:</span><span class="qn-global">Integer</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-number">3</span><span class="qn-plain">.</span><span class="qn-signature">can?</span><span class="qn-plain">:</span><span class="qn-global">String</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; false</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-case:"><span class="sig">case:Block</span><div class="body"><p>Match self against the arms in the block: inside it, self is a Case whose subject is this object; answers the first matching arm's result (nil when nothing matches and no default: is given).</p>
+<pre class="qn-code"><span class="qn-number">3</span><span class="qn-plain">.</span><span class="qn-signature">case</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'one'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">; </span><span class="qn-plain">.</span><span class="qn-signature">when</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-signature">do</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'three'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">; </span><span class="qn-plain">.</span><span class="qn-signature">default</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-string">'other'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; three</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/01-case.qn#L78"><code>core/01-case.qn:78</code></a></p></div></div>
+<div class="method" id="i-class"><span class="sig">class</span><div class="body"><p>The receiver's class, as a Class object.</p>
+<pre class="qn-code"><span class="qn-number">3</span><span class="qn-plain">.</span><span class="qn-signature">class</span><span class="qn-plain">.</span><span class="qn-signature">name</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; Integer</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-defined?"><span class="sig">defined?</span><div class="body"><p>true for every value except nil (Nil overrides this to false) — the fundamental existence test, used by <code>whileDefinedDo:</code> and friends.</p>
+<pre class="qn-code"><span class="qn-string">'x'</span><span class="qn-plain">.</span><span class="qn-signature">defined?</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-global">nil</span><span class="qn-plain">.</span><span class="qn-signature">defined?</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; false</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/00-bootstrap.qn#L57"><code>core/00-bootstrap.qn:57</code></a></p></div></div>
+<div class="method" id="i-doc"><span class="sig">doc</span><div class="body"><p>The receiver's class-level reference doc, or nil. Mirrors <code>can?:</code>: a Class answers for itself, an instance for its class.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-docFor:"><span class="sig">docFor:</span><div class="body"><p>The reference doc for a selector, or nil. A Class receiver answers for instance methods; <code>.meta.docFor:</code> for class-side ones -- the same sides <code>can?:</code> reports.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-hash"><span class="sig">hash</span><div class="body"><p>The receiver's hash code. Scalars hash structurally; instances default to IDENTITY, matching Object's identity <code>==:</code>. A class that overrides <code>==:</code> with value semantics must override <code>hash</code> to match -- equal values must hash equal, or map lookups miss.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-init"><span class="sig">init</span><div class="body"><p>The default initializer: does nothing and answers the receiver. Instantiation runs it on each fresh instance; classes define their own <code>init</code> (or keyword <code>init:</code> forms) to set up state.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-perform:args:"><span class="sig">perform: args:</span><div class="body"><p>Send a selector reflectively: the String selector, with the List's elements as arguments (nil is an empty argument list). Raises the same MessageNotUnderstood a direct send would.</p>
+<pre class="qn-code"><span class="qn-number">3</span><span class="qn-plain">.</span><span class="qn-signature">perform</span><span class="qn-plain">:</span><span class="qn-string">'+:'</span><span class="qn-plain"> </span><span class="qn-signature">args</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 7</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-pp"><span class="sig">pp</span><div class="body"><p>A structural, canonical dump of the value graph for debugging and inspection -- escaped strings, instance variables, intrinsic collections. Width-aware (wraps to the console width; <code>pp:</code> takes an explicit width) and never calls <code>s</code>.</p>
+<pre class="qn-code"><span class="qn-string">'hi'</span><span class="qn-plain">.</span><span class="qn-signature">pp</span><span class="qn-plain">        </span><span class="qn-comment">"* -&gt; 'hi'</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">.</span><span class="qn-signature">pp</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(1 2)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-pp:"><span class="sig">pp:</span><div class="body"><p>As <code>pp</code>, but wrapped to the given width (a positive Integer) instead of the console's.</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-print"><span class="sig">print</span><div class="body"><p>Render the receiver with <code>s</code> and write it to standard output with a trailing newline. Answers nil.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain">    </span><span class="qn-comment">"* prints hello</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-s"><span class="sig">s</span><div class="body"><p>The receiver rendered for humans, as a String. The default for a value with no intrinsic form falls back to the structural <code>pp</code> rendering; types with one (Integer, String, Error, ...) override it.</p>
+<pre class="qn-code"><span class="qn-global">A</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ivar">@x</span><span class="qn-plain"> </span><span class="qn-ivar">@y</span><span class="qn-plain">| </span><span class="qn-signature">init</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-plain"> </span><span class="qn-ivar">@x</span><span class="qn-plain"> = </span><span class="qn-number">1</span><span class="qn-plain">; </span><span class="qn-ivar">@y</span><span class="qn-plain"> = </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">;
+</span><span class="qn-global">A</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">.</span><span class="qn-signature">s</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; A{@x: 1 @y: 2}</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sealed!"><span class="sig">sealed!</span><div class="body"><p>Seal the receiver against further extension: <code>value &lt;-- { ... }</code> on it is refused afterwards. On an instance this freezes its eigenclass; on a value type (an Integer, a String, ...) it targets the type's shared class, matching how <code>value &lt;-- { ... }</code> extends it. Answers the receiver. (<code>Class#sealed!</code> handles class receivers.)</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-throw"><span class="sig">throw</span><div class="body"><p>Raise the receiver as an exception: unwind to the nearest enclosing <code>catch:</code> whose handler matches (by the handler parameter's declared type). Any value can be thrown, not just Error instances.</p>
+<pre class="qn-code"><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-string">'boom'</span><span class="qn-plain">.</span><span class="qn-signature">throw</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">catch</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">e</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; boom</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-~:"><span class="sig">~:</span><div class="body"><p>The match operator, <code>pattern ~ subject</code> -- it dispatches on the LEFT operand (the pattern). Object's default is plain equality (delegates to <code>==:</code>); pattern kinds override it: a Class matches its instances (<code>Integer ~ 3</code>), a Block runs as a predicate, a Regex matches strings. <code>case:</code>'s <code>when:</code> clauses match with it.</p>
+<pre class="qn-code"><span class="qn-number">3</span><span class="qn-plain"> ~ </span><span class="qn-number">3</span><span class="qn-plain">          </span><span class="qn-comment">"* -&gt; true</span><span class="qn-plain">
+</span><span class="qn-global">Integer</span><span class="qn-plain"> ~ </span><span class="qn-number">3</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+
+</body></html>

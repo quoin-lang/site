@@ -58,9 +58,18 @@ npx wrangler deploy   # deploy by hand (Git push does this automatically)
 static assets honors this file (same format Pages used); it is not served
 publicly.
 
-The CSP is locked to `default-src 'none'` and only opens what this page actually
-uses. **`style-src` includes `'unsafe-inline'`** because the page has a single
-inline `<style>` block — if that's ever replaced with an external stylesheet or
-hashed, tighten this. Any new resource type (a script, a web font, an external
-image, an analytics call) must be added to the matching CSP directive or the
-browser will block it.
+The CSP is locked to `default-src 'none'` and only opens what the site actually
+uses. **`style-src` includes `'unsafe-inline'`** because the pages use inline
+`<style>` blocks — if that's ever replaced with an external stylesheet or
+hashed, tighten this. **`style-src`/`font-src` allow `https://cdn.jsdelivr.net`**
+because the generated doc pages under `/book/` and `/reference/` load Fira Code
+from there. Any new resource type (a script, a web font, an external image, an
+analytics call) must be added to the matching CSP directive or the browser will
+block it.
+
+## Generated documentation
+
+`public/book/` (the language reference) and `public/reference/` (the stdlib API
+reference) are **committed build artifacts**, regenerated from a Quoin VM
+checkout with `tools/gen_docs.sh [checkout-path]`. Rerun it (and commit the
+result) whenever the book or the stdlib changes.

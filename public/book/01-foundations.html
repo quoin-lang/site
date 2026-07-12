@@ -1,0 +1,264 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part I — Foundations</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<h1 id="part-i-foundations">Part I — Foundations</h1>
+<p>How Quoin code is written and how the most basic pieces fit together: comments, literals, names, message sends, and operators.</p>
+<blockquote>
+<p>Each section opens with a <strong>Rules</strong> box (the terse version for lookup) followed by prose and examples. <strong>⚠ Gotcha</strong> boxes flag behavior that is surprising or a common source of wrong code.</p>
+</blockquote>
+<p>Nav: <strong>Foundations</strong> · <a href="02-blocks-and-control.html">Blocks &amp; control</a> · <a href="03-objects.html">Objects</a> · <a href="04-patterns-and-errors.html">Patterns &amp; errors</a> · <a href="05-concurrency-and-iteration.html">Concurrency &amp; iteration</a> · <a href="06-networking-and-web.html">Networking &amp; the web</a> · <a href="07-types.html">Types</a> · <a href="08-tooling.html">Tooling</a> · <a href="09-library-and-reference.html">Library &amp; reference</a> · <a href="10-appendices.html">Appendices</a></p>
+<hr>
+<h2 id="1-mental-model">1. Mental model</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li>Everything is an <strong>object</strong>. All computation is <strong>messages</strong> (method calls) sent to objects with <code>.</code>.</li>
+<li>A leading dot with no receiver — <code>.foo</code> — means <code>self.foo</code>.</li>
+<li>Classes are defined with <code>&lt;-</code>, methods with <code>-&gt;</code>. Blocks <code>{ … }</code> are first-class closures and objects.</li>
+<li>There are no control-flow keywords. <code>if:</code>, <code>whileDo:</code>, <code>case:</code> are ordinary methods.</li>
+<li>Inline comments are wrapped in <code>"</code>. Strings are single-quoted <code>'…'</code>.</li>
+<li>A newline ends a statement when unambiguous; use <code>;</code> when the next line would otherwise continue the expression (i.e. it starts with <code>.</code> or an operator). The formatter (<code>qn fmt</code>) will generally figure this out for you.</li>
+</ul>
+</blockquote>
+<p>Quoin is a small, uniformly object-oriented language in the Smalltalk lineage. If you can read "send the message <code>m</code> to the object <code>x</code>" for every <code>x.m</code>, you can read almost all of it. A method with no explicit receiver is sent to <code>self</code>, written with a bare leading dot:</p>
+<pre class="qn-code"><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain">: </span><span class="qn-string">'hello'</span><span class="qn-plain">        </span><span class="qn-comment">"* sends print: to self</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">person</span><span class="qn-plain">.</span><span class="qn-signature">greet</span><span class="qn-plain">           </span><span class="qn-comment">"* sends greet to person</span><span class="qn-plain">
+(</span><span class="qn-number">1</span><span class="qn-plain">..</span><span class="qn-number">5</span><span class="qn-plain">).</span><span class="qn-signature">collect</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> |</span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain">| </span><span class="qn-ident qn-ident-1">n</span><span class="qn-plain"> * </span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span></pre>
+<p>Because control flow is just methods (Part II), there is very little dedicated syntax to memorize — most of this document is about which messages exist, not about statements.</p>
+<hr>
+<h2 id="2-lexical-structure">2. Lexical structure</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Comments</strong> (two forms):</li>
+<li><code>"* …</code> — line comment, runs to end of line.</li>
+<li><code>"…"</code> — block comment; may span multiple lines; ends at the next unescaped <code>"</code>.</li>
+<li>No double-quoted strings exist — a <code>"</code> always begins a comment.</li>
+<li><strong>Separators</strong>: a newline ends a statement <em>when unambiguous</em>. A <code>;</code> is required when the next line would otherwise continue the expression — i.e. it begins with <code>.</code> (a message send) or an infix operator.</li>
+<li><strong>Identifiers</strong>: start with a letter or <code>_</code>, then letters/digits/<code>_</code>/<code>?</code>. So <code>done?</code>, <code>flush!</code> and <code>my_var</code> are valid names.</li>
+<li><strong>Reserved identifiers</strong>: only <code>nil</code>, <code>true</code>, <code>false</code> (can't be reassigned). The <em>keywords</em> are all soft keywords (reserved only as a statement prefix, so ordinary uses of the word are unaffected): <code>use</code> (§47) and <code>var</code>/<code>let</code> (local declarations; §4). Identifiers are case-sensitive.</li>
+</ul>
+</blockquote>
+<h3 id="comments">Comments</h3>
+<pre class="qn-code"><span class="qn-comment">"* A line comment — everything to the end of this line is ignored.</span><span class="qn-plain">
+
+</span><span class="qn-comment">"
+A block comment. It opens with a quote that is not followed by '*',
+spans as many lines as you like, and closes at the next quote.
+"</span><span class="qn-plain">
+</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">x</span><span class="qn-plain"> = </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-comment">"this trailing block comment ends here"</span><span class="qn-plain"> + </span><span class="qn-number">2</span><span class="qn-plain">   </span><span class="qn-comment">"* x is 3</span></pre>
+<h3 id="separators">Separators</h3>
+<p>A newline ends a statement <strong>when the result is unambiguous</strong>. A <code>;</code> is needed when the next line would otherwise continue the previous expression — specifically when it begins with <code>.</code> (a message send) or an infix operator. The formatter (<code>qn fmt</code>) will generally figure this out for you, but a common gotcha is:</p>
+<pre class="qn-code"><span class="qn-global">A</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">
+    </span><span class="qn-signature">method</span><span class="qn-plain"> -&gt; </span><span class="qn-brace qn-brace-2">{</span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;          </span><span class="qn-comment">"* the ; ends the statement</span><span class="qn-plain">
+    </span><span class="qn-plain">.</span><span class="qn-signature">mix</span><span class="qn-plain">:</span><span class="qn-global">Mixin</span><span class="qn-plain">
+</span><span class="qn-brace qn-brace-1">}</span></pre>
+<p>Without the <code>;</code> on the <code>method</code> line, this parses as <code>(method -&gt; {}).mix:Mixin</code> — the <code>.mix:</code> send attaches to the method definition instead of starting a new statement.</p>
+<hr>
+<h2 id="3-literals-data-types">3. Literals &amp; data types</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<table>
+<tr><th>Kind</th><th>Syntax</th><th>Example</th></tr>
+<tr><td>Integer</td><td>digits (<code>0</code>, or <code>1</code>–<code>9</code> then digits)</td><td><code>42</code>, <code>1000000</code></td></tr>
+<tr><td>Double</td><td>digits with a <code>.</code> and fractional digits</td><td><code>3.14</code>, <code>42.0</code>, <code>.5</code></td></tr>
+<tr><td>String</td><td><code>'…'</code> (single quotes only)</td><td><code>'hello'</code></td></tr>
+<tr><td>Symbol</td><td><code>#name</code>, <code>#multi:part:</code>, <code>#'…'</code></td><td><code>#x</code>, <code>#when:do:</code>, <code>#'+:'</code></td></tr>
+<tr><td>List</td><td><code>#( … )</code> space-separated</td><td><code>#(1 2 3)</code>, <code>#()</code></td></tr>
+<tr><td>Map</td><td><code>#{ key: value … }</code></td><td><code>#{ 'a': 1 'b': 2 }</code></td></tr>
+<tr><td>Set</td><td><code>#&lt; … &gt;</code> space-separated, unique</td><td><code>#&lt;1 2 3&gt;</code>, <code>#&lt;&gt;</code></td></tr>
+<tr><td>Range</td><td><code>a..b</code> (half-open)</td><td><code>1..5</code>, <code>5..1</code></td></tr>
+<tr><td>Regex</td><td><code>#/…/</code></td><td><code>#/^[a-z]+$/</code></td></tr>
+<tr><td>User string</td><td><code>#Name'…'</code></td><td><code>#ANSI'…'</code></td></tr>
+<tr><td>User list</td><td><code>#Name( … )</code></td><td></td></tr>
+<tr><td>Block</td><td><code>{ … }</code></td><td><code>{ |n| n * 2 }</code> (Part II)</td></tr>
+<tr><td>Booleans / nil</td><td>reserved identifiers</td><td><code>true</code>, <code>false</code>, <code>nil</code></td></tr>
+</table>
+</blockquote>
+<ul>
+<li><strong>Numbers.</strong> Integers have no fractional part; a number is a double only if it has a <code>.</code> followed by digits. There is no negative literal — <code>-3</code> is the prefix operator <code>-</code> applied to <code>3</code> (see §6).</li>
+<li><strong>Strings</strong> use single quotes. Escapes: <code>\t \n \r \" \' \\</code>, plus <code>\uXXXX</code> and <code>\xXXXX</code> (four hex digits). Plain strings do not interpolate; interpolation is a separate <code>%</code> form (see <a href="09-library-and-reference.html">§45</a>).</li>
+<li><strong>Symbols</strong> are interned selector-like names: <code>#name</code>, multi-part <code>#when:do:</code>, or a quoted form <code>#'+:'</code> for operators and otherwise-unspellable names. They are a distinct type (<code>#foo.class == Symbol</code>), compared by identity — <code>#foo == #foo</code> is true, but <code>#foo == 'foo'</code> is <strong>false</strong>; <code>#foo.s</code> yields the name <code>'foo'</code>. <code>Block#name</code> and <code>Method#selector</code> (alias <code>Method#name</code>) return symbols.</li>
+<li><strong>Lists</strong> are space-separated (no commas): <code>#(1 2 3)</code>. <strong>Maps</strong> pair <code>key: value</code>: <code>#{ 'foo': 100 'bar': 200 #sym: 300 }</code>. <strong>Sets</strong> are space-separated and hold unique elements (deduplicated by <code>hash</code> + <code>==:</code> — a user class that overrides <code>==:</code> must also override <code>hash</code>, or its instances dedup by identity; mirrors the any-key Map contract): <code>#&lt;1 2 3&gt;</code>, empty <code>#&lt;&gt;</code>.</li>
+<li><strong>Ranges</strong> are covered in §6 and Part IX; note they are <strong>half-open</strong> (the end is excluded).</li>
+</ul>
+<blockquote>
+<p><strong>⚠ Gotcha — inside <code>#&lt; … &gt;</code>, a bare <code>&gt;</code> ends the set.</strong> Because the closing <code>&gt;</code> would otherwise collide with the greater-than operator, <code>&gt;</code> and <code>&gt;=</code> are not treated as operators inside a set literal — the first bare <code>&gt;</code> terminates it. To use them in an element, parenthesize: <code>#&lt;(a &gt; b) c&gt;</code> is a two-element set. Every other operator works unparenthesized (<code>#&lt;a + b  c&gt;</code>).</p>
+</blockquote>
+<hr>
+<h2 id="4-variables-scope-destructuring">4. Variables, scope &amp; destructuring</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Declare a local with <code>var</code> (mutable) or <code>let</code> (immutable)</strong>, always with an initializer: <code>var x = 5</code>, <code>let pi = 3.14</code>. A plain <code>name = expr</code> reassigns an already-declared local — assigning an <em>undeclared</em> name, or reassigning a <code>let</code>, is a compile error.</li>
+<li>Declaration/assignment is a <strong>statement, not an expression</strong> — you cannot nest it (<code>b = (a = 5)</code> is a parse error) or use it as a condition.</li>
+<li>Scope is <strong>lexical</strong>; blocks are closures that capture the enclosing scope. <code>var</code>/<code>let</code> may <strong>shadow</strong> an outer binding but cannot redeclare a name in the same scope. A recursive reference works — <code>var f = { … f … }</code> sees its own name.</li>
+<li>A single-target declaration may carry a <strong>type</strong>: <code>var n: Integer = 5</code> (drives the typed/unboxed tier). The type may be namespaced — <code>var f: [IO]File = …</code>; a bare name means the root namespace. Destructuring targets are untyped.</li>
+<li><code>_</code> discards a value on the left-hand side.</li>
+<li><strong>Destructuring</strong>: <code>var</code> declares multiple targets from a list — <code>var a b c = #(1 2 3)</code>. One splat <code>*rest</code> (or <code>*_</code>) may appear in <strong>any</strong> position; sub-patterns nest with <code>( … )</code>. Plain (keyword-less) <code>a b c = …</code> reassigns already-declared targets.</li>
+<li><code>@name</code> is an <strong>instance variable</strong> (only meaningful inside class/method bodies — Part III; declared in the class header). <code>[Ns]name</code> / <code>[/]name</code> are namespaced globals (§46).</li>
+<li><code>Name &lt;- expr</code> defines a <strong>constant</strong> (redefining one throws).</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">x</span><span class="qn-plain"> = </span><span class="qn-number">10</span><span class="qn-plain">
+</span><span class="qn-keyword">let</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">greeting</span><span class="qn-plain"> = </span><span class="qn-string">'hi'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">x</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">x</span><span class="qn-plain"> + </span><span class="qn-number">1</span><span class="qn-plain">                   </span><span class="qn-comment">"* reassign a `var`</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">n</span><span class="qn-plain">: </span><span class="qn-global">Integer</span><span class="qn-plain"> = </span><span class="qn-number">42</span><span class="qn-plain">         </span><span class="qn-comment">"* typed local</span><span class="qn-plain">
+
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">b</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">c</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-plain">        </span><span class="qn-comment">"* a=1, b=2, c=3</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">first</span><span class="qn-plain"> *</span><span class="qn-ident qn-ident-0">rest</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">)</span><span class="qn-plain"> </span><span class="qn-comment">"* first=1, rest=#(2 3 4)</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">p</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">q</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">*_</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-plain"> </span><span class="qn-number">5</span><span class="qn-collection">)</span><span class="qn-plain">   </span><span class="qn-comment">"* p=1, q=2, rest discarded</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">head</span><span class="qn-plain"> (</span><span class="qn-ident qn-ident-0">x2</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">y</span><span class="qn-plain">) = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-collection">#(</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-collection">)</span><span class="qn-collection">)</span><span class="qn-plain"> </span><span class="qn-comment">"* head=1, x2=2, y=3  (nested)</span><span class="qn-plain">
+
+</span><span class="qn-global">Pi</span><span class="qn-plain"> &lt;- </span><span class="qn-number">3.14159</span><span class="qn-plain">               </span><span class="qn-comment">"* a constant; a second `Pi &lt;- …` would throw</span></pre>
+<p>Only one splat is allowed per pattern <strong>level</strong> (a compile error otherwise; each nested <code>( … )</code> sub-pattern may carry its own), but it may lead, sit in the middle, or trail. Targets after a splat bind from the end of the list:</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain"> *</span><span class="qn-ident qn-ident-0">mid</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">z</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-number">10</span><span class="qn-plain"> </span><span class="qn-number">20</span><span class="qn-plain"> </span><span class="qn-number">30</span><span class="qn-plain"> </span><span class="qn-number">40</span><span class="qn-plain"> </span><span class="qn-number">50</span><span class="qn-collection">)</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-ident qn-ident-0">a</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">mid</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">z</span><span class="qn-collection">)</span><span class="qn-plain">                       </span><span class="qn-comment">"* -&gt; #(10 #(20 30 40) 50)</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> *</span><span class="qn-ident qn-ident-0">init</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">last</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-string">'x'</span><span class="qn-plain"> </span><span class="qn-string">'y'</span><span class="qn-collection">)</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-ident qn-ident-0">init</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">last</span><span class="qn-collection">)</span><span class="qn-plain">                     </span><span class="qn-comment">"* -&gt; #(#(x) y)</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">lead</span><span class="qn-plain"> (</span><span class="qn-ident qn-ident-0">p</span><span class="qn-plain"> *</span><span class="qn-ident qn-ident-0">q</span><span class="qn-plain">) *</span><span class="qn-ident qn-ident-0">tail</span><span class="qn-plain"> = </span><span class="qn-collection">#(</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-collection">#(</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-number">4</span><span class="qn-collection">)</span><span class="qn-plain"> </span><span class="qn-number">5</span><span class="qn-plain"> </span><span class="qn-number">6</span><span class="qn-collection">)</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-ident qn-ident-0">lead</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">p</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">q</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">tail</span><span class="qn-collection">)</span><span class="qn-plain">                 </span><span class="qn-comment">"* -&gt; #(1 2 #(3 4) #(5 6))</span></pre>
+<p>Destructuring never errors on length: a missing position reads <code>nil</code> and a splat clamps to <code>#()</code> (on a too-short list the end-relative targets can re-read leading elements). <code>_</code> (and <code>*_</code>) ignore the corresponding element(s).</p>
+<hr>
+<h2 id="5-messages-call-syntax">5. Messages &amp; call syntax</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Unary</strong> send: <code>receiver.selector</code> → <code>42.abs</code>, <code>list.first</code>.</li>
+<li><strong>Keyword</strong> send: <code>receiver.selector:arg</code>. Multi-part selectors are one name: <code>map.at:'k' put:v</code> sends <code>at:put:</code>.</li>
+<li>A keyword argument is a whole expression (greedy) — <code>obj.m: 1 + 2</code> passes <code>1 + 2</code>.</li>
+<li><strong>Leading dot</strong> <code>.selector</code> sends to <code>self</code>.</li>
+<li><strong>Suffix selectors</strong>: <code>name!</code> (e.g. <code>.sealed!</code>) and <code>name?</code> (e.g. <code>fiber.done?</code>) are ordinary method names.</li>
+<li>Method (postfix) sends bind <strong>tighter</strong> than infix operators: <code>a.b + c.d</code> is <code>(a.b) + (c.d)</code>.</li>
+</ul>
+</blockquote>
+<pre class="qn-code"><span class="qn-number">42</span><span class="qn-plain">.</span><span class="qn-signature">abs</span><span class="qn-plain">                         </span><span class="qn-comment">"* unary</span><span class="qn-plain">
+</span><span class="qn-string">'a,b,c'</span><span class="qn-plain">.</span><span class="qn-signature">split</span><span class="qn-plain">:</span><span class="qn-string">','</span><span class="qn-plain">              </span><span class="qn-comment">"* one keyword arg</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">scores</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'amy'</span><span class="qn-plain"> </span><span class="qn-signature">put</span><span class="qn-plain">:</span><span class="qn-number">95</span><span class="qn-plain">         </span><span class="qn-comment">"* selector is at:put:, two args</span><span class="qn-plain">
+.</span><span class="qn-signature">print</span><span class="qn-plain">:</span><span class="qn-string">'sum ='</span><span class="qn-plain"> </span><span class="qn-signature">and</span><span class="qn-plain">:(</span><span class="qn-number">2</span><span class="qn-plain"> + </span><span class="qn-number">2</span><span class="qn-plain">)     </span><span class="qn-comment">"* leading dot = self; parenthesize operator args</span></pre>
+<p>Because a keyword argument greedily consumes a full expression, you usually parenthesize an operator expression that you want to pass as a single argument (as with <code>(2 + 2)</code> above). Multi-part selectors let methods read like prose: <code>coll.when:cond do:action</code> is a single send of <code>when:do:</code>.</p>
+<hr>
+<h2 id="6-operators-precedence">6. Operators &amp; precedence</h2>
+<blockquote>
+<p><strong>Rules</strong></p>
+<ul>
+<li><strong>Prefix</strong> operators are no-argument sends on the operand: <code>-x</code>→<code>-</code>, <code>+x</code>→<code>+</code> (identity), <code>!x</code>→<code>!</code>, <code>%x</code>→<code>%</code>.</li>
+<li><strong>Infix</strong> operators are one-argument sends and are <strong>all left-associative</strong>.</li>
+<li>Most infix operators are overridable methods on the receiver's type; <code>&amp;&amp;</code>/<code>||</code> are special short-circuit forms (not method sends).</li>
+<li><strong>Precedence, loosest → tightest:</strong> <code>||</code> · <code>&amp;&amp;</code> · <code>== !=</code> · <code>&lt; &lt;= &gt; &gt;=</code> · <code>~</code> · <code>..</code> · <code>+ -</code> · <code>* / %</code> · <code>&lt;--</code>. Postfix sends (<code>.method</code>) bind tighter than any infix operator.</li>
+</ul>
+</blockquote>
+<h3 id="desugaring">Desugaring</h3>
+<table>
+<tr><th>You write</th><th>Compiles to</th><th>Notes</th></tr>
+<tr><td><code>a + b</code> <code>a - b</code> <code>a * b</code> <code>a / b</code> <code>a % b</code></td><td><code>Send("+:"…)</code> etc.</td><td>the overridable <code>+:</code> <code>-:</code> <code>*:</code> <code>/:</code> <code>%:</code> method on the receiver's type (resolved class-first; no global fallback)</td></tr>
+<tr><td><code>a == b</code> <code>a != b</code> <code>a &lt; b</code> <code>a &lt;= b</code> <code>a &gt; b</code> <code>a &gt;= b</code></td><td><code>Send("==:"…)</code> etc.</td><td>overridable <code>==:</code> <code>!=:</code> <code>&lt;:</code> <code>&lt;=:</code> <code>&gt;:</code> <code>&gt;=:</code> methods</td></tr>
+<tr><td><code>a ~ b</code></td><td><code>Send("~:"…)</code></td><td>the match protocol — dispatches <code>~:</code> on the left operand (Part IV)</td></tr>
+<tr><td><code>a .. b</code></td><td><code>Send("..:"…)</code></td><td>builds a <code>NumberRange</code></td></tr>
+<tr><td><code>a &amp;&amp; b</code> <code>a || b</code></td><td>short-circuit jumps</td><td><strong>not</strong> method sends; right side is skipped when the left decides the result</td></tr>
+<tr><td><code>-x</code></td><td><code>Send("-")</code></td><td>unary minus is the no-arg <code>-</code> method (binary <code>-</code> is <code>-:</code>); <code>+x</code> is <code>Send("+")</code>, the identity <code>+</code> method</td></tr>
+<tr><td><code>!x</code></td><td><code>Send("!")</code></td><td>boolean negation (<code>Object#'!'</code> / <code>Nil#'!'</code> / the booleans)</td></tr>
+</table>
+<p>Operators are therefore per-type customizable: define <code>+:</code> on your class and <code>+</code> works on its instances.</p>
+<blockquote>
+<p><strong>Note — precedence is conventional, with two specifics worth knowing.</strong> Multiplicative (<code>* / %</code>) binds tighter than additive (<code>+ -</code>), which binds tighter than comparison, which binds tighter than <code>&amp;&amp;</code>/<code>||</code> — as you'd expect, so <code>2 + 3 * 4</code> is <code>14</code> and <code>1 + 2 == 3</code> is <code>true</code>. Beyond that: <strong>range <code>..</code> is looser than arithmetic</strong>, so <code>2 .. n + 1</code> means <code>2 .. (n + 1)</code>; and <strong>postfix <code>.method</code> binds tighter than every infix operator</strong>, so <code>1 .. list.count</code> is <code>1 .. (list.count)</code> and <code>a.x * b.y</code> is <code>(a.x) * (b.y)</code>.</p>
+</blockquote>
+<hr>
+<p>Next: <strong><a href="02-blocks-and-control.html">Part II — Blocks &amp; control flow</a></strong> — closures, <code>if:</code>/<code>whileDo:</code>, truthiness, and the <code>^</code> / <code>^^</code> return operators.</p>
+
+</body></html>

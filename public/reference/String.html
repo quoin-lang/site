@@ -1,0 +1,197 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>String</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>String</code></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a></p>
+<p>Immutable UTF-8 text -- the type of 'single-quoted' literals (a double quote starts a comment in Quoin, so strings are single-quoted). Position-based operations (<code>length</code>, <code>index:</code>, <code>insert:at:</code>) count characters, not bytes. Strings concatenate with <code>+</code>, format with <code>%</code>, and interpolate with <code>.mod</code>; every operation returns a new String.</p>
+<pre class="qn-code"><span class="qn-string">'ab'</span><span class="qn-plain"> + </span><span class="qn-string">'cd'</span><span class="qn-plain">       </span><span class="qn-comment">"* -&gt; abcd</span><span class="qn-plain">
+</span><span class="qn-string">'héllo'</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; 5</span></pre>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L2"><code>core/04-string.qn:2</code></a></span><div class="body"><p>Splitting and padding conveniences over the native String primitives.</p>
+</div></div>
+<div class="method"><span class="meta-line">extended at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L22"><code>core/09-codecs.qn:22</code></a></span><div class="body"><p>Decoding (and base64-encoding) conveniences for Strings holding encoded data.</p>
+</div></div>
+<h2>Class methods</h2>
+<div class="method" id="c-default"><span class="sig">default</span><div class="body"><p>The type's default value: the empty string.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L5"><code>core/04-string.qn:5</code></a></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-%"><span class="sig">%</span><div class="body"><p>Interpolation: evaluate each <code>%{...}</code> in the receiver as a Quoin expression in the caller's scope and splice in the result's <code>.s</code> rendering. A malformed expression raises a catchable ParseError.</p>
+<pre class="qn-code"><span class="qn-string">'x = %{1 + 2}'</span><span class="qn-plain">.</span><span class="qn-signature">mod</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; x = 3</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-%:"><span class="sig">%:</span><div class="body"><p>printf-style formatting: <code>template % args</code>. A List argument fills <code>%1</code>, <code>%2</code>, ... (1-based) and bare <code>%</code> placeholders in order; a Map argument fills named <code>%&lt;key&gt;</code> placeholders; any other value serves as a single positional argument. Substituted values are rendered with <code>.s</code>.</p>
+<pre class="qn-code"><span class="qn-string">'%1-%2'</span><span class="qn-plain"> % </span><span class="qn-collection">#(</span><span class="qn-number">42</span><span class="qn-plain"> </span><span class="qn-number">43</span><span class="qn-collection">)</span><span class="qn-plain">            </span><span class="qn-comment">"* -&gt; 42-43</span><span class="qn-plain">
+</span><span class="qn-string">'%a, %b'</span><span class="qn-plain"> % </span><span class="qn-collection">#{</span><span class="qn-plain"> </span><span class="qn-string">'a'</span><span class="qn-plain">:</span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-string">'b'</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain"> </span><span class="qn-collection">}</span><span class="qn-plain">   </span><span class="qn-comment">"* -&gt; 1, 2</span><span class="qn-plain">
+</span><span class="qn-string">'total: %'</span><span class="qn-plain"> % </span><span class="qn-number">7</span><span class="qn-plain">                </span><span class="qn-comment">"* -&gt; total: 7</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-+:"><span class="sig">+:String<br>+:</span><div class="body"><p>Concatenation (<code>a + b</code>). A String argument is appended directly; any other value is first rendered with <code>.s</code>, so <code>'n = ' + 5</code> just works.</p>
+<pre class="qn-code"><span class="qn-string">'ab'</span><span class="qn-plain"> + </span><span class="qn-string">'cd'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; abcd</span><span class="qn-plain">
+</span><span class="qn-string">'n = '</span><span class="qn-plain"> + </span><span class="qn-number">5</span><span class="qn-plain">      </span><span class="qn-comment">"* -&gt; n = 5</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-&lt;:"><span class="sig">&lt;:</span><div class="body"><p>Lexicographic less-than against another String. The one native comparison -- <code>&gt;</code>, <code>&lt;=</code> and <code>&gt;=</code> derive from it.</p>
+<pre class="qn-code"><span class="qn-string">'abc'</span><span class="qn-plain"> &lt; </span><span class="qn-string">'abd'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-==:"><span class="sig">==:</span><div class="body"><p>Whether the argument is a character-for-character equal String; any non-String value is simply unequal, never an error.</p>
+<pre class="qn-code"><span class="qn-string">'abc'</span><span class="qn-plain"> == </span><span class="qn-string">'abc'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-ansiEscaped"><span class="sig">ansiEscaped</span><div class="body"><p>A copy with each <code>[</code> doubled, so the text is safe to embed literally in an <code>#ANSI'…'</code> color template (where <code>[…]</code> opens a styled span).</p>
+<pre class="qn-code"><span class="qn-string">'[red]cost'</span><span class="qn-plain">.</span><span class="qn-signature">ansiEscaped</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; [[red]cost</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-asBytes"><span class="sig">asBytes</span><div class="body"><p>The string's UTF-8 bytes as a Bytes. Never fails; the inverse, <code>Bytes.asString</code>, can (not all byte sequences are valid UTF-8).</p>
+<pre class="qn-code"><span class="qn-string">'abc'</span><span class="qn-plain">.</span><span class="qn-signature">asBytes</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; Bytes[3] 61 62 63</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-contains?:"><span class="sig">contains?:</span><div class="body"><p>Whether the String argument occurs anywhere in the receiver.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">contains?</span><span class="qn-plain">:</span><span class="qn-string">'ell'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-ends?:"><span class="sig">ends?:</span><div class="body"><p>Whether the receiver ends with the String argument.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">ends?</span><span class="qn-plain">:</span><span class="qn-string">'lo'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-fromBase64"><span class="sig">fromBase64</span><div class="body"><p>This String, read as base64, decoded back to Bytes.</p>
+<pre class="qn-code"><span class="qn-string">'aGk='</span><span class="qn-plain">.</span><span class="qn-signature">fromBase64</span><span class="qn-plain">.</span><span class="qn-signature">asString</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; hi</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L28"><code>core/09-codecs.qn:28</code></a></p></div></div>
+<div class="method" id="i-fromHex"><span class="sig">fromHex</span><div class="body"><p>This String, read as hex, decoded back to Bytes.</p>
+<pre class="qn-code"><span class="qn-string">'6869'</span><span class="qn-plain">.</span><span class="qn-signature">fromHex</span><span class="qn-plain">.</span><span class="qn-signature">asString</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; hi</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L34"><code>core/09-codecs.qn:34</code></a></p></div></div>
+<div class="method" id="i-index:"><span class="sig">index:</span><div class="body"><p>The character index of the first occurrence of the String argument, or nil if it does not occur.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">index</span><span class="qn-plain">:</span><span class="qn-string">'l'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 2</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-insert:at:"><span class="sig">insert:String at:Integer</span><div class="body"><p>A copy with the String argument inserted before the given character index; an index at or past the end appends.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">insert</span><span class="qn-plain">:</span><span class="qn-string">'-'</span><span class="qn-plain"> </span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-number">2</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; he-llo</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-length"><span class="sig">length</span><div class="body"><p>The number of characters (Unicode scalar values) -- not bytes.</p>
+<pre class="qn-code"><span class="qn-string">'héllo'</span><span class="qn-plain">.</span><span class="qn-signature">length</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 5</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-lower"><span class="sig">lower</span><div class="body"><p>A lowercase copy (full Unicode lowercasing).</p>
+<pre class="qn-code"><span class="qn-string">'Hello'</span><span class="qn-plain">.</span><span class="qn-signature">lower</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; hello</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-padRight:"><span class="sig">padRight:Integer</span><div class="body"><p>Left-justify to <code>width</code> by appending spaces; answers self if already that wide.</p>
+<pre class="qn-code"><span class="qn-plain">(</span><span class="qn-string">'hi'</span><span class="qn-plain">.</span><span class="qn-signature">padRight</span><span class="qn-plain">:</span><span class="qn-number">5</span><span class="qn-plain">) + </span><span class="qn-string">'|'</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; hi   |</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L34"><code>core/04-string.qn:34</code></a></p></div></div>
+<div class="method" id="i-replace:with:"><span class="sig">replace:Regex with:String<br>replace:String with:String</span><div class="body"><p>A copy with every match of the pattern replaced by the String argument. The pattern's type selects the variant: a String replaces each literal occurrence, a Regex replaces each match.</p>
+<pre class="qn-code"><span class="qn-string">'banana'</span><span class="qn-plain">.</span><span class="qn-signature">replace</span><span class="qn-plain">:</span><span class="qn-string">'an'</span><span class="qn-plain"> </span><span class="qn-signature">with</span><span class="qn-plain">:</span><span class="qn-string">'AN'</span><span class="qn-plain">         </span><span class="qn-comment">"* -&gt; bANANa</span><span class="qn-plain">
+</span><span class="qn-string">'a1b22c'</span><span class="qn-plain">.</span><span class="qn-signature">replace</span><span class="qn-plain">:</span><span class="qn-regex">#/[0-9]+/</span><span class="qn-plain"> </span><span class="qn-signature">with</span><span class="qn-plain">:</span><span class="qn-string">'#'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; a#b#c</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-s"><span class="sig">s</span><div class="body"><p>The string itself -- the human rendering of a String adds no quotes or escapes (structural, quoted rendering is <code>.pp</code>'s job).</p>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-sliceFrom:to:"><span class="sig">sliceFrom:Integer to:Integer</span><div class="body"><p>The characters from <code>from</code> (inclusive) to <code>to</code> (exclusive) — the String twin of <code>List#sliceFrom:to:</code>: character-indexed, both ends clamp to the string, an inverted range answers ''.</p>
+<pre class="qn-code"><span class="qn-string">'command'</span><span class="qn-plain">.</span><span class="qn-signature">sliceFrom</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-signature">to</span><span class="qn-plain">:</span><span class="qn-number">7</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; mand</span><span class="qn-plain">
+</span><span class="qn-string">'command'</span><span class="qn-plain">.</span><span class="qn-signature">sliceFrom</span><span class="qn-plain">:</span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-signature">to</span><span class="qn-plain">:</span><span class="qn-number">99</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; mand</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-split"><span class="sig">split</span><div class="body"><p>Split on runs of whitespace — the word-splitting shortcut.</p>
+<pre class="qn-code"><span class="qn-string">'one two  three'</span><span class="qn-plain">.</span><span class="qn-signature">split</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(one two three)</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L27"><code>core/04-string.qn:27</code></a></p></div></div>
+<div class="method" id="i-split:"><span class="sig">split:String<br>split:Regex</span><div class="body"><p>The pieces of the receiver around each occurrence of <code>pat</code>, taken as a literal String (not a regex).</p>
+<pre class="qn-code"><span class="qn-string">'a,b,c'</span><span class="qn-plain">.</span><span class="qn-signature">split</span><span class="qn-plain">:</span><span class="qn-string">','</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(a b c)</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L14"><code>core/04-string.qn:14</code></a></p></div></div>
+<div class="method" id="i-splitString:"><span class="sig">splitString:</span><div class="body"><p>The pieces between occurrences of the literal String separator, as a List of Strings (for pattern-based splitting see <code>Regex.split:</code>).</p>
+<pre class="qn-code"><span class="qn-string">'a,b,c'</span><span class="qn-plain">.</span><span class="qn-signature">splitString</span><span class="qn-plain">:</span><span class="qn-string">','</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; #(a b c)</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-starts?:"><span class="sig">starts?:</span><div class="body"><p>Whether the receiver starts with the String argument.</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">starts?</span><span class="qn-plain">:</span><span class="qn-string">'he'</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; true</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-styled:"><span class="sig">styled:String</span><div class="body"><p>The receiver styled with color-markup attributes, as an ANSI value — the programmatic counterpart of writing the tag in an <code>#ANSI'…'</code> literal. The receiver is markup-escaped, so its own brackets stay literal; the result embeds safely in other ANSI strings (spans nest and restore).</p>
+<pre class="qn-code"><span class="qn-string">'FAIL'</span><span class="qn-plain">.</span><span class="qn-signature">styled</span><span class="qn-plain">:</span><span class="qn-string">'bold red'</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #ANSI'[bold red]FAIL[/]'</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/04-string.qn#L47"><code>core/04-string.qn:47</code></a></p></div></div>
+<div class="method" id="i-toBase64"><span class="sig">toBase64</span><div class="body"><p>This String's UTF-8 bytes encoded as a base64 String.</p>
+<pre class="qn-code"><span class="qn-string">'hi'</span><span class="qn-plain">.</span><span class="qn-signature">toBase64</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; aGk=</span></pre>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/09-codecs.qn#L40"><code>core/09-codecs.qn:40</code></a></p></div></div>
+<div class="method" id="i-to_integer"><span class="sig">to_integer</span><div class="body"><p>Parse the receiver as a decimal Integer; raises an error if the whole string is not one.</p>
+<pre class="qn-code"><span class="qn-string">'42'</span><span class="qn-plain">.</span><span class="qn-signature">to_integer</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; 42</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+<div class="method" id="i-upper"><span class="sig">upper</span><div class="body"><p>An uppercase copy (full Unicode uppercasing).</p>
+<pre class="qn-code"><span class="qn-string">'hello'</span><span class="qn-plain">.</span><span class="qn-signature">upper</span><span class="qn-plain">     </span><span class="qn-comment">"* -&gt; HELLO</span></pre>
+<p class="meta-line"><code>native</code></p></div></div>
+
+</body></html>

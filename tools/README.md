@@ -28,11 +28,23 @@ tools/highlight_to_html.py --css
 
 Notes:
 - Needs the `qn` binary: found via `$QN_BIN`, then `PATH`, then a sibling
-  `building_blocks_vm` checkout's `target/{debug,release}`. Override with `--qn`.
+  `quoin` checkout's `target/{debug,release}`. Override with `--qn`.
 - The palette is the Quoin standard, mirrored from
-  `building_blocks_vm/crates/quoin-syntax/src/highlight.rs` (`colors_for`).
+  `quoin/crates/quoin-syntax/src/highlight.rs` (`colors_for`).
   Locals cycle by scope (`.v0`–`.v3`), block braces by nesting depth
   (`.b0`–`.b4`), collection braces `#( )` are one color.
 - **Site deviation:** the `<- -> ^> <--` arrows are kept brand-gold (`.kw`),
   not the standard's white. Pass `--no-gold-arrows` for the pure standard.
+```
+
+## `gen_docs.sh` — regenerate the hosted docs
+
+`public/book/` and `public/reference/` are committed artifacts generated from a
+Quoin VM checkout (the language book via `qn doc --md docs/language`, the stdlib
+API reference via `qn doc --stdlib`):
+
+```sh
+tools/gen_docs.sh                     # sibling ../quoin checkout
+tools/gen_docs.sh ~/code/my-checkout  # explicit checkout
+QN_BIN=/path/to/qn tools/gen_docs.sh  # explicit binary
 ```

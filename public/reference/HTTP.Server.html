@@ -1,0 +1,140 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[HTTP]Server</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>[HTTP]Server</code></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a> · defined at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L159"><code>net/http_server.qn:159</code></a></p>
+<p>The server: bind in init (so <code>port</code> works before <code>start</code>, including after an ephemeral ':0'), accept in a background Task, one Task per connection running the keep-alive loop. Termination is the caller's: <code>stop</code> cancels the accept loop (in-flight connections keep running), <code>join</code> drains them, <code>close</code> releases the port.</p>
+<h2>Class methods</h2>
+<div class="method" id="c-chunkFrame:"><span class="sig">chunkFrame:</span><div class="body"><p>One frame of a chunked body (pure): hex size, CRLF, data, CRLF. The caller must not frame empty data — a zero-size chunk is the terminator.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L217"><code>net/http_server.qn:217</code></a></p></div></div>
+<div class="method" id="c-hexOf:"><span class="sig">hexOf:</span><div class="body"><p>Lowercase hex digits of a non-negative Integer (chunk-size lines).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L223"><code>net/http_server.qn:223</code></a></p></div></div>
+<div class="method" id="c-httpDateFor:"><span class="sig">httpDateFor:</span><div class="body"><p>RFC-1123 date (e.g. 'Sun, 06 Nov 1994 08:49:37 GMT') for a UTC DateTime.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L236"><code>net/http_server.qn:236</code></a></p></div></div>
+<div class="method" id="c-wireBytesFor:connection:"><span class="sig">wireBytesFor: connection:</span><div class="body"><p>A whole non-streaming response as one buffer: head + materialized body.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L210"><code>net/http_server.qn:210</code></a></p></div></div>
+<div class="method" id="c-wireHeadFor:streaming:connection:"><span class="sig">wireHeadFor: streaming: connection:</span><div class="body"><p>Serialize a response head (status line + headers + framing + blank line) — a pure function apart from the Date header, unit-testable without a socket. <code>streaming</code> selects Transfer-Encoding: chunked over Content-Length framing of the materialized body (nil = empty). <code>connection</code> is the Connection header value to emit, or nil for none (the HTTP/1.1 keep-alive default needs no header). Caller-set Date / Content-Length / Connection headers always win over ours.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L184"><code>net/http_server.qn:184</code></a></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-close"><span class="sig">close</span><div class="body"><p>Release the listening socket / bound port.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L296"><code>net/http_server.qn:296</code></a></p></div></div>
+<div class="method" id="i-connections"><span class="sig">connections</span><div class="body"><p>Connection-task registry size (finished tasks are swept on each accept, so a long-lived server stays bounded by its concurrency, not its history).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L256"><code>net/http_server.qn:256</code></a></p></div></div>
+<div class="method" id="i-errorResponse:"><span class="sig">errorResponse:</span><div class="body"><p>A bare status-only response for transport-level errors.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L477"><code>net/http_server.qn:477</code></a></p></div></div>
+<div class="method" id="i-init:"><span class="sig">init:</span><div class="body"><p>Internal: apply the limit defaults and bind the listener — the port is held from construction on, before start.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L163"><code>net/http_server.qn:163</code></a></p></div></div>
+<div class="method" id="i-join"><span class="sig">join</span><div class="body"><p>Wait for the in-flight connection tasks to finish.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L290"><code>net/http_server.qn:290</code></a></p></div></div>
+<div class="method" id="i-port"><span class="sig">port</span><div class="body"><p>The bound local port (e.g. after an ephemeral ':0' bind).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L252"><code>net/http_server.qn:252</code></a></p></div></div>
+<div class="method" id="i-readHeadFrom:"><span class="sig">readHeadFrom:</span><div class="body"><p>Read one request head through the blank line, enforcing maxHeadBytes -&gt; [HTTP]HeadTooLarge (431). Returns the raw head bytes; empty or partial at EOF parses to a quiet close or a 400 upstream.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L454"><code>net/http_server.qn:454</code></a></p></div></div>
+<div class="method" id="i-refuse:"><span class="sig">refuse:</span><div class="body"><p>Over maxConnections: tell the peer we are saturated, then close.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L314"><code>net/http_server.qn:314</code></a></p></div></div>
+<div class="method" id="i-respond:over:suppress:connection:"><span class="sig">respond: over: suppress: connection:</span><div class="body"><p>Write <code>resp</code>; returns whether the write succeeded (a false means the peer is gone and the caller should close — there is nobody left to tell). A Generator body streams as chunked transfer-encoding, one frame per (non-empty) yield — this is what makes SSE work; anything else goes out as one buffer framed by Content-Length. <code>suppress</code> (HEAD) sends the entity headers but no body bytes.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L485"><code>net/http_server.qn:485</code></a></p></div></div>
+<div class="method" id="i-serve:"><span class="sig">serve:</span><div class="body"><p>One connection: run request/response exchanges until one of them decides to close (Connection: close, HTTP/1.0 default, an error path, EOF, or the idle timeout), then release the socket.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L301"><code>net/http_server.qn:301</code></a></p></div></div>
+<div class="method" id="i-serveOne:first:"><span class="sig">serveOne: first:</span><div class="body"><p>One request/response exchange. Returns true to keep the connection open for the next request, false to close. Error responses on this transport level (400/408/413/431/500) always close.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L324"><code>net/http_server.qn:324</code></a></p></div></div>
+<div class="method" id="i-start"><span class="sig">start</span><div class="body"><p>Begin accepting in the background and return immediately. The accept loop runs as its own Task so <code>stop</code> can cancel it — including a parked accept.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L260"><code>net/http_server.qn:260</code></a></p></div></div>
+<div class="method" id="i-stop"><span class="sig">stop</span><div class="body"><p>Stop accepting: cancel the accept loop, which aborts its parked <code>accept</code>. In-flight connection tasks keep running — drain them with <code>join</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/net/http_server.qn#L287"><code>net/http_server.qn:287</code></a></p></div></div>
+
+</body></html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[CLI]Spec</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css">
+<style>
+:root { --fg: #1a1a1a; --bg: #ffffff; --dim: #666; --line: #e2e2e2; --accent: #0550ae;
+        --code-bg: #f6f8fa; }
+@media (prefers-color-scheme: dark) {
+  :root { --fg: #d4d4d4; --bg: #1e1e1e; --dim: #999; --line: #3a3a3a; --accent: #6cb6ff;
+          --code-bg: #2a2a2a; }
+}
+* { box-sizing: border-box; }
+body { color: var(--fg); background: var(--bg); font: 16px/1.55 system-ui, sans-serif;
+       max-width: 52rem; margin: 0 auto; padding: 2rem 1rem 4rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+     margin-top: 2.2rem; }
+code, pre { font: 0.9em ui-monospace, monospace; }
+pre { background: var(--code-bg); padding: .75rem 1rem; border-radius: 6px; overflow-x: auto; }
+.sig { font-family: ui-monospace, monospace; font-weight: 600; }
+.meta-line { color: var(--dim); font-size: .85rem; }
+a.src { color: inherit; }
+a.src:hover { text-decoration: underline; }
+.method { margin: 1.4rem 0; }
+.method > .body { margin: .3rem 0 0 1rem; }
+.badge { font-size: .75rem; color: var(--dim); border: 1px solid var(--line);
+         border-radius: 4px; padding: 0 .35rem; margin-left: .5rem; vertical-align: middle; }
+blockquote { border-left: 3px solid var(--line); margin: 1rem 0; padding: .1rem 1rem;
+             color: var(--fg); background: color-mix(in srgb, var(--code-bg) 55%, var(--bg)); }
+table { border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: .3rem .6rem; text-align: left; }
+th { background: var(--code-bg); }
+ul.classlist { list-style: none; padding-left: 0; }
+ul.classlist li { margin: .15rem 0; }
+ul.classlist .summary { color: var(--dim); margin-left: .5rem; }
+
+pre.qn-code, pre, code, .sig { font-family: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace; font-feature-settings: 'ss05'; }
+pre.qn-code { line-height: 1.45; }
+.qn-error { color: #b3261e; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-error { color: #d9534f; font-weight: 600; } }
+.qn-return { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-return { color: inherit; } }
+.qn-number { color: #0868a5; }
+@media (prefers-color-scheme: dark) { .qn-number { color: #00bfff; } }
+.qn-string { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-string { color: #4682b4; } }
+.qn-symbol { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-symbol { color: #4682b4; } }
+.qn-regex { color: #20639b; }
+@media (prefers-color-scheme: dark) { .qn-regex { color: #4682b4; } }
+.qn-ident { color: #1f7a5c; }
+.qn-ident-0 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-0 { color: #5fd7af; } }
+.qn-ident-1 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-1 { color: #aeb1ab; } }
+.qn-ident-2 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-2 { color: #c79ca9; } }
+.qn-ident-3 { color: #1f7a5c; }
+@media (prefers-color-scheme: dark) { .qn-ident-3 { color: #85b9a5; } }
+.qn-ivar { color: #2b7a8c; }
+@media (prefers-color-scheme: dark) { .qn-ivar { color: #6ab1c2; } }
+.qn-brace { color: #c05e2f; }
+.qn-brace-0 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-0 { color: #f79c88; } }
+.qn-brace-1 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-1 { color: #80f0ff; } }
+.qn-brace-2 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-2 { color: #fa859d; } }
+.qn-brace-3 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-3 { color: #eabe95; } }
+.qn-brace-4 { color: #c05e2f; }
+@media (prefers-color-scheme: dark) { .qn-brace-4 { color: #a4dbbe; } }
+.qn-collection { color: #3d8156; }
+@media (prefers-color-scheme: dark) { .qn-collection { color: #93c6a5; } }
+.qn-op { color: inherit; }
+@media (prefers-color-scheme: dark) { .qn-op { color: inherit; } }
+.qn-comment { color: #767b76; }
+@media (prefers-color-scheme: dark) { .qn-comment { color: #b9bdba; } }
+.qn-signature { color: #6b4bb8; }
+@media (prefers-color-scheme: dark) { .qn-signature { color: #ab82ff; } }
+.qn-global { color: #b0316f; }
+@media (prefers-color-scheme: dark) { .qn-global { color: #ef65a5; } }
+.qn-namespace { color: #a02a68; }
+@media (prefers-color-scheme: dark) { .qn-namespace { color: #d53b82; } }
+.qn-keyword { color: #9a6410; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .qn-keyword { color: #e0a45a; font-weight: 600; } }
+.qn-path { color: #33689c; }
+@media (prefers-color-scheme: dark) { .qn-path { color: #6aa9e0; } }
+</style>
+</head>
+<body>
+<p><a href="index.html">← index</a></p>
+<h1><code>[CLI]Spec</code></h1>
+<p class="meta-line">inherits <a href="Object.html">Object</a> · defined at <a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L44"><code>core/14-cli.qn:44</code></a></p>
+<p>The declarative spec. Builder methods return self, so a whole tool declares in one chain; <code>parse</code> / <code>parseFrom:</code> do the work.</p>
+<pre class="qn-code"><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">cli</span><span class="qn-plain"> = </span><span class="qn-namespace">[CLI]</span><span class="qn-global">Spec</span><span class="qn-plain">.</span><span class="qn-signature">new</span><span class="qn-plain">:</span><span class="qn-string">'greet'</span><span class="qn-plain"> </span><span class="qn-signature">about</span><span class="qn-plain">:</span><span class="qn-string">'says hello'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">cli</span><span class="qn-plain">.</span><span class="qn-signature">flag</span><span class="qn-plain">:</span><span class="qn-string">'shout'</span><span class="qn-plain"> </span><span class="qn-signature">short</span><span class="qn-plain">:</span><span class="qn-string">'s'</span><span class="qn-plain"> </span><span class="qn-signature">help</span><span class="qn-plain">:</span><span class="qn-string">'LOUDLY'</span><span class="qn-plain">
+</span><span class="qn-ident qn-ident-0">cli</span><span class="qn-plain">.</span><span class="qn-signature">positional</span><span class="qn-plain">:</span><span class="qn-string">'name'</span><span class="qn-plain"> </span><span class="qn-signature">help</span><span class="qn-plain">:</span><span class="qn-string">'whom to greet'</span><span class="qn-plain">
+</span><span class="qn-keyword">var</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">args</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">cli</span><span class="qn-plain">.</span><span class="qn-signature">parseFrom</span><span class="qn-plain">:</span><span class="qn-collection">#(</span><span class="qn-plain"> </span><span class="qn-string">'-s'</span><span class="qn-plain"> </span><span class="qn-string">'quoin'</span><span class="qn-plain"> </span><span class="qn-collection">)</span><span class="qn-plain">
+</span><span class="qn-collection">#(</span><span class="qn-plain"> (</span><span class="qn-ident qn-ident-0">args</span><span class="qn-plain">.</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'name'</span><span class="qn-plain">) (</span><span class="qn-ident qn-ident-0">args</span><span class="qn-plain">.</span><span class="qn-signature">flag?</span><span class="qn-plain">:</span><span class="qn-string">'shout'</span><span class="qn-plain">) </span><span class="qn-collection">)</span><span class="qn-plain">    </span><span class="qn-comment">"* -&gt; #(quoin true)</span></pre>
+<h2>Class methods</h2>
+<div class="method" id="c-new:"><span class="sig">new:String</span><div class="body"><p>A spec for the tool <code>name</code> (the usage line's first word).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L47"><code>core/14-cli.qn:47</code></a></p></div></div>
+<div class="method" id="c-new:about:"><span class="sig">new:String about:String</span><div class="body"><p>A spec with a one-line description for the help text.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L50"><code>core/14-cli.qn:50</code></a></p></div></div>
+<h2>Instance methods</h2>
+<div class="method" id="i-applyDefaults:"><span class="sig">applyDefaults:</span><div class="body"><p>Flags default false, options to their default; a missing <code>required:</code> option is a UsageError.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L293"><code>core/14-cli.qn:293</code></a></p></div></div>
+<div class="method" id="i-command:spec:"><span class="sig">command: spec:</span><div class="body"><p>A subcommand: the block configures its own sub-spec (options, positionals, rest — not further commands). The first positional token picks the command; after it, option lookups try the sub-spec first, then this one.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L146"><code>core/14-cli.qn:146</code></a></p></div></div>
+<div class="method" id="i-command:spec:help:"><span class="sig">command: spec: help:</span><div class="body"><p>See <code>command:spec:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L148"><code>core/14-cli.qn:148</code></a></p></div></div>
+<div class="method" id="i-findLong:sub:"><span class="sig">findLong: sub:</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L309"><code>core/14-cli.qn:309</code></a></p></div></div>
+<div class="method" id="i-findShort:sub:"><span class="sig">findShort: sub:</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L317"><code>core/14-cli.qn:317</code></a></p></div></div>
+<div class="method" id="i-flag:"><span class="sig">flag:</span><div class="body"><p>A boolean flag: absent -&gt; false, <code>--name</code> (or its short) -&gt; true.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L68"><code>core/14-cli.qn:68</code></a></p></div></div>
+<div class="method" id="i-flag:help:"><span class="sig">flag: help:</span><div class="body"><p>See <code>flag:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L70"><code>core/14-cli.qn:70</code></a></p></div></div>
+<div class="method" id="i-flag:short:help:"><span class="sig">flag: short: help:</span><div class="body"><p>See <code>flag:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L72"><code>core/14-cli.qn:72</code></a></p></div></div>
+<div class="method" id="i-helpText"><span class="sig">helpText</span><div class="body"><p>The generated help: a usage line, the about text, and aligned tables of commands, options, and positionals (from their <code>help:</code> strings). What <code>-h</code>/<code>--help</code> prints.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L344"><code>core/14-cli.qn:344</code></a></p></div></div>
+<div class="method" id="i-init"><span class="sig">init</span><div class="body"><p>Internal: the collections default empty (<code>new:{}</code> populated the scalars).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L59"><code>core/14-cli.qn:59</code></a></p></div></div>
+<div class="method" id="i-knownNames"><span class="sig">knownNames</span><div class="body"><p>Every name <code>at:</code> may read on a result from this spec.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L331"><code>core/14-cli.qn:331</code></a></p></div></div>
+<div class="method" id="i-longOpt:"><span class="sig">longOpt:</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L325"><code>core/14-cli.qn:325</code></a></p></div></div>
+<div class="method" id="i-option:"><span class="sig">option:</span><div class="body"><p>An option taking a value: <code>--name value</code> or <code>--name=value</code>. Absent -&gt; its <code>default:</code> (nil without one), unless <code>required:true</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L79"><code>core/14-cli.qn:79</code></a></p></div></div>
+<div class="method" id="i-option:default:help:"><span class="sig">option: default: help:</span><div class="body"><p>See <code>option:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L89"><code>core/14-cli.qn:89</code></a></p></div></div>
+<div class="method" id="i-option:help:"><span class="sig">option: help:</span><div class="body"><p>See <code>option:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L81"><code>core/14-cli.qn:81</code></a></p></div></div>
+<div class="method" id="i-option:required:help:"><span class="sig">option: required: help:</span><div class="body"><p>An option that must be given (absence is a UsageError).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L102"><code>core/14-cli.qn:102</code></a></p></div></div>
+<div class="method" id="i-option:short:default:help:"><span class="sig">option: short: default: help:</span><div class="body"><p>See <code>option:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L93"><code>core/14-cli.qn:93</code></a></p></div></div>
+<div class="method" id="i-option:short:default:required:values:help:"><span class="sig">option: short: default: required: values: help:</span><div class="body"><p>The kitchen sink — every option property, nil where unused.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L114"><code>core/14-cli.qn:114</code></a></p></div></div>
+<div class="method" id="i-option:short:help:"><span class="sig">option: short: help:</span><div class="body"><p>See <code>option:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L85"><code>core/14-cli.qn:85</code></a></p></div></div>
+<div class="method" id="i-option:short:required:help:"><span class="sig">option: short: required: help:</span><div class="body"><p>See <code>option:required:help:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L106"><code>core/14-cli.qn:106</code></a></p></div></div>
+<div class="method" id="i-option:short:values:help:"><span class="sig">option: short: values: help:</span><div class="body"><p>See <code>option:values:help:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L110"><code>core/14-cli.qn:110</code></a></p></div></div>
+<div class="method" id="i-option:values:help:"><span class="sig">option: values: help:</span><div class="body"><p>An option whose value must be one of <code>values:</code> (anything else is a UsageError naming the choices).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L98"><code>core/14-cli.qn:98</code></a></p></div></div>
+<div class="method" id="i-parse"><span class="sig">parse</span><div class="body"><p>Parse <code>Runtime.arguments</code> — the production entry: <code>-h</code>/<code>--help</code> prints the help and exits 0; misuse prints the message + usage to stderr and exits 2.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L162"><code>core/14-cli.qn:162</code></a></p></div></div>
+<div class="method" id="i-parseFrom:"><span class="sig">parseFrom:</span><div class="body"><p>Parse an explicit token List, throwing UsageError on misuse — the testable seam. <code>-h</code>/<code>--help</code> short-circuits: the result answers <code>help?</code> and nothing else is validated.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L181"><code>core/14-cli.qn:181</code></a></p></div></div>
+<div class="method" id="i-positional:"><span class="sig">positional:</span><div class="body"><p>A required positional argument (assigned in declaration order).</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L123"><code>core/14-cli.qn:123</code></a></p></div></div>
+<div class="method" id="i-positional:help:"><span class="sig">positional: help:</span><div class="body"><p>See <code>positional:</code>.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L125"><code>core/14-cli.qn:125</code></a></p></div></div>
+<div class="method" id="i-positionals"><span class="sig">positionals</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L327"><code>core/14-cli.qn:327</code></a></p></div></div>
+<div class="method" id="i-rest:"><span class="sig">rest:</span><div class="body"><p>The trailing splat: every positional after the declared ones, as a List (possibly empty). Without one, extras are a UsageError.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L135"><code>core/14-cli.qn:135</code></a></p></div></div>
+<div class="method" id="i-restName"><span class="sig">restName</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L328"><code>core/14-cli.qn:328</code></a></p></div></div>
+<div class="method" id="i-shortOpt:"><span class="sig">shortOpt:</span><div class="body"><p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L326"><code>core/14-cli.qn:326</code></a></p></div></div>
+<div class="method" id="i-take:inline:from:at:into:"><span class="sig">take: inline: from: at: into:</span><div class="body"><p>Record one option token; answers the index after any consumed value.</p>
+<p class="meta-line"><a class="src" href="https://github.com/quoin-lang/quoin/blob/main/qnlib/core/14-cli.qn#L266"><code>core/14-cli.qn:266</code></a></p></div></div>
+
+</body></html>
