@@ -128,7 +128,7 @@ pre.qn-code { line-height: 1.45; }
 <p><strong>Rules</strong></p>
 <ul>
 <li><code>if:</code>, <code>else:</code>, <code>if:else:</code>, and <code>not</code> are methods defined <strong>only on <code>true</code> and <code>false</code></strong> (see <code>core/00-bootstrap.qn</code>). <code>nil</code> has none of them.</li>
-<li><strong>Conditionals are strict</strong>: <code>if:</code>/<code>else:</code>/<code>if:else:</code> and <code>whileDo:</code> require an actual Boolean condition — sending one to a non-Boolean (including <code>nil</code>) is a <code>MessageNotUnderstood</code>. There is no truthiness coercion for these.</li>
+<li><strong>Conditionals are strict</strong>: <code>if:</code>/<code>else:</code>/<code>if:else:</code> and <code>whileDo:</code> require an actual Boolean condition — sending one to a non-Boolean (including <code>nil</code>) is a <a href="../reference/MessageNotUnderstood.html"><code>MessageNotUnderstood</code></a>. There is no truthiness coercion for these.</li>
 <li>The <code>if:</code>/<code>else:</code> blocks are zero-arg; they run via <code>.value</code>.</li>
 <li><strong>Loops</strong> are methods on a <em>block</em> used as the condition:</li>
 <li><code>{ cond }.whileDo:{ body }</code> — re-evaluates <code>cond</code> (must return <code>true</code>/<code>false</code>) before each iteration.</li>
@@ -145,7 +145,7 @@ pre.qn-code { line-height: 1.45; }
 </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">i</span><span class="qn-plain"> &lt;= </span><span class="qn-number">3</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span><span class="qn-plain">.</span><span class="qn-signature">whileDo</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain"> </span><span class="qn-ident qn-ident-0">i</span><span class="qn-plain">.</span><span class="qn-signature">print</span><span class="qn-plain">; </span><span class="qn-ident qn-ident-0">i</span><span class="qn-plain"> = </span><span class="qn-ident qn-ident-0">i</span><span class="qn-plain"> + </span><span class="qn-number">1</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-1">}</span></pre>
 <p>Because conditionals are just messages, the receiver of <code>.if:</code> must already be a boolean. Comparison operators (<code>==</code>, <code>&lt;</code>, …) and predicate methods (<code>defined?</code>, <code>contains?:</code>, …) are how you produce one.</p>
 <blockquote>
-<p><strong>⚠ Gotcha — <code>nil.if:</code> is an error, not "false".</strong> Many languages treat <code>nil</code> as falsy; Quoin does not. <code>maybe.if:{ … }</code> throws <code>MessageNotUnderstood</code> when <code>maybe</code> is <code>nil</code> (or any non-boolean). Guard with an explicit test: <code>maybe.defined?.if:{ … }</code> or <code>(maybe == x).if:{ … }</code>.</p>
+<p><strong>⚠ Gotcha — <code>nil.if:</code> is an error, not "false".</strong> Many languages treat <code>nil</code> as falsy; Quoin does not. <code>maybe.if:{ … }</code> throws <a href="../reference/MessageNotUnderstood.html"><code>MessageNotUnderstood</code></a> when <code>maybe</code> is <code>nil</code> (or any non-boolean). Guard with an explicit test: <code>maybe.defined?.if:{ … }</code> or <code>(maybe == x).if:{ … }</code>.</p>
 </blockquote>
 <hr>
 <h2 id="9-returns-non-local-return">9. Returns &amp; non-local return</h2>
@@ -155,7 +155,7 @@ pre.qn-code { line-height: 1.45; }
 <li>A block (and a method body) evaluates to its <strong>last expression</strong> — no return keyword needed.</li>
 <li><code>^ expr</code> — <strong>block return</strong>: returns from the <em>current block</em>. At a method's top level the body <em>is</em> the method's block, so <code>^</code> there exits the method; inside a nested block it exits only that block.</li>
 <li><code>^^ expr</code> — <strong>method return</strong> (non-local): unwinds through any intervening blocks and returns from the enclosing method. This is how you break out of an iterator's body.</li>
-<li><code>^&gt; expr</code> — <strong>yield</strong>: sugar for <code>Fiber.yield:expr</code> (Part V).</li>
+<li><code>^&gt; expr</code> — <strong>yield</strong>: sugar for <a href="../reference/Fiber.html#c-yield:"><code>Fiber.yield:expr</code></a> (Part V).</li>
 </ul>
 </blockquote>
 <pre class="qn-code"><span class="qn-global">Finder</span><span class="qn-plain"> &lt;- </span><span class="qn-brace qn-brace-1">{</span><span class="qn-plain">

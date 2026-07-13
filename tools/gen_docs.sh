@@ -22,5 +22,6 @@ fi
 [ -n "$qn" ] || { echo "error: no qn binary; set \$QN_BIN or build the checkout" >&2; exit 1; }
 
 rm -rf "$site/public/book" "$site/public/reference"
-(cd "$vm" && QUOIN_STDLIB="$vm/qnlib" "$qn" doc --md docs/language --out "$site/public/book")
+# --stdlib-path: book code spans naming stdlib classes link into the sibling reference.
+(cd "$vm" && QUOIN_STDLIB="$vm/qnlib" "$qn" doc --md docs/language --stdlib-path ../reference --out "$site/public/book")
 (cd "$vm" && QUOIN_STDLIB="$vm/qnlib" "$qn" doc --stdlib --out "$site/public/reference")
