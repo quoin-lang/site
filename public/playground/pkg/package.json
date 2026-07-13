@@ -1,0 +1,22 @@
+{
+  "name": "quoin-wasm",
+  "type": "module",
+  "description": "Browser (wasm32) bindings for the Quoin VM — the quoinlang.dev playground engine.",
+  "version": "0.1.0",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quoin-lang/quoin"
+  },
+  "files": [
+    "quoin_wasm_bg.wasm",
+    "quoin_wasm.js",
+    "quoin_wasm.d.ts"
+  ],
+  "main": "quoin_wasm.js",
+  "homepage": "https://quoinlang.dev",
+  "types": "quoin_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

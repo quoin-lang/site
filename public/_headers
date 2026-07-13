@@ -8,3 +8,10 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Cross-Origin-Opener-Policy: same-origin
   Content-Security-Policy: default-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+
+# The playground needs what the docs pages must not have: its own module scripts, a
+# module Web Worker, the .wasm fetch, and WebAssembly compilation ('wasm-unsafe-eval'
+# allows wasm without re-enabling JS eval). Everything stays same-origin — the page
+# is fully self-contained (no CDN); the worker's own response carries this policy too.
+/playground/*
+  Content-Security-Policy: default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
