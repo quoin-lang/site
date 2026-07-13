@@ -102,10 +102,10 @@ pre.qn-code { line-height: 1.45; }
 <blockquote>
 <p><strong>Rules</strong></p>
 <ul>
-<li><code>qn app.qn [args…]</code> runs a program. <strong>Everything after the file</strong> — flags included — lands in <code>Runtime.arguments</code> (a List of Strings), verbatim; <code>qn</code>'s own flags go <em>before</em> the file.</li>
+<li><code>qn app.qn [args…]</code> runs a program. <strong>Everything after the file</strong> — flags included — lands in <a href="../reference/Runtime.html#c-arguments"><code>Runtime.arguments</code></a> (a List of Strings), verbatim; <code>qn</code>'s own flags go <em>before</em> the file.</li>
 <li>A program may start with a <strong>shebang</strong> (<code>#!/usr/bin/env qn</code>): the line is trivia to the language, so a <code>chmod +x</code>'d script runs directly, and its arguments still arrive verbatim. Diagnostics keep true line numbers.</li>
 <li><code>qn -e EXPR</code> evaluates one expression and prints its value (a <code>nil</code> result prints nothing) — the same rendering the REPL uses.</li>
-<li><strong>Exit codes</strong>: <code>0</code> on normal completion; an <strong>uncaught error</strong> prints its annotated report to stderr and exits <code>1</code>; <code>Runtime.exit:N</code> exits with <code>N</code> (it is uncatchable, and teardown still runs).</li>
+<li><strong>Exit codes</strong>: <code>0</code> on normal completion; an <strong>uncaught error</strong> prints its annotated report to stderr and exits <code>1</code>; <a href="../reference/Runtime.html#c-exit:"><code>Runtime.exit:N</code></a> exits with <code>N</code> (it is uncatchable, and teardown still runs).</li>
 <li><strong>Environment</strong>: <code>QUOIN_STDLIB=DIR</code> loads the stdlib from <code>DIR</code> instead of the copy embedded in the binary; <code>QUOIN_PATH=DIRS</code> adds extra roots to the extension-package search. Internal <code>QN_*</code> tuning knobs are catalogued in <code>docs/internal/ENV_FLAGS.md</code> and are not part of the language surface.</li>
 </ul>
 </blockquote>
@@ -130,7 +130,7 @@ Message not understood: receiver=Nil, selector='foo', args=[]
   at (top) in &lt;eval&gt;:1:0                                &lt; nil.foo
 $ echo $?
 1</pre>
-<p>That second run shows the exit-code contract: an error nobody catches is reported on stderr and the process exits <code>1</code>, so shell scripts and CI can gate on any <code>qn</code> invocation. To choose the status yourself, <code>Runtime.exit:3</code> ends the process with code 3 — it cannot be caught, but sockets, extensions, and other resources are still torn down normally.</p>
+<p>That second run shows the exit-code contract: an error nobody catches is reported on stderr and the process exits <code>1</code>, so shell scripts and CI can gate on any <code>qn</code> invocation. To choose the status yourself, <a href="../reference/Runtime.html#c-exit:"><code>Runtime.exit:3</code></a> ends the process with code 3 — it cannot be caught, but sockets, extensions, and other resources are still torn down normally.</p>
 <hr>
 <h2 id="37-the-repl-qn-repl">37. The REPL — <code>qn repl</code></h2>
 <blockquote>
@@ -179,7 +179,7 @@ Classes (2):
   String  StringStream
 qn&gt; $reset
 Session locals cleared.</pre>
-<p>Every line runs under the same scheduler a program uses, so top-level I/O, an <code>Async.sleep:</code>, a spawned <code>Task</code>, or a fiber resume all work at the prompt — and <code>$ps</code> shows what is running or parked while they do.</p>
+<p>Every line runs under the same scheduler a program uses, so top-level I/O, an <a href="../reference/Async.html#c-sleep:"><code>Async.sleep:</code></a>, a spawned <a href="../reference/Task.html"><code>Task</code></a>, or a fiber resume all work at the prompt — and <code>$ps</code> shows what is running or parked while they do.</p>
 <p><code>$doc</code> is the reference at your fingertips: it answers with the same documentation <code>qn doc</code> publishes (see below), for stdlib and your own loaded classes alike:</p>
 <pre>qn&gt; $doc List.sort
 Sort in place, ascending by the elements' `&gt;:`, and answer the receiver; nils sort last.
@@ -190,7 +190,7 @@ Sort in place, ascending by the elements' `&gt;:`, and answer the receiver; nils
 <p><strong>Rules</strong></p>
 <ul>
 <li><code>qn test [DIR]</code> (default <code>tests</code>) loads the test framework, then every <code>.qn</code> file in <code>DIR</code> in sorted order, then runs every suite that registered.</li>
-<li>A test file <em>builds</em> suites; <strong>constructing a <code>TestSuite</code> registers it</strong> (into the <code>[Test]Suites</code> registry) — no export or main needed.</li>
+<li>A test file <em>builds</em> suites; <strong>constructing a <a href="../reference/TestSuite.html"><code>TestSuite</code></a> registers it</strong> (into the <code>[Test]Suites</code> registry) — no export or main needed.</li>
 <li>Structure: <code>(TestSuite.new:{ var name = '…' }).add:{ … }</code>; inside the <code>add:</code> block, each <code>.test: name -&gt; { … }</code> declares one test.</li>
 <li>Assertions take the value under test as a <strong>block</strong>. The vocabulary: <code>isTrue:</code> / <code>isFalse:</code>; <code>is:equalTo:</code> / <code>is:notEqualTo:</code> (the workhorse); <code>is:a:</code> / <code>is:an:</code>; <code>is:closeTo:</code> (<code>…within:</code>); <code>is:lessThan:</code> / <code>is:greaterThan:</code> (and the <code>…OrEqualTo:</code> pair); <code>does:match:</code> / <code>does:notMatch:</code> (the <code>~</code> pattern protocol, §14); <code>does:resultIn:</code> (effects); <code>does:throw:</code>; <code>elementsOf:areEqualTo:</code>. <code>.skip:'reason'</code> in an <code>add:</code> block skips the suite without failing the run.</li>
 <li><strong>Lifecycle hooks</strong>, declared in the <code>add:</code> block like tests: <code>.setup:{ … }</code> / <code>.teardown:{ … }</code> run around <strong>each</strong> test; <code>.setupAll:{ … }</code> / <code>.teardownAll:{ … }</code> run once per suite. Share fixture state by capturing a <code>var</code>. Several of the same hook accumulate: setups run in declaration order, teardowns in reverse (they unwind). A skipped suite runs no hooks.</li>
@@ -237,7 +237,7 @@ $ echo $?
         </span><span class="qn-plain">.</span><span class="qn-signature">is</span><span class="qn-plain">:</span><span class="qn-brace qn-brace-3">{</span><span class="qn-plain"> (</span><span class="qn-global">JSON</span><span class="qn-plain">.</span><span class="qn-signature">parse</span><span class="qn-plain">:(</span><span class="qn-namespace">[IO]</span><span class="qn-global">File</span><span class="qn-plain">.</span><span class="qn-signature">read</span><span class="qn-plain">:</span><span class="qn-ident qn-ident-1">path</span><span class="qn-plain">)).</span><span class="qn-signature">at</span><span class="qn-plain">:</span><span class="qn-string">'port'</span><span class="qn-plain"> </span><span class="qn-brace qn-brace-3">}</span><span class="qn-plain"> </span><span class="qn-signature">equalTo</span><span class="qn-plain">:</span><span class="qn-number">8080</span><span class="qn-plain">;
     </span><span class="qn-brace qn-brace-2">}</span><span class="qn-plain">;
 </span><span class="qn-brace qn-brace-1">}</span></pre>
-<p>The framework itself is ordinary, documented Quoin — for the full assertion reference (including how to build custom assertions on <code>recordResult:evidence:block:</code>), see the <code>TestSuite</code>, <code>BuiltinAssertions</code>, and <code>IterateAssertions</code> pages of the generated API reference (<code>qn doc</code>, below), or ask the REPL directly with <code>$doc TestSuite</code>.</p>
+<p>The framework itself is ordinary, documented Quoin — for the full assertion reference (including how to build custom assertions on <code>recordResult:evidence:block:</code>), see the <a href="../reference/TestSuite.html"><code>TestSuite</code></a>, <a href="../reference/BuiltinAssertions.html"><code>BuiltinAssertions</code></a>, and <a href="../reference/IterateAssertions.html"><code>IterateAssertions</code></a> pages of the generated API reference (<code>qn doc</code>, below), or ask the REPL directly with <code>$doc TestSuite</code>.</p>
 <blockquote>
 <p><strong>⚠ Gotcha — the test directory's name is spliced into a <code>use</code> path.</strong> <code>qn test DIR</code> synthesizes <code>use self:DIR/*</code>, so <code>DIR</code> must be spellable as a Quoin load path: <code>qn test my-tests</code> fails with a parse error (the <code>-</code> reads as an operator). Prefer plain names like <code>tests</code>.</p>
 </blockquote>
@@ -352,7 +352,7 @@ qn doc --check: 5 examples, 2 annotations checked, 0 failed</pre>
 <tr><td><code>$quit</code>/<code>$q</code> · <code>$help</code></td><td>leave; help</td></tr>
 </table>
 <ul>
-<li><strong>Exception breakpoints</strong>: <code>--break-on-throw TYPES</code> pauses when a matching exception is thrown, <em>even one that would be caught</em> (first-chance); <code>--break-on-uncaught TYPES</code> pauses only when it will escape. Both take a comma-separated type list — matching is hierarchy-aware (<code>Error</code> catches every structured error; <code>Object</code> is the explicit catch-everything), and a Rust-raised <code>TypeError</code> and your own <code>Error.throw:</code> behave identically.</li>
+<li><strong>Exception breakpoints</strong>: <code>--break-on-throw TYPES</code> pauses when a matching exception is thrown, <em>even one that would be caught</em> (first-chance); <code>--break-on-uncaught TYPES</code> pauses only when it will escape. Both take a comma-separated type list — matching is hierarchy-aware (<a href="../reference/Error.html"><code>Error</code></a> catches every structured error; <a href="../reference/Object.html"><code>Object</code></a> is the explicit catch-everything), and a Rust-raised <a href="../reference/TypeError.html"><code>TypeError</code></a> and your own <a href="../reference/Error.html#c-throw:"><code>Error.throw:</code></a> behave identically.</li>
 <li><code>qn debug --dap</code> speaks the <strong>Debug Adapter Protocol</strong> on stdio instead of the <code>$</code>-command loop — point VS Code, <code>nvim-dap</code>, or any DAP client at it for editor breakpoints and stepping.</li>
 <li>A breakpoint pauses the whole scheduler, so the paused world holds still while you inspect it.</li>
 </ul>
@@ -415,7 +415,7 @@ $ $frames
 → #2  core/00-bootstrap.qn:115  throw:
   #1  oops.qn:2  value:
   #0  oops.qn:4  &lt;block&gt;</pre>
-<p><code>$continue</code> from a throw pause simply lets the exception keep propagating (or get caught) exactly as it would have. Had this run used <code>--break-on-uncaught</code> and the <code>ValueError</code> been caught somewhere, no pause would fire at all — that mode is for the error that actually escapes.</p>
+<p><code>$continue</code> from a throw pause simply lets the exception keep propagating (or get caught) exactly as it would have. Had this run used <code>--break-on-uncaught</code> and the <a href="../reference/ValueError.html"><code>ValueError</code></a> been caught somewhere, no pause would fire at all — that mode is for the error that actually escapes.</p>
 <hr>
 <h2 id="43-syntax-highlighting-qn-highlight">43. Syntax highlighting — <code>qn highlight</code></h2>
 <blockquote>

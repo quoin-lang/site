@@ -126,24 +126,24 @@ pre.qn-code { line-height: 1.45; }
 <h3 id="part-iv-patterns-errors-04-patterns-and-errors-md-04-patterns-and-errors-md">Part IV — Patterns &amp; errors · <a href="04-patterns-and-errors.html"><code>04-patterns-and-errors.md</code></a></h3>
 <ol>
 <li>Pattern matching &amp; <code>case</code> — <code>when:do:</code>, the <code>~</code> protocol, <code>.bind:</code></li>
-<li>Errors &amp; stack traces — <code>throw</code>/<code>catch:</code>, the <code>Error</code> hierarchy</li>
+<li>Errors &amp; stack traces — <code>throw</code>/<code>catch:</code>, the <a href="../reference/Error.html"><code>Error</code></a> hierarchy</li>
 </ol>
 <h3 id="part-v-concurrency-iteration-05-concurrency-and-iteration-md-05-concurrency-and-iteration-md">Part V — Concurrency &amp; iteration · <a href="05-concurrency-and-iteration.html"><code>05-concurrency-and-iteration.md</code></a></h3>
 <ol>
-<li>Fibers &amp; generators — <code>Fiber.new:</code>, <code>^&gt;</code>, <code>Generator.from:</code>, external <code>Iterator</code></li>
-<li>The iteration protocol — the <code>Iterate</code> mixin, <code>each:</code> as the one primitive, custom iterables</li>
-<li>Tasks &amp; the cooperative scheduler — <code>Task.spawn:</code>, <code>join</code>/<code>cancel</code>, round-robin at yield boundaries, parking parks the task</li>
+<li>Fibers &amp; generators — <a href="../reference/Fiber.html#c-new:"><code>Fiber.new:</code></a>, <code>^&gt;</code>, <a href="../reference/Generator.html#c-from:"><code>Generator.from:</code></a>, external <a href="../reference/Iterator.html"><code>Iterator</code></a></li>
+<li>The iteration protocol — the <a href="../reference/Iterate.html"><code>Iterate</code></a> mixin, <code>each:</code> as the one primitive, custom iterables</li>
+<li>Tasks &amp; the cooperative scheduler — <a href="../reference/Task.html#c-spawn:"><code>Task.spawn:</code></a>, <code>join</code>/<code>cancel</code>, round-robin at yield boundaries, parking parks the task</li>
 <li>Async — <code>sleep:</code>, <code>gather:</code>, <code>timeout:do:</code> (+ <code>onCancel:</code>), <code>joinAll:</code></li>
 <li>Channels — rendezvous &amp; buffered CSP, <code>close</code>, deadlock detection</li>
-<li>Workers, Parallel &amp; Plan — isolates, <code>parallelCollect:</code>, task graphs, <code>WorkerService</code></li>
+<li>Workers, Parallel &amp; Plan — isolates, <code>parallelCollect:</code>, task graphs, <a href="../reference/WorkerService.html"><code>WorkerService</code></a></li>
 </ol>
 <h3 id="part-vi-networking-the-web-06-networking-and-web-md-06-networking-and-web-md">Part VI — Networking &amp; the web · <a href="06-networking-and-web.html"><code>06-networking-and-web.md</code></a></h3>
 <ol>
 <li>The I/O model — park-don't-block; what <code>use std:net/*</code> / <code>use std:web/*</code> load (tasks, gather &amp; timeouts: Part V)</li>
-<li>Sockets &amp; streams — <code>TcpSocket</code> / <code>TcpListener</code> / <code>TlsSocket</code>, <code>ByteStream</code> / <code>StringStream</code>, write-through vs. buffered</li>
-<li><code>TcpServer</code> — a minimal concurrent TCP server</li>
+<li>Sockets &amp; streams — <a href="../reference/TcpSocket.html"><code>TcpSocket</code></a> / <a href="../reference/TcpListener.html"><code>TcpListener</code></a> / <a href="../reference/TlsSocket.html"><code>TlsSocket</code></a>, <a href="../reference/ByteStream.html"><code>ByteStream</code></a> / <a href="../reference/StringStream.html"><code>StringStream</code></a>, write-through vs. buffered</li>
+<li><a href="../reference/TcpServer.html"><code>TcpServer</code></a> — a minimal concurrent TCP server</li>
 <li>The <code>[HTTP]</code> client — verbs, the request builder, bodies &amp; JSON, streaming, redirects</li>
-<li>Serving HTTP — the <code>[HTTP]Server</code> transport and the <code>[Web]App</code> framework</li>
+<li>Serving HTTP — the <a href="../reference/HTTP.Server.html"><code>[HTTP]Server</code></a> transport and the <a href="../reference/Web.App.html"><code>[Web]App</code></a> framework</li>
 <li>End to end — a JSON service unit-tested in-process via <code>handle:</code>, then served</li>
 </ol>
 <h3 id="part-vii-the-gradual-type-system-07-types-md-07-types-md">Part VII — The gradual type system · <a href="07-types.html"><code>07-types.md</code></a></h3>
@@ -155,11 +155,11 @@ pre.qn-code { line-height: 1.45; }
 <li>Types at dispatch time — typed multimethods, guards, tag-aware dispatch</li>
 <li>Checked generic collections — element tags, <code>of:</code>/<code>ensure:</code>/<code>elementType</code>, combinators</li>
 <li>Sealing — <code>sealed!</code>/<code>abstract!</code>, the sealed built-ins, why devirtualization needs them</li>
-<li>Errors at runtime, warnings at compile time — <code>NameError</code>, <code>Class.exists?:</code>, MNU candidates</li>
+<li>Errors at runtime, warnings at compile time — <a href="../reference/NameError.html"><code>NameError</code></a>, <a href="../reference/Class.html#c-exists?:"><code>Class.exists?:</code></a>, MNU candidates</li>
 </ol>
 <h3 id="part-viii-tooling-08-tooling-md-08-tooling-md">Part VIII — Tooling · <a href="08-tooling.html"><code>08-tooling.md</code></a></h3>
 <ol>
-<li>Running programs — <code>qn</code>, <code>-e</code>, <code>Runtime.arguments</code>, the exit-code contract, environment</li>
+<li>Running programs — <code>qn</code>, <code>-e</code>, <a href="../reference/Runtime.html#c-arguments"><code>Runtime.arguments</code></a>, the exit-code contract, environment</li>
 <li>The REPL — <code>qn repl</code>: persistent sessions, editing/completion, the <code>$</code>-commands, <code>~/.quoinrc</code></li>
 <li>Tests — <code>qn test</code>: suites &amp; assertions, coverage reports, exit-code gating</li>
 <li>Static checking — <code>qn check</code>: diagnostics without running</li>
@@ -170,7 +170,7 @@ pre.qn-code { line-height: 1.45; }
 </ol>
 <h3 id="part-ix-the-standard-library-09-library-and-reference-md-09-library-and-reference-md">Part IX — The standard library · <a href="09-library-and-reference.html"><code>09-library-and-reference.md</code></a></h3>
 <ol>
-<li>The library by area — collections &amp; <code>Iterate</code>, strings, numbers, time, data formats, bytes, I/O &amp; streams, OS, ids; the generated API reference (<code>qn doc</code> / REPL <code>$doc</code>)</li>
+<li>The library by area — collections &amp; <a href="../reference/Iterate.html"><code>Iterate</code></a>, strings, numbers, time, data formats, bytes, I/O &amp; streams, OS, ids; the generated API reference (<code>qn doc</code> / REPL <code>$doc</code>)</li>
 <li>Value rendering &amp; string formatting — <code>s</code> vs <code>pp</code>, <code>%</code> formatting, <code>%'…%{expr}'</code>, ANSI</li>
 <li>Namespaces — <code>[IO]</code>, <code>[/]</code>, <code>[Y]</code></li>
 <li>File loading &amp; packages — <code>use (pkg:)? path</code>, the resolver seam, directory globs</li>
