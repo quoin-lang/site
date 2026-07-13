@@ -155,13 +155,13 @@
 <span class="key">var</span> <span class="v0">pages</span> = <span class="typ">Async</span>.<span class="sel">gather</span>:(<span class="v0">sites</span>.<span class="sel">collect</span>:<span class="b1">{</span> |<span class="v1">u</span>| <span class="b2">{</span> <span class="ns">[HTTP]</span><span class="typ">Client</span>.<span class="sel">get</span>:<span class="v1">u</span> <span class="b2">}</span> <span class="b1">}</span>)
 <span class="v0">pages</span>.<span class="sel">collect</span>:<span class="b1">{</span> |<span class="v1">r</span>| <span class="v1">r</span>.<span class="sel">status</span> <span class="b1">}</span>  <span class="cmt">"* #(200 200 200)</span></pre>
 
-    <span class="status"><span class="dot"></span>In active development</span>
+    <span class="status"><span class="dot"></span>v0.1.0 &middot; public preview</span>
 
     <div class="links">
+      <a href="https://github.com/quoin-lang/quoin/releases/latest">Download</a>
       <a href="/book/">Language reference</a>
       <a href="/reference/">API reference</a>
       <a href="https://github.com/quoin-lang/quoin">GitHub</a>
-      <a href="https://crates.io/crates/quoin">crates.io</a>
     </div>
 
     <footer>
