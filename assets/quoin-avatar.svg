@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">
+  <rect x="0" y="0" width="512" height="512" rx="112" ry="112" fill="#19170F"></rect>
+  <g transform="translate(68.5 68.5) scale(2.930)">
+    <circle cx="64" cy="64" r="62" fill="#19170F"></circle>
+    <circle cx="64" cy="64" r="54" fill="#F6C445"></circle>
+    <circle cx="64" cy="64" r="45" fill="none" stroke="#E2A93C" stroke-width="5"></circle>
+    <g fill="none" stroke="#9A660C" stroke-width="12" stroke-linecap="round" transform="translate(-2 -2.4)">
+      <circle cx="64" cy="59" r="18.5"></circle><line x1="74.5" y1="73" x2="86" y2="85"></line>
+    </g>
+    <g fill="none" stroke="#FFF0B4" stroke-width="12" stroke-linecap="round" transform="translate(2 2.4)">
+      <circle cx="64" cy="59" r="18.5"></circle><line x1="74.5" y1="73" x2="86" y2="85"></line>
+    </g>
+    <g fill="none" stroke="#E7B231" stroke-width="12" stroke-linecap="round">
+      <circle cx="64" cy="59" r="18.5"></circle><line x1="74.5" y1="73" x2="86" y2="85"></line>
+    </g>
+    <circle cx="88" cy="32" r="5.5" fill="#FFF3CE"></circle>
+    <circle cx="97" cy="43" r="3" fill="#FFF3CE"></circle>
+  </g>
+</svg>
