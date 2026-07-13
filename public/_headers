@@ -13,5 +13,10 @@
 # module Web Worker, the .wasm fetch, and WebAssembly compilation ('wasm-unsafe-eval'
 # allows wasm without re-enabling JS eval). Everything stays same-origin — the page
 # is fully self-contained (no CDN); the worker's own response carries this policy too.
+#
+# `! Content-Security-Policy` DETACHES the `/*` rule's CSP first: matching rules
+# APPEND their headers, and a browser receiving two CSP headers enforces the
+# intersection — the site-wide `default-src 'none'` was still blocking everything.
 /playground/*
+  ! Content-Security-Policy
   Content-Security-Policy: default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
